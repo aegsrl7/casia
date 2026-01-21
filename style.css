@@ -1315,6 +1315,9 @@ strong {
 .servizio-item.reveal:nth-child(4) { transition-delay: 0.3s; }
 .servizio-item.reveal:nth-child(5) { transition-delay: 0.4s; }
 .servizio-item.reveal:nth-child(6) { transition-delay: 0.5s; }
+.servizio-item.reveal:nth-child(7) { transition-delay: 0.6s; }
+.servizio-item.reveal:nth-child(8) { transition-delay: 0.7s; }
+.servizio-item.reveal:nth-child(9) { transition-delay: 0.8s; }
 
 /* ----- Modal Gallery ----- */
 .modal {
