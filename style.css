@@ -631,6 +631,7 @@ strong {
     background-color: var(--color-bianco);
     margin-bottom: var(--space-xl);
     padding: var(--space-lg);
+    overflow: hidden;
 }
 
 .appartamento-header {
@@ -677,10 +678,16 @@ strong {
     }
 }
 
+.appartamento-gallery {
+    max-width: 100%;
+    overflow: hidden;
+}
+
 .appartamento-gallery-main {
     aspect-ratio: 16 / 10;
     overflow: hidden;
     cursor: pointer;
+    max-width: 100%;
 }
 
 .appartamento-gallery-main img {
@@ -699,12 +706,14 @@ strong {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-sm);
     margin-top: var(--space-sm);
+    max-width: 100%;
 }
 
 .appartamento-gallery-thumb {
     aspect-ratio: 4 / 3;
     overflow: hidden;
     cursor: pointer;
+    min-width: 0;
 }
 
 .appartamento-gallery-thumb img {
