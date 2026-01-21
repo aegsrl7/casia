@@ -604,6 +604,277 @@ strong {
     line-height: 1.5;
 }
 
+/* ----- Appartamenti ----- */
+.appartamenti {
+    padding: var(--space-xl) 0 var(--space-2xl);
+}
+
+.appartamenti-intro {
+    max-width: 700px;
+    margin: 0 auto var(--space-xl);
+    text-align: center;
+    font-size: 1.0625rem;
+    color: var(--color-text-light);
+}
+
+.appartamento {
+    background-color: var(--color-bianco);
+    margin-bottom: var(--space-xl);
+    padding: var(--space-lg);
+}
+
+.appartamento-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid rgba(184, 149, 107, 0.2);
+}
+
+.appartamento-nome {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 500;
+    color: var(--color-antracite);
+}
+
+.appartamento-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-bianco);
+    background-color: var(--color-rame);
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+}
+
+.appartamento-tag--coming {
+    background-color: var(--color-text-light);
+}
+
+.appartamento-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+}
+
+@media (min-width: 1024px) {
+    .appartamento-content {
+        grid-template-columns: 1.2fr 1fr;
+        gap: var(--space-xl);
+    }
+}
+
+.appartamento-gallery-main {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.appartamento-gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.appartamento-gallery-main:hover img {
+    transform: scale(1.03);
+}
+
+.appartamento-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+}
+
+.appartamento-gallery-thumb {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.appartamento-gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+}
+
+.appartamento-gallery-thumb:hover img {
+    transform: scale(1.05);
+}
+
+.appartamento-descrizione {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    line-height: 1.8;
+    margin-bottom: var(--space-lg);
+}
+
+.appartamento-specs {
+    display: flex;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    padding: var(--space-md) 0;
+    border-top: 1px solid rgba(45, 41, 38, 0.1);
+    border-bottom: 1px solid rgba(45, 41, 38, 0.1);
+}
+
+.spec-item {
+    text-align: center;
+}
+
+.spec-value {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--color-rame);
+    line-height: 1;
+}
+
+.spec-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-light);
+    margin-top: 0.25rem;
+}
+
+.appartamento-features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xs);
+}
+
+@media (min-width: 480px) {
+    .appartamento-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.appartamento-features li {
+    font-size: 0.9375rem;
+    color: var(--color-text-light);
+    padding-left: 1.25rem;
+    position: relative;
+}
+
+.appartamento-features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 6px;
+    height: 6px;
+    background-color: var(--color-rame-light);
+    border-radius: 50%;
+}
+
+/* Placeholder per Verica */
+.appartamento-placeholder {
+    background: linear-gradient(135deg, var(--color-crema) 0%, #e8e4de 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder-content {
+    text-align: center;
+    color: var(--color-text-light);
+}
+
+.placeholder-content svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--space-sm);
+    opacity: 0.4;
+}
+
+.placeholder-content span {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: var(--space-xs);
+}
+
+.placeholder-content p {
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+.appartamento-placeholder-thumb {
+    background: linear-gradient(135deg, var(--color-crema) 0%, #e8e4de 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.appartamento-placeholder-thumb span {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    opacity: 0.5;
+}
+
+.appartamento-coming-note {
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px solid rgba(45, 41, 38, 0.1);
+    font-size: 0.9375rem;
+    color: var(--color-rame);
+}
+
+/* Esterno cascina */
+.cascina-esterno {
+    margin-top: var(--space-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.cascina-image {
+    aspect-ratio: 21 / 9;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.cascina-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.cascina-esterno:hover .cascina-image img {
+    transform: scale(1.02);
+}
+
+.cascina-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+    background: linear-gradient(to top, rgba(45, 41, 38, 0.8) 0%, transparent 100%);
+    color: var(--color-bianco);
+}
+
+.cascina-caption h4 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-bottom: var(--space-xs);
+}
+
+.cascina-caption p {
+    font-size: 0.9375rem;
+    opacity: 0.9;
+    max-width: 500px;
+}
+
 /* ----- Servizi ----- */
 .servizi {
     padding: var(--space-xl) 0 var(--space-2xl);

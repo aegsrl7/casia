@@ -19,10 +19,10 @@
     const modalClose = document.getElementById('modal-close');
     const modalPrev = document.getElementById('modal-prev');
     const modalNext = document.getElementById('modal-next');
-    const galleryItems = document.querySelectorAll('.gallery-item[data-image]');
+    const galleryItems = document.querySelectorAll('[data-image]');
     
     let currentImageIndex = 0;
-    const galleryImages = Array.from(galleryItems).map(item => item.dataset.image);
+    const galleryImages = Array.from(galleryItems).map(item => item.dataset.image).filter(Boolean);
 
     // ----- Navbar Scroll Effect -----
     function handleNavbarScroll() {

@@ -76,64 +76,161 @@
         </div>
     </section>
 
-    <!-- La Casa -->
-    <section class="casa" id="casa">
+    <!-- Gli Appartamenti -->
+    <section class="appartamenti" id="casa">
         <div class="container">
             <header class="section-header reveal">
-                <span class="section-label">Esplora</span>
+                <span class="section-label">I nostri alloggi</span>
                 <h2 class="section-title">La Casa</h2>
             </header>
             
-            <div class="gallery">
-                <article class="gallery-item gallery-item--large reveal" data-image="images/esterno.jpg">
-                    <div class="gallery-image">
-                        <img src="images/esterno.jpg" alt="La cascina vista dal giardino" loading="lazy">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>La Cascina</h3>
-                        <p>Un angolo di Piemonte tutto per voi, dove i colori caldi della facciata accolgono ogni arrivo</p>
-                    </div>
-                </article>
+            <p class="appartamenti-intro reveal">
+                Due appartamenti indipendenti, ciascuno con il proprio carattere e la propria storia. Entrambi con ingresso privato, giardino e accesso alla piscina.
+            </p>
+
+            <!-- Appartamento Oliva -->
+            <article class="appartamento reveal" id="oliva">
+                <div class="appartamento-header">
+                    <h3 class="appartamento-nome">Oliva</h3>
+                    <span class="appartamento-tag">Disponibile</span>
+                </div>
                 
-                <article class="gallery-item reveal" data-image="images/soggiorno.jpg">
-                    <div class="gallery-image">
-                        <img src="images/soggiorno.jpg" alt="Soggiorno luminoso" loading="lazy">
+                <div class="appartamento-content">
+                    <div class="appartamento-gallery">
+                        <div class="appartamento-gallery-main" data-image="images/soggiorno.jpg">
+                            <img src="images/soggiorno.jpg" alt="Soggiorno appartamento Oliva" loading="lazy">
+                        </div>
+                        <div class="appartamento-gallery-grid">
+                            <div class="appartamento-gallery-thumb" data-image="images/cucina.jpg">
+                                <img src="images/cucina.jpg" alt="Cucina" loading="lazy">
+                            </div>
+                            <div class="appartamento-gallery-thumb" data-image="images/camera.jpg">
+                                <img src="images/camera.jpg" alt="Camera" loading="lazy">
+                            </div>
+                            <div class="appartamento-gallery-thumb" data-image="images/bagno.jpg">
+                                <img src="images/bagno.jpg" alt="Bagno" loading="lazy">
+                            </div>
+                        </div>
                     </div>
-                    <div class="gallery-caption">
-                        <h3>Soggiorno</h3>
-                        <p>Luce naturale e comfort per le vostre serate. Divano letto per un ospite in più</p>
+                    
+                    <div class="appartamento-info">
+                        <p class="appartamento-descrizione">
+                            Al primo piano della cascina, l'appartamento Oliva vi accoglie con i suoi spazi luminosi e le travi a vista originali. Perfetto per coppie o piccole famiglie che cercano il comfort di una vera casa piemontese.
+                        </p>
+                        
+                        <div class="appartamento-specs">
+                            <div class="spec-item">
+                                <span class="spec-value">65</span>
+                                <span class="spec-label">mq</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">2</span>
+                                <span class="spec-label">Camere</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">4+1</span>
+                                <span class="spec-label">Posti letto</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">1</span>
+                                <span class="spec-label">Bagno</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="appartamento-features">
+                            <li>Soggiorno con divano letto matrimoniale</li>
+                            <li>Camera matrimoniale in mansarda</li>
+                            <li>Camera singola</li>
+                            <li>Cucina attrezzata con zona pranzo</li>
+                            <li>Bagno con doccia</li>
+                            <li>Aria condizionata</li>
+                            <li>Smart TV</li>
+                        </ul>
                     </div>
-                </article>
+                </div>
+            </article>
+
+            <!-- Appartamento Verica -->
+            <article class="appartamento appartamento--coming reveal" id="verica">
+                <div class="appartamento-header">
+                    <h3 class="appartamento-nome">Verica</h3>
+                    <span class="appartamento-tag appartamento-tag--coming">Prossimamente</span>
+                </div>
                 
-                <article class="gallery-item reveal" data-image="images/cucina.jpg">
-                    <div class="gallery-image">
-                        <img src="images/cucina.jpg" alt="Cucina attrezzata" loading="lazy">
+                <div class="appartamento-content">
+                    <div class="appartamento-gallery">
+                        <div class="appartamento-gallery-main appartamento-placeholder">
+                            <div class="placeholder-content">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                    <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0l-2-7m-12 7l2-7m0 0h8m-8 0V7a1 1 0 011-1h6a1 1 0 011 1v7"/>
+                                </svg>
+                                <span>In ristrutturazione</span>
+                                <p>Nuove foto in arrivo</p>
+                            </div>
+                        </div>
+                        <div class="appartamento-gallery-grid">
+                            <div class="appartamento-gallery-thumb appartamento-placeholder-thumb">
+                                <span>Foto</span>
+                            </div>
+                            <div class="appartamento-gallery-thumb appartamento-placeholder-thumb">
+                                <span>Foto</span>
+                            </div>
+                            <div class="appartamento-gallery-thumb appartamento-placeholder-thumb">
+                                <span>Foto</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="gallery-caption">
-                        <h3>Cucina</h3>
-                        <p>Il cuore della casa, dove preparare colazioni lente e cene con i sapori del territorio</p>
+                    
+                    <div class="appartamento-info">
+                        <p class="appartamento-descrizione">
+                            Al piano terra con accesso diretto al giardino, l'appartamento Verica è attualmente in fase di ristrutturazione. Presto sarà pronto ad accogliervi con ambienti rinnovati e tutti i comfort moderni.
+                        </p>
+                        
+                        <div class="appartamento-specs">
+                            <div class="spec-item">
+                                <span class="spec-value">80</span>
+                                <span class="spec-label">mq</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">2</span>
+                                <span class="spec-label">Camere</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">5</span>
+                                <span class="spec-label">Posti letto</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-value">2</span>
+                                <span class="spec-label">Bagni</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="appartamento-features">
+                            <li>Ampio soggiorno con camino</li>
+                            <li>Camera matrimoniale</li>
+                            <li>Camera con letto a castello + singolo</li>
+                            <li>Cucina abitabile</li>
+                            <li>Due bagni (uno con vasca)</li>
+                            <li>Accesso diretto al giardino</li>
+                            <li>Pet friendly</li>
+                        </ul>
+                        
+                        <p class="appartamento-coming-note">
+                            <em>Disponibile da Primavera 2025 — Contattaci per info</em>
+                        </p>
                     </div>
-                </article>
-                
-                <article class="gallery-item reveal" data-image="images/camera.jpg">
-                    <div class="gallery-image">
-                        <img src="images/camera.jpg" alt="Camera da letto in mansarda" loading="lazy">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>Camera</h3>
-                        <p>Sotto le travi antiche, un nido intimo dove riscoprire il piacere del riposo</p>
-                    </div>
-                </article>
-                
-                <article class="gallery-item reveal" data-image="images/bagno.jpg">
-                    <div class="gallery-image">
-                        <img src="images/bagno.jpg" alt="Bagno moderno" loading="lazy">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>Bagno</h3>
-                        <p>Design contemporaneo e cura nei dettagli, con doccia rigenerante</p>
-                    </div>
-                </article>
+                </div>
+            </article>
+
+            <!-- Esterno -->
+            <div class="cascina-esterno reveal">
+                <div class="cascina-image" data-image="images/esterno.jpg">
+                    <img src="images/esterno.jpg" alt="La cascina vista dal giardino" loading="lazy">
+                </div>
+                <div class="cascina-caption">
+                    <h4>La Cascina</h4>
+                    <p>Un angolo di Piemonte tutto per voi, dove i colori caldi della facciata accolgono ogni arrivo</p>
+                </div>
             </div>
         </div>
     </section>
