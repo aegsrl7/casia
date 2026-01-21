@@ -195,13 +195,22 @@ strong {
 }
 
 .logo-img {
-    height: 48px;
+    height: 62px;
     width: auto;
     transition: opacity var(--transition-fast);
 }
 
-.navbar:not(.scrolled) .logo-img {
-    filter: brightness(0) invert(1);
+/* Logo switching based on navbar state */
+.logo-chiaro {
+    display: none;
+}
+
+.navbar:not(.scrolled) .logo-scuro {
+    display: none;
+}
+
+.navbar:not(.scrolled) .logo-chiaro {
+    display: block;
 }
 
 .nav-toggle {
@@ -279,7 +288,8 @@ strong {
     transition: width var(--transition-base);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link.active::after {
     width: 100%;
 }
 

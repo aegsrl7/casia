@@ -62,6 +62,28 @@
         });
     }
 
+    // ----- Active Nav Link on Scroll -----
+    function updateActiveNavLink() {
+        const sections = document.querySelectorAll('section[id]');
+        const scrollY = window.scrollY;
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - navbarHeight - 100;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + sectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }
+
     // ----- Smooth Scroll for Anchor Links -----
     function smoothScroll(e) {
         const href = this.getAttribute('href');
@@ -113,10 +135,12 @@
         // Initial checks
         handleNavbarScroll();
         revealOnScroll();
+        updateActiveNavLink();
 
         // Event listeners
         window.addEventListener('scroll', handleNavbarScroll, { passive: true });
         window.addEventListener('scroll', revealOnScroll, { passive: true });
+        window.addEventListener('scroll', updateActiveNavLink, { passive: true });
         window.addEventListener('resize', revealOnScroll, { passive: true });
 
         if (navToggle) {
