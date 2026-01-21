@@ -865,11 +865,11 @@ strong {
 @media (min-width: 768px) {
     .cascina-gallery {
         grid-template-columns: 2fr 1fr;
+        align-items: stretch;
     }
 }
 
 .cascina-gallery-main {
-    aspect-ratio: 16 / 10;
     overflow: hidden;
     cursor: pointer;
 }
@@ -892,7 +892,6 @@ strong {
 }
 
 .cascina-gallery-thumb {
-    aspect-ratio: 16 / 10;
     overflow: hidden;
     cursor: pointer;
 }
