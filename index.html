@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Casia Country House - Riposo autentico nella campagna piemontese. Casa vacanze a Santo Stefano, Bene Vagienna (Cuneo).">
+    <meta name="keywords" content="casa vacanze, country house, Piemonte, Bene Vagienna, Cuneo, Langhe, agriturismo">
+    <meta name="author" content="Casia Country House">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Casia Country House - Campagna Piemontese">
+    <meta property="og:description" content="Riposo autentico nella campagna piemontese. Una cascina storica restaurata con cura.">
+    <meta property="og:image" content="images/esterno.jpg">
+    <meta property="og:type" content="website">
+    
+    <title>Casia Country House | Santo Stefano, Bene Vagienna</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <img src="images/logo_scuro.png" alt="Casia Country House" class="logo-img">
+            </a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#casa" class="nav-link">La Casa</a></li>
+                <li><a href="#servizi" class="nav-link">Servizi</a></li>
+                <li><a href="#territorio" class="nav-link">Territorio</a></li>
+                <li><a href="#esperienze" class="nav-link">Esperienze</a></li>
+                <li><a href="#prenota" class="nav-link nav-cta">Prenota</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg" style="background-image: url('images/esterno.jpg');"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <img src="images/logo_chiaro.png" alt="Casia Country House" class="hero-logo fade-in">
+            <h1 class="hero-title fade-in">Riposo autentico nella campagna piemontese</h1>
+            <p class="hero-subtitle fade-in">Santo Stefano, Bene Vagienna</p>
+            <div class="hero-cta fade-in">
+                <a href="#casa" class="btn btn-outline">Scopri la casa</a>
+                <a href="#prenota" class="btn btn-primary">Prenota ora</a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>Scorri</span>
+            <div class="scroll-indicator"></div>
+        </div>
+    </section>
+
+    <!-- Introduzione -->
+    <section class="intro" id="intro">
+        <div class="container">
+            <div class="intro-content reveal">
+                <div class="intro-ornament"></div>
+                <p class="intro-text">
+                    Nel cuore delle colline del Cuneese, <strong>Casia Country House</strong> è un rifugio di pace dove il tempo rallenta. Una cascina storica restaurata con cura, che unisce il fascino dell'architettura piemontese tradizionale al comfort contemporaneo.
+                </p>
+                <div class="intro-ornament"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- La Casa -->
+    <section class="casa" id="casa">
+        <div class="container">
+            <header class="section-header reveal">
+                <span class="section-label">Esplora</span>
+                <h2 class="section-title">La Casa</h2>
+            </header>
+            
+            <div class="gallery">
+                <article class="gallery-item gallery-item--large reveal" data-image="images/esterno.jpg">
+                    <div class="gallery-image">
+                        <img src="images/esterno.jpg" alt="La cascina vista dal giardino" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>La Cascina</h3>
+                        <p>Un angolo di Piemonte tutto per voi, dove i colori caldi della facciata accolgono ogni arrivo</p>
+                    </div>
+                </article>
+                
+                <article class="gallery-item reveal" data-image="images/soggiorno.jpg">
+                    <div class="gallery-image">
+                        <img src="images/soggiorno.jpg" alt="Soggiorno luminoso" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Soggiorno</h3>
+                        <p>Luce naturale e comfort per le vostre serate. Divano letto per un ospite in più</p>
+                    </div>
+                </article>
+                
+                <article class="gallery-item reveal" data-image="images/cucina.jpg">
+                    <div class="gallery-image">
+                        <img src="images/cucina.jpg" alt="Cucina attrezzata" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Cucina</h3>
+                        <p>Il cuore della casa, dove preparare colazioni lente e cene con i sapori del territorio</p>
+                    </div>
+                </article>
+                
+                <article class="gallery-item reveal" data-image="images/camera.jpg">
+                    <div class="gallery-image">
+                        <img src="images/camera.jpg" alt="Camera da letto in mansarda" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Camera</h3>
+                        <p>Sotto le travi antiche, un nido intimo dove riscoprire il piacere del riposo</p>
+                    </div>
+                </article>
+                
+                <article class="gallery-item reveal" data-image="images/bagno.jpg">
+                    <div class="gallery-image">
+                        <img src="images/bagno.jpg" alt="Bagno moderno" loading="lazy">
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>Bagno</h3>
+                        <p>Design contemporaneo e cura nei dettagli, con doccia rigenerante</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Servizi -->
+    <section class="servizi" id="servizi">
+        <div class="container">
+            <header class="section-header reveal">
+                <span class="section-label">Comfort</span>
+                <h2 class="section-title">I Nostri Servizi</h2>
+            </header>
+            
+            <div class="servizi-grid">
+                <div class="servizio-item reveal">
+                    <div class="servizio-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z"/>
+                        </svg>
+                    </div>
+                    <h3>WiFi Gratuito</h3>
+                    <p>Connessione veloce in tutta la casa</p>
+                </div>
+                
+                <div class="servizio-item reveal">
+                    <div class="servizio-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+                        </svg>
+                    </div>
+                    <h3>Cucina Attrezzata</h3>
+                    <p>Frigorifero, macchina caffè, tostapane e bollitore</p>
+                </div>
+                
+                <div class="servizio-item reveal">
+                    <div class="servizio-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/>
+                            <path d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1.001A3.75 3.75 0 0012 18z"/>
+                        </svg>
+                    </div>
+                    <h3>Riscaldamento</h3>
+                    <p>Riscaldamento autonomo per ogni stagione</p>
+                </div>
+                
+                <div class="servizio-item reveal">
+                    <div class="servizio-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 19h16M4 19v-7a1 1 0 011-1h14a1 1 0 011 1v7M4 19l-1 2h18l-1-2"/>
+                            <path d="M7 11V8a1 1 0 011-1h8a1 1 0 011 1v3"/>
+                            <path d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                            <path d="M8 14h8M8 17h8"/>
+                        </svg>
+                    </div>
+                    <h3>Biancheria Inclusa</h3>
+                    <p>Lenzuola e asciugamani di qualità forniti</p>
+                </div>
+                
+                <div class="servizio-item reveal">
+                    <div class="servizio-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M19 17h1a1 1 0 001-1v-3a1 1 0 00-.4-.8l-2.1-1.6a1 1 0 00-.5-.1H6a1 1 0 00-.5.1L3.4 12.2A1 1 0 003 13v3a1 1 0 001 1h1"/>
+                            <path d="M6 17h12"/>
+                            <circle cx="7" cy="17" r="2"/>
+                            <circle cx="17" cy="17" r="2"/>
+                            <path d="M5 11.5l1.5-3.4a1 1 0 01.9-.6h9.2a1 1 0 01.9.6L19 11.5"/>
+                        </svg>
+                    </div>
+                    <h3>Parcheggio Privato</h3>
+                    <p>Posto auto riservato nella proprietà</p>
+                </div>
+                
+                <div class="servizio-item reveal">
+                    <div class="servizio-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 21v-9"/>
+                            <path d="M12 12c0-3 2-5 5-6-1 3-2 5-5 6z"/>
+                            <path d="M12 12c0-3-2-5-5-6 1 3 2 5 5 6z"/>
+                            <path d="M12 8c0-2.5 1.5-4 4-5-.5 2.5-1.5 4-4 5z"/>
+                            <path d="M12 8c0-2.5-1.5-4-4-5 .5 2.5 1.5 4 4 5z"/>
+                        </svg>
+                    </div>
+                    <h3>Giardino</h3>
+                    <p>Spazio verde privato per il relax</p>
+                </div>
+                
+                <div class="servizio-item reveal">
+                    <div class="servizio-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 17.25c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3-1.5 4.5 0"/>
+                            <path d="M3 21c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3-1.5 4.5 0"/>
+                            <path d="M5 14V7a2 2 0 012-2h10a2 2 0 012 2v7"/>
+                            <path d="M12 5v9"/>
+                            <circle cx="12" cy="3" r="1"/>
+                        </svg>
+                    </div>
+                    <h3>Piscina</h3>
+                    <p>Piscina privata 6x4 metri per rinfrescarsi</p>
+                </div>
+            </div>
+            
+            <p class="servizi-note reveal">
+                <em>Animali domestici: contattaci per verificare la disponibilità</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- Territorio -->
+    <section class="territorio" id="territorio">
+        <div class="container">
+            <header class="section-header reveal">
+                <span class="section-label">Dintorni</span>
+                <h2 class="section-title">Il Territorio</h2>
+            </header>
+            
+            <div class="territorio-content">
+                <div class="territorio-info reveal">
+                    <p class="territorio-intro">
+                        Casia Country House è il punto di partenza ideale per esplorare le meraviglie del Piemonte meridionale, tra borghi storici, vigneti pregiati e paesaggi incantati.
+                    </p>
+                    
+                    <div class="luoghi-grid">
+                        <div class="luogo">
+                            <h4>Bene Vagienna</h4>
+                            <p>Borgo romano con i resti archeologici di <em>Augusta Bagiennorum</em>, teatro e terme dell'antica città</p>
+                        </div>
+                        <div class="luogo">
+                            <h4>Langhe e Roero</h4>
+                            <p>A breve distanza, le terre patrimonio UNESCO del Barolo, del tartufo bianco e dei vini pregiati</p>
+                        </div>
+                    </div>
+                    
+                    <div class="distanze">
+                        <h4>Distanze</h4>
+                        <ul>
+                            <li><strong>Cuneo</strong> — 25 km</li>
+                            <li><strong>Alba</strong> — 40 km</li>
+                            <li><strong>Torino</strong> — 70 km</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="territorio-map reveal">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11384.661432366855!2d7.8055!3d44.5605!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12d2b3f5e8a8b8b7%3A0x4b0b0b0b0b0b0b0b!2sSanto%20Stefano%2C%20Bene%20Vagienna%20CN!5e0!3m2!1sit!2sit!4v1699999999999!5m2!1sit!2sit"
+                        width="100%" 
+                        height="400" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Mappa di Casia Country House">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Esperienze -->
+    <section class="esperienze" id="esperienze">
+        <div class="container">
+            <header class="section-header reveal">
+                <span class="section-label">Vivi il territorio</span>
+                <h2 class="section-title">Esperienze</h2>
+            </header>
+            
+            <div class="esperienze-grid">
+                <article class="esperienza-card reveal">
+                    <div class="esperienza-image">
+                        <img src="images/tartufi.jpg" alt="Cerca tartufi nelle colline piemontesi" loading="lazy">
+                    </div>
+                    <div class="esperienza-content">
+                        <h3>Caccia al Tartufo</h3>
+                        <p>Una mattinata immersi nei boschi delle Langhe, accompagnati da un tartufaio esperto e dal suo fedele cane. Scoprirete i segreti di questa tradizione antica e, con un po' di fortuna, porterete a casa il vostro prezioso bottino.</p>
+                        <span class="esperienza-tag">Su richiesta</span>
+                    </div>
+                </article>
+                
+                <article class="esperienza-card reveal">
+                    <div class="esperienza-image">
+                        <img src="images/autodepoca.jpg" alt="Tour in auto d'epoca nelle Langhe" loading="lazy">
+                    </div>
+                    <div class="esperienza-content">
+                        <h3>Tour in Auto d'Epoca</h3>
+                        <p>Esplorate le colline patrimonio UNESCO al volante di un'elegante auto d'epoca. Un itinerario tra vigneti, castelli e borghi incantati, per vivere le Langhe con lo stile e il fascino di un tempo.</p>
+                        <span class="esperienza-tag">Su richiesta</span>
+                    </div>
+                </article>
+            </div>
+            
+            <p class="esperienze-note reveal">
+                <em>Contattaci per organizzare la tua esperienza su misura</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- Prenota -->
+    <section class="prenota" id="prenota">
+        <div class="container">
+            <div class="prenota-content reveal">
+                <header class="section-header section-header--light">
+                    <span class="section-label">Soggiorna</span>
+                    <h2 class="section-title">Prenota il tuo soggiorno</h2>
+                </header>
+                
+                <p class="prenota-text">
+                    Concediti una pausa dalla routine. Contattaci per verificare la disponibilità e prenotare la tua esperienza nella campagna piemontese.
+                </p>
+                
+                <a href="#booking" class="btn btn-primary btn-large">Richiedi Disponibilità</a>
+                
+                <div class="prenota-contact">
+                    <p>
+                        <a href="mailto:info@casiacountryhouse.it">info@casiacountryhouse.it</a>
+                    </p>
+                    <p class="prenota-note">Risposta entro 24 ore</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="images/logo_chiaro.png" alt="Casia Country House" class="footer-logo">
+                    <address>
+                        Santo Stefano, Bene Vagienna (CN)<br>
+                        Piemonte, Italia
+                    </address>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Contatti</h4>
+                    <ul>
+                        <li><a href="mailto:info@casiacountryhouse.it">info@casiacountryhouse.it</a></li>
+                        <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Esplora</h4>
+                    <ul>
+                        <li><a href="#casa">La Casa</a></li>
+                        <li><a href="#servizi">Servizi</a></li>
+                        <li><a href="#territorio">Territorio</a></li>
+                        <li><a href="#prenota">Prenota</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Casia Country House. Tutti i diritti riservati.</p>
+                <p class="footer-piva">P.IVA: 00000000000</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Gallery -->
+    <div class="modal" id="gallery-modal">
+        <button class="modal-close" id="modal-close" aria-label="Chiudi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <div class="modal-content">
+            <img src="" alt="" id="modal-image">
+        </div>
+        <button class="modal-nav modal-prev" id="modal-prev" aria-label="Precedente">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <button class="modal-nav modal-next" id="modal-next" aria-label="Successivo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
