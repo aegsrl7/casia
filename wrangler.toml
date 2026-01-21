@@ -1,0 +1,6 @@
+name = "casia"
+compatibility_date = "2026-01-21"
+
+[site]
+bucket = "./"
+
