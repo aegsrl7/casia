@@ -8,6 +8,7 @@
 
     // ----- DOM Elements -----
     const navbar = document.getElementById('navbar');
+    const statusBarCover = document.querySelector('.status-bar-cover');
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -30,8 +31,10 @@
         
         if (scrollY > 50) {
             navbar.classList.add('scrolled');
+            if (statusBarCover) statusBarCover.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
+            if (statusBarCover) statusBarCover.classList.remove('scrolled');
         }
     }
 
