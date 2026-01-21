@@ -832,47 +832,105 @@ strong {
 /* Esterno cascina */
 .cascina-esterno {
     margin-top: var(--space-xl);
-    position: relative;
-    overflow: hidden;
+    background-color: var(--color-bianco);
+    padding: var(--space-lg);
 }
 
-.cascina-image {
-    aspect-ratio: 21 / 9;
+.cascina-header {
+    margin-bottom: var(--space-lg);
+    text-align: center;
+}
+
+.cascina-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+    color: var(--color-antracite);
+    margin-bottom: var(--space-sm);
+}
+
+.cascina-subtitle {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cascina-gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+    .cascina-gallery {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.cascina-gallery-main {
+    aspect-ratio: 16 / 10;
     overflow: hidden;
     cursor: pointer;
 }
 
-.cascina-image img {
+.cascina-gallery-main img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform var(--transition-slow);
 }
 
-.cascina-esterno:hover .cascina-image img {
-    transform: scale(1.02);
+.cascina-gallery-main:hover img {
+    transform: scale(1.03);
 }
 
-.cascina-caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: var(--space-xl) var(--space-lg) var(--space-lg);
-    background: linear-gradient(to top, rgba(45, 41, 38, 0.8) 0%, transparent 100%);
-    color: var(--color-bianco);
+.cascina-gallery-side {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--space-md);
 }
 
-.cascina-caption h4 {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    margin-bottom: var(--space-xs);
+.cascina-gallery-thumb {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    cursor: pointer;
 }
 
-.cascina-caption p {
+.cascina-gallery-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+}
+
+.cascina-gallery-thumb:hover img {
+    transform: scale(1.05);
+}
+
+.cascina-placeholder {
+    background: linear-gradient(135deg, var(--color-crema) 0%, #e8e4de 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+}
+
+.placeholder-content-small {
+    text-align: center;
+    color: var(--color-text-light);
+}
+
+.placeholder-content-small span {
+    display: block;
     font-size: 0.9375rem;
-    opacity: 0.9;
-    max-width: 500px;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.placeholder-content-small p {
+    font-size: 0.75rem;
+    opacity: 0.6;
 }
 
 /* ----- Servizi ----- */
