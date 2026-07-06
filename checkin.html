@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>CASIA — Check-in Online</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rame: #B8956B;
+            --rame-light: #D4B896;
+            --antracite: #2D2926;
+            --crema: #F8F5F0;
+            --white: #fff;
+            --text-light: #5a5652;
+            --danger: #dc2626;
+            --success: #059669;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Jost', -apple-system, sans-serif;
+            background: var(--crema);
+            color: var(--antracite);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .header {
+            background: var(--antracite);
+            padding: 24px;
+            text-align: center;
+        }
+        .header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--rame);
+            font-size: 1.6rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+        }
+        .header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 24px 16px 48px;
+        }
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .card h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--antracite);
+        }
+        .card h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f0ece6;
+            color: var(--rame);
+        }
+        .reservation-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-label { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+        .info-value { font-weight: 500; font-size: 1rem; }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label {
+            font-size: 0.82rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-light);
+        }
+        .form-group label .required { color: var(--danger); }
+        .form-group input, .form-group select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--rame);
+        }
+        .form-group input.error { border-color: var(--danger); }
+        .traveler-section {
+            border: 1px solid #e8e4de;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .traveler-section.primary { border-color: var(--rame); border-width: 2px; }
+        .traveler-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: var(--rame);
+            color: var(--white);
+            margin-left: 8px;
+            font-weight: 400;
+        }
+        .doc-upload {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .upload-box {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .upload-box:hover { border-color: var(--rame); background: rgba(184,149,107,0.04); }
+        .upload-box.uploaded { border-color: var(--success); border-style: solid; background: rgba(5,150,105,0.04); }
+        .upload-box input[type="file"] { display: none; }
+        .upload-box .upload-icon { font-size: 1.5rem; margin-bottom: 4px; }
+        .upload-box .upload-label { font-size: 0.82rem; color: var(--text-light); }
+        .upload-box .upload-check { color: var(--success); font-size: 1.2rem; }
+        .upload-box .upload-filename { font-size: 0.75rem; color: var(--text-light); margin-top: 4px; word-break: break-all; }
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--rame); color: var(--white); }
+        .btn-primary:hover { background: #a6835d; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-block { display: block; width: 100%; text-align: center; }
+        .status-message {
+            text-align: center;
+            padding: 32px;
+        }
+        .status-message .icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .status-message h2 { font-family: 'Cormorant Garamond', serif; margin-bottom: 8px; }
+        .status-message p { color: var(--text-light); }
+        .error-msg { color: var(--danger); font-size: 0.85rem; margin-top: 8px; display: none; }
+        .loading { text-align: center; padding: 48px; color: var(--text-light); }
+        .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid #e8e4de; border-top-color: var(--rame); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .form-row.three { grid-template-columns: 1fr; }
+            .reservation-info { grid-template-columns: 1fr; }
+            .doc-upload { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>CASIA COUNTRY HOUSE</h1>
+    <p>Check-in Online</p>
+</div>
+
+<div class="container">
+    <div id="loading-state" class="loading">
+        <div class="spinner"></div>
+        <p style="margin-top:16px;">Caricamento prenotazione...</p>
+    </div>
+
+    <div id="error-state" style="display:none;">
+        <div class="card">
+            <div class="status-message">
+                <div class="icon">!</div>
+                <h2>Link non valido</h2>
+                <p id="error-text">Il link di check-in non è valido o è scaduto. Contattaci per assistenza.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="already-submitted" style="display:none;">
+        <div class="card">
+            <div class="status-message">
+                <div class="icon" style="color:var(--success);">&#10003;</div>
+                <h2>Check-in completato</h2>
+                <p>I tuoi dati sono stati inviati correttamente. Sarai contattato per la verifica dell'identità e riceverai le istruzioni di accesso.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="form-state" style="display:none;">
+        <div class="card">
+            <h2>Dettagli prenotazione</h2>
+            <div class="reservation-info">
+                <div class="info-item">
+                    <span class="info-label">Appartamento</span>
+                    <span class="info-value" id="res-apartment">—</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Date</span>
+                    <span class="info-value" id="res-dates">—</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Notti</span>
+                    <span class="info-value" id="res-nights">—</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Ospiti</span>
+                    <span class="info-value" id="res-guests">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Dati dei viaggiatori</h2>
+            <p style="color:var(--text-light);font-size:0.88rem;margin-bottom:16px;">Compila i dati di tutti i viaggiatori. I campi con <span style="color:var(--danger);">*</span> sono obbligatori.</p>
+            <div id="travelers-forms"></div>
+        </div>
+
+        <div class="error-msg" id="submit-error"></div>
+        <button type="button" class="btn btn-primary btn-block" id="btn-submit" style="margin-top:8px;">
+            Invia dati check-in
+        </button>
+    </div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    const API_BASE = '/api/checkin';
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+
+    let reservationData = null;
+    let existingTravelers = [];
+
+    function formatDate(d) {
+        if (!d) return '—';
+        const [y, m, dd] = d.split('-');
+        return `${dd}/${m}/${y}`;
+    }
+
+    function show(id) {
+        ['loading-state', 'error-state', 'already-submitted', 'form-state'].forEach(s => {
+            document.getElementById(s).style.display = s === id ? '' : 'none';
+        });
+    }
+
+    async function init() {
+        if (!token || token.length < 10) {
+            show('error-state');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/${token}`);
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                document.getElementById('error-text').textContent = err.error || 'Prenotazione non trovata.';
+                show('error-state');
+                return;
+            }
+
+            const data = await res.json();
+            reservationData = data.reservation;
+            existingTravelers = data.travelers || [];
+
+            if (reservationData.checkin_status === 'submitted' || reservationData.checkin_status === 'verified') {
+                show('already-submitted');
+                return;
+            }
+
+            renderReservation();
+            renderTravelerForms();
+            show('form-state');
+        } catch (err) {
+            document.getElementById('error-text').textContent = 'Errore di connessione. Riprova.';
+            show('error-state');
+        }
+    }
+
+    function renderReservation() {
+        const r = reservationData;
+        document.getElementById('res-apartment').textContent = r.apartment_name;
+        document.getElementById('res-dates').textContent = `${formatDate(r.checkin)} — ${formatDate(r.checkout)}`;
+        document.getElementById('res-nights').textContent = r.nights;
+        document.getElementById('res-guests').textContent = `${r.adults} adulti${r.children > 0 ? ` + ${r.children} bambini` : ''}`;
+    }
+
+    function renderTravelerForms() {
+        const total = reservationData.adults + reservationData.children;
+        const wrap = document.getElementById('travelers-forms');
+        let html = '';
+
+        // Pre-split guest_name for primary
+        const nameParts = (reservationData.guest_name || '').split(' ');
+        const defaultFirst = nameParts[0] || '';
+        const defaultLast = nameParts.slice(1).join(' ') || '';
+
+        for (let i = 0; i < total; i++) {
+            const isPrimary = i === 0;
+            const isChild = i >= reservationData.adults;
+            const existing = existingTravelers[i] || {};
+            const label = isPrimary ? 'Capogruppo' : (isChild ? `Bambino ${i - reservationData.adults + 1}` : `Viaggiatore ${i + 1}`);
+
+            html += `
+            <div class="traveler-section ${isPrimary ? 'primary' : ''}" data-index="${i}">
+                <h3>${label}${isPrimary ? '<span class="traveler-badge">Principale</span>' : ''}</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome <span class="required">*</span></label>
+                        <input type="text" name="first_name" value="${esc(existing.first_name || (isPrimary ? defaultFirst : ''))}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cognome <span class="required">*</span></label>
+                        <input type="text" name="last_name" value="${esc(existing.last_name || (isPrimary ? defaultLast : ''))}" required>
+                    </div>
+                </div>
+                <div class="form-row three">
+                    <div class="form-group">
+                        <label>Data di nascita</label>
+                        <input type="date" name="birth_date" value="${existing.birth_date || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>Sesso</label>
+                        <select name="gender">
+                            <option value="">—</option>
+                            <option value="M"${existing.gender === 'M' ? ' selected' : ''}>M</option>
+                            <option value="F"${existing.gender === 'F' ? ' selected' : ''}>F</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cittadinanza</label>
+                        <input type="text" name="citizenship" value="${esc(existing.citizenship || 'IT')}" placeholder="IT" maxlength="2" style="text-transform:uppercase;">
+                    </div>
+                </div>
+                <div class="form-row three">
+                    <div class="form-group">
+                        <label>Luogo di nascita</label>
+                        <input type="text" name="birth_place" value="${esc(existing.birth_place || '')}">
+                    </div>
+                    <div class="form-group">
+                        <label>Provincia</label>
+                        <input type="text" name="birth_province" value="${esc(existing.birth_province || '')}" maxlength="2" placeholder="CN" style="text-transform:uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label>Stato nascita</label>
+                        <input type="text" name="birth_country" value="${esc(existing.birth_country || 'IT')}" maxlength="2" placeholder="IT" style="text-transform:uppercase;">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo documento</label>
+                        <select name="doc_type">
+                            <option value="">—</option>
+                            <option value="CI"${existing.doc_type === 'CI' ? ' selected' : ''}>Carta d'identità</option>
+                            <option value="PA"${existing.doc_type === 'PA' ? ' selected' : ''}>Passaporto</option>
+                            <option value="PT"${existing.doc_type === 'PT' ? ' selected' : ''}>Patente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Numero documento</label>
+                        <input type="text" name="doc_number" value="${esc(existing.doc_number || '')}">
+                    </div>
+                </div>
+                <div class="doc-upload">
+                    <div class="upload-box${existing.doc_front_key ? ' uploaded' : ''}" data-side="front" data-index="${i}">
+                        <input type="file" accept="image/*,.pdf">
+                        ${existing.doc_front_key
+                            ? '<div class="upload-check">&#10003;</div><div class="upload-label">Fronte caricato</div>'
+                            : '<div class="upload-icon">&#128196;</div><div class="upload-label">Fronte documento</div>'}
+                    </div>
+                    <div class="upload-box${existing.doc_back_key ? ' uploaded' : ''}" data-side="back" data-index="${i}">
+                        <input type="file" accept="image/*,.pdf">
+                        ${existing.doc_back_key
+                            ? '<div class="upload-check">&#10003;</div><div class="upload-label">Retro caricato</div>'
+                            : '<div class="upload-icon">&#128196;</div><div class="upload-label">Retro documento</div>'}
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        wrap.innerHTML = html;
+
+        // Upload handlers
+        wrap.querySelectorAll('.upload-box').forEach(box => {
+            const fileInput = box.querySelector('input[type="file"]');
+            box.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    box.classList.add('uploaded');
+                    box.innerHTML = `<input type="file" accept="image/*,.pdf"><div class="upload-check">&#10003;</div><div class="upload-label">${box.dataset.side === 'front' ? 'Fronte' : 'Retro'}</div><div class="upload-filename">${esc(file.name)}</div>`;
+                    box.querySelector('input[type="file"]').files = fileInput.files;
+                    box.querySelector('input[type="file"]').addEventListener('change', fileInput.onchange);
+                    box.addEventListener('click', () => box.querySelector('input[type="file"]').click());
+                }
+            });
+        });
+    }
+
+    document.getElementById('btn-submit').addEventListener('click', async function() {
+        const btn = this;
+        const errorEl = document.getElementById('submit-error');
+        errorEl.style.display = 'none';
+
+        const sections = document.querySelectorAll('.traveler-section');
+        const travelers = [];
+        let valid = true;
+
+        sections.forEach((section, i) => {
+            const firstName = section.querySelector('[name="first_name"]');
+            const lastName = section.querySelector('[name="last_name"]');
+
+            if (!firstName.value.trim()) { firstName.classList.add('error'); valid = false; }
+            else firstName.classList.remove('error');
+            if (!lastName.value.trim()) { lastName.classList.add('error'); valid = false; }
+            else lastName.classList.remove('error');
+
+            travelers.push({
+                first_name: firstName.value.trim(),
+                last_name: lastName.value.trim(),
+                birth_date: section.querySelector('[name="birth_date"]').value || null,
+                gender: section.querySelector('[name="gender"]').value || null,
+                citizenship: (section.querySelector('[name="citizenship"]').value || 'IT').toUpperCase(),
+                birth_place: section.querySelector('[name="birth_place"]').value.trim() || null,
+                birth_province: (section.querySelector('[name="birth_province"]').value || '').toUpperCase() || null,
+                birth_country: (section.querySelector('[name="birth_country"]').value || 'IT').toUpperCase(),
+                doc_type: section.querySelector('[name="doc_type"]').value || null,
+                doc_number: section.querySelector('[name="doc_number"]').value.trim() || null,
+            });
+        });
+
+        if (!valid) {
+            errorEl.textContent = 'Compila nome e cognome di tutti i viaggiatori.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Invio in corso...';
+
+        try {
+            // 1. Salva travelers
+            const res = await fetch(`${API_BASE}/${token}/travelers`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ travelers }),
+            });
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error || 'Errore nel salvataggio dei dati');
+            }
+
+            // 2. Upload documenti (se presenti)
+            const uploadBoxes = document.querySelectorAll('.upload-box');
+            for (const box of uploadBoxes) {
+                const fileInput = box.querySelector('input[type="file"]');
+                if (fileInput && fileInput.files.length > 0) {
+                    const idx = parseInt(box.dataset.index);
+                    const side = box.dataset.side;
+
+                    // Abbiamo bisogno del traveler_id dal DB
+                    // Ricarichiamo i dati per ottenere gli ID
+                    const checkRes = await fetch(`${API_BASE}/${token}`);
+                    if (checkRes.ok) {
+                        const checkData = await checkRes.json();
+                        const traveler = checkData.travelers[idx];
+                        if (traveler) {
+                            const formData = new FormData();
+                            formData.append('file', fileInput.files[0]);
+                            formData.append('traveler_id', traveler.id);
+                            formData.append('side', side);
+
+                            await fetch(`${API_BASE}/${token}/upload`, {
+                                method: 'POST',
+                                body: formData,
+                            });
+                        }
+                    }
+                }
+            }
+
+            show('already-submitted');
+        } catch (err) {
+            errorEl.textContent = err.message;
+            errorEl.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Invia dati check-in';
+        }
+    });
+
+    function esc(str) {
+        const el = document.createElement('span');
+        el.textContent = str || '';
+        return el.innerHTML;
+    }
+
+    init();
+})();
+</script>
+</body>
+</html>

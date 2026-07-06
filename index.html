@@ -6,13 +6,20 @@
     <meta name="description" content="Casia Country House - Riposo autentico nella campagna piemontese. Casa vacanze a Santo Stefano, Bene Vagienna (Cuneo).">
     <meta name="keywords" content="casa vacanze, country house, Piemonte, Bene Vagienna, Cuneo, Langhe, agriturismo">
     <meta name="author" content="Casia Country House">
-    
+
     <!-- Open Graph -->
     <meta property="og:title" content="Casia Country House - Campagna Piemontese">
     <meta property="og:description" content="Riposo autentico nella campagna piemontese. Una cascina storica restaurata con cura.">
     <meta property="og:image" content="images/esterno.jpg">
     <meta property="og:type" content="website">
-    
+
+    <!-- hreflang -->
+    <link rel="alternate" hreflang="it" href="?lang=it">
+    <link rel="alternate" hreflang="en" href="?lang=en">
+    <link rel="alternate" hreflang="fr" href="?lang=fr">
+    <link rel="alternate" hreflang="de" href="?lang=de">
+    <link rel="alternate" hreflang="x-default" href="?lang=it">
+
     <title>Casia Country House | Santo Stefano, Bene Vagienna</title>
     
     <!-- Google Fonts -->
@@ -21,6 +28,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
+
+    <!-- Flatpickr Calendar + locales -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/it.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
 </head>
 <body>
     <!-- Safari iOS Status Bar Cover -->
@@ -39,11 +53,17 @@
                 <span></span>
             </button>
             <ul class="nav-menu" id="nav-menu">
-                <li><a href="#casa" class="nav-link">La Casa</a></li>
-                <li><a href="#servizi" class="nav-link">Servizi</a></li>
-                <li><a href="#territorio" class="nav-link">Territorio</a></li>
-                <li><a href="#esperienze" class="nav-link">Esperienze</a></li>
-                <li><a href="#prenota" class="nav-link nav-cta">Prenota</a></li>
+                <li><a href="#casa" class="nav-link" data-i18n="nav_casa">La Casa</a></li>
+                <li><a href="#servizi" class="nav-link" data-i18n="nav_servizi">Servizi</a></li>
+                <li><a href="#territorio" class="nav-link" data-i18n="nav_territorio">Territorio</a></li>
+                <li><a href="#esperienze" class="nav-link" data-i18n="nav_esperienze">Esperienze</a></li>
+                <li class="nav-lang">
+                    <button class="lang-btn active" data-lang="it">IT</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="fr">FR</button>
+                    <button class="lang-btn" data-lang="de">DE</button>
+                </li>
+                <li><a href="#prenota" class="nav-link nav-cta" data-i18n="nav_prenota">Prenota</a></li>
             </ul>
         </div>
     </nav>
@@ -54,15 +74,14 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <img src="images/logo_chiaro.png" alt="Casia Country House" class="hero-logo fade-in">
-            <h1 class="hero-title fade-in">Riposo autentico nella campagna piemontese</h1>
-            <p class="hero-subtitle fade-in">Santo Stefano, Bene Vagienna</p>
+            <h1 class="hero-title fade-in" data-i18n="hero_title">Riposo autentico nella campagna piemontese</h1>
             <div class="hero-cta fade-in">
-                <a href="#casa" class="btn btn-outline">Scopri la casa</a>
-                <a href="#prenota" class="btn btn-primary">Prenota ora</a>
+                <a href="#casa" class="btn btn-outline" data-i18n="hero_cta_discover">Scopri la casa</a>
+                <a href="#prenota" class="btn btn-primary" data-i18n="hero_cta_book">Prenota ora</a>
             </div>
         </div>
         <div class="hero-scroll">
-            <span>Scorri</span>
+            <span data-i18n="scroll">Scorri</span>
             <div class="scroll-indicator"></div>
         </div>
     </section>
@@ -72,7 +91,7 @@
         <div class="container">
             <div class="intro-content reveal">
                 <div class="intro-ornament"></div>
-                <p class="intro-text">
+                <p class="intro-text" data-i18n-html="intro_text">
                     Nel cuore delle colline del Cuneese, <strong>Casia Country House</strong> è un rifugio di pace dove il tempo rallenta. Una cascina storica restaurata con cura, che unisce il fascino dell'architettura piemontese tradizionale al comfort contemporaneo.
                 </p>
                 <div class="intro-ornament"></div>
@@ -84,11 +103,11 @@
     <section class="appartamenti" id="casa">
         <div class="container">
             <header class="section-header reveal">
-                <span class="section-label">I nostri alloggi</span>
-                <h2 class="section-title">La Casa</h2>
+                <span class="section-label" data-i18n="section_label_alloggi">I nostri alloggi</span>
+                <h2 class="section-title" data-i18n="section_title_casa">La Casa</h2>
             </header>
-            
-            <p class="appartamenti-intro reveal">
+
+            <p class="appartamenti-intro reveal" data-i18n="appartamenti_intro">
                 Due appartamenti indipendenti, ciascuno con il proprio carattere e la propria storia. Entrambi con ingresso privato, giardino e accesso alla piscina.
             </p>
 
@@ -96,9 +115,9 @@
             <article class="appartamento reveal" id="oliva">
                 <div class="appartamento-header">
                     <h3 class="appartamento-nome">Oliva</h3>
-                    <span class="appartamento-tag">Disponibile</span>
+                    <span class="appartamento-tag" data-i18n="oliva_tag">Disponibile</span>
                 </div>
-                
+
                 <div class="appartamento-content">
                     <div class="appartamento-gallery">
                         <div class="appartamento-gallery-main" data-image="images/soggiorno.jpg">
@@ -116,39 +135,41 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="appartamento-info">
-                        <p class="appartamento-descrizione">
+                        <p class="appartamento-descrizione" data-i18n="oliva_description">
                             Al primo piano della cascina, l'appartamento Oliva vi accoglie con i suoi spazi luminosi e le travi a vista originali. Perfetto per coppie o piccole famiglie che cercano il comfort di una vera casa piemontese.
                         </p>
                         
                         <div class="appartamento-specs">
                             <div class="spec-item">
                                 <span class="spec-value">65</span>
-                                <span class="spec-label">mq</span>
+                                <span class="spec-label" data-i18n="oliva_spec_sqm">mq</span>
                             </div>
                             <div class="spec-item">
                                 <span class="spec-value">1</span>
-                                <span class="spec-label">Camera</span>
+                                <span class="spec-label" data-i18n="oliva_spec_bedroom">Camera</span>
                             </div>
                             <div class="spec-item">
                                 <span class="spec-value">2+2</span>
-                                <span class="spec-label">Posti letto</span>
+                                <span class="spec-label" data-i18n="oliva_spec_beds">Posti letto</span>
                             </div>
                             <div class="spec-item">
                                 <span class="spec-value">1</span>
-                                <span class="spec-label">Bagno</span>
+                                <span class="spec-label" data-i18n="oliva_spec_bathroom">Bagno</span>
                             </div>
                         </div>
-                        
+
                         <ul class="appartamento-features">
-                            <li>Cucina attrezzata</li>
-                            <li>Salotto con divano letto</li>
-                            <li>Camera matrimoniale</li>
-                            <li>Bagno con doccia</li>
-                            <li>Aria condizionata</li>
-                            <li>Smart TV</li>
+                            <li data-i18n="oliva_feat_kitchen">Cucina attrezzata</li>
+                            <li data-i18n="oliva_feat_sofa">Salotto con divano letto</li>
+                            <li data-i18n="oliva_feat_bedroom">Camera matrimoniale</li>
+                            <li data-i18n="oliva_feat_bathroom">Bagno con doccia</li>
+                            <li data-i18n="oliva_feat_ac">Aria condizionata</li>
+                            <li data-i18n="oliva_feat_tv">Smart TV</li>
                         </ul>
+
+                        <a href="#prenota" class="btn btn-primary appartamento-cta" data-apartment="oliva" data-i18n="oliva_cta">Prenota questo appartamento</a>
                     </div>
                 </div>
             </article>
@@ -157,9 +178,9 @@
             <article class="appartamento appartamento--coming reveal" id="venica">
                 <div class="appartamento-header">
                     <h3 class="appartamento-nome">Venica</h3>
-                    <span class="appartamento-tag appartamento-tag--coming">Prossimamente</span>
+                    <span class="appartamento-tag appartamento-tag--coming" data-i18n="venica_tag">Prossimamente</span>
                 </div>
-                
+
                 <div class="appartamento-content">
                     <div class="appartamento-gallery">
                         <div class="appartamento-gallery-main appartamento-placeholder">
@@ -167,8 +188,8 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
                                     <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0l-2-7m-12 7l2-7m0 0h8m-8 0V7a1 1 0 011-1h6a1 1 0 011 1v7"/>
                                 </svg>
-                                <span>In ristrutturazione</span>
-                                <p>Nuove foto in arrivo</p>
+                                <span data-i18n="venica_placeholder_title">In ristrutturazione</span>
+                                <p data-i18n="venica_placeholder_text">Nuove foto in arrivo</p>
                             </div>
                         </div>
                         <div class="appartamento-gallery-grid">
@@ -185,7 +206,7 @@
                     </div>
                     
                     <div class="appartamento-info">
-                        <p class="appartamento-descrizione">
+                        <p class="appartamento-descrizione" data-i18n="venica_description">
                             Al piano terra con accesso diretto al giardino, l'appartamento Venica è attualmente in fase di ristrutturazione. Presto sarà pronto ad accogliervi con ambienti rinnovati e tutti i comfort moderni.
                         </p>
                         
@@ -199,7 +220,7 @@
                                 <span class="spec-label">Camera</span>
                             </div>
                             <div class="spec-item">
-                                <span class="spec-value">2+2</span>
+                                <span class="spec-value">2+2+1</span>
                                 <span class="spec-label">Posti letto</span>
                             </div>
                             <div class="spec-item">
@@ -207,19 +228,21 @@
                                 <span class="spec-label">Bagno</span>
                             </div>
                         </div>
-                        
+
                         <ul class="appartamento-features">
-                            <li>Cucina attrezzata</li>
-                            <li>Studio con divano letto</li>
-                            <li>Camera da letto</li>
-                            <li>Bagno con doccia</li>
-                            <li>Accesso diretto al giardino</li>
-                            <li>Aria condizionata</li>
+                            <li data-i18n="venica_feat_kitchen">Cucina attrezzata</li>
+                            <li data-i18n="venica_feat_studio">Studio con divano letto</li>
+                            <li data-i18n="venica_feat_bedroom">Camera da letto</li>
+                            <li data-i18n="venica_feat_bathroom">Bagno con doccia</li>
+                            <li data-i18n="venica_feat_garden">Accesso diretto al giardino</li>
+                            <li data-i18n="venica_feat_ac">Aria condizionata</li>
                         </ul>
-                        
+
                         <p class="appartamento-coming-note">
-                            <em>Disponibile da Primavera 2026 — Contattaci per info</em>
+                            <em data-i18n="venica_coming_note">Disponibile da Estate 2026 — Contattaci per info</em>
                         </p>
+
+                        <span class="btn btn-outline appartamento-cta appartamento-cta--disabled" data-i18n="venica_cta_disabled">Disponibile da Estate 2026</span>
                     </div>
                 </div>
             </article>
@@ -227,8 +250,8 @@
             <!-- Esterno -->
             <div class="cascina-esterno reveal">
                 <div class="cascina-header">
-                    <h3 class="cascina-title">La Cascina</h3>
-                    <p class="cascina-subtitle">Un angolo di Piemonte tutto per voi, dove i colori caldi della facciata accolgono ogni arrivo</p>
+                    <h3 class="cascina-title" data-i18n="cascina_title">La Cascina</h3>
+                    <p class="cascina-subtitle" data-i18n="cascina_subtitle">Un angolo di Piemonte tutto per voi, dove i colori caldi della facciata accolgono ogni arrivo</p>
                 </div>
                 <div class="cascina-gallery">
                     <div class="cascina-gallery-main" data-image="images/esterno.jpg">
@@ -251,8 +274,8 @@
     <section class="servizi" id="servizi">
         <div class="container">
             <header class="section-header reveal">
-                <span class="section-label">Comfort</span>
-                <h2 class="section-title">I Nostri Servizi</h2>
+                <span class="section-label" data-i18n="section_label_comfort">Comfort</span>
+                <h2 class="section-title" data-i18n="section_title_servizi">I Nostri Servizi</h2>
             </header>
             
             <div class="servizi-grid">
@@ -262,8 +285,8 @@
                             <path d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z"/>
                         </svg>
                     </div>
-                    <h3>WiFi Gratuito</h3>
-                    <p>Connessione veloce in tutta la casa</p>
+                    <h3 data-i18n="service_wifi_title">WiFi Gratuito</h3>
+                    <p data-i18n="service_wifi_desc">Connessione veloce in tutta la casa</p>
                 </div>
                 
                 <div class="servizio-item reveal">
@@ -272,8 +295,8 @@
                             <path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
                         </svg>
                     </div>
-                    <h3>Cucina Attrezzata</h3>
-                    <p>Frigorifero, macchina caffè, tostapane e bollitore</p>
+                    <h3 data-i18n="service_kitchen_title">Cucina Attrezzata</h3>
+                    <p data-i18n="service_kitchen_desc">Frigorifero, macchina caffè, tostapane e bollitore</p>
                 </div>
                 
                 <div class="servizio-item reveal">
@@ -283,8 +306,8 @@
                             <path d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1.001A3.75 3.75 0 0012 18z"/>
                         </svg>
                     </div>
-                    <h3>Riscaldamento</h3>
-                    <p>Riscaldamento autonomo per ogni stagione</p>
+                    <h3 data-i18n="service_heating_title">Riscaldamento</h3>
+                    <p data-i18n="service_heating_desc">Riscaldamento autonomo per ogni stagione</p>
                 </div>
                 
                 <div class="servizio-item reveal">
@@ -296,8 +319,8 @@
                             <path d="M8 14h8M8 17h8"/>
                         </svg>
                     </div>
-                    <h3>Biancheria Inclusa</h3>
-                    <p>Lenzuola e asciugamani di qualità forniti</p>
+                    <h3 data-i18n="service_linen_title">Biancheria Inclusa</h3>
+                    <p data-i18n="service_linen_desc">Lenzuola e asciugamani di qualità forniti</p>
                 </div>
                 
                 <div class="servizio-item reveal">
@@ -310,8 +333,8 @@
                             <path d="M5 11.5l1.5-3.4a1 1 0 01.9-.6h9.2a1 1 0 01.9.6L19 11.5"/>
                         </svg>
                     </div>
-                    <h3>Parcheggio Privato</h3>
-                    <p>Posto auto riservato nella proprietà</p>
+                    <h3 data-i18n="service_parking_title">Parcheggio Privato</h3>
+                    <p data-i18n="service_parking_desc">Posto auto riservato nella proprietà</p>
                 </div>
                 
                 <div class="servizio-item reveal">
@@ -324,8 +347,8 @@
                             <path d="M12 8c0-2.5-1.5-4-4-5 .5 2.5 1.5 4 4 5z"/>
                         </svg>
                     </div>
-                    <h3>Giardino</h3>
-                    <p>Spazio verde privato per il relax</p>
+                    <h3 data-i18n="service_garden_title">Giardino</h3>
+                    <p data-i18n="service_garden_desc">Spazio verde privato per il relax</p>
                 </div>
                 
                 <div class="servizio-item reveal">
@@ -338,8 +361,8 @@
                             <circle cx="12" cy="3" r="1"/>
                         </svg>
                     </div>
-                    <h3>Piscina</h3>
-                    <p>Piscina privata 6x4 metri per rinfrescarsi</p>
+                    <h3 data-i18n="service_pool_title">Piscina</h3>
+                    <p data-i18n="service_pool_desc">Piscina privata 8x4 metri per rinfrescarsi</p>
                 </div>
                 
                 <div class="servizio-item reveal">
@@ -352,8 +375,8 @@
                             <path d="M12 10c-3.5 0-6 2.5-6 5.5 0 2.5 2 4.5 6 4.5s6-2 6-4.5c0-3-2.5-5.5-6-5.5z"/>
                         </svg>
                     </div>
-                    <h3>Animali ammessi</h3>
-                    <p>Benvenuti amici a 4 zampe di piccola taglia</p>
+                    <h3 data-i18n="service_pets_title">Animali ammessi</h3>
+                    <p data-i18n="service_pets_desc">Benvenuti amici a 4 zampe di piccola taglia</p>
                 </div>
                 
                 <div class="servizio-item reveal">
@@ -370,8 +393,8 @@
                             <path d="M14 4c0-.5.2-1 .5-1.5"/>
                         </svg>
                     </div>
-                    <h3>Barbecue</h3>
-                    <p>Area BBQ attrezzata nel giardino</p>
+                    <h3 data-i18n="service_bbq_title">Barbecue</h3>
+                    <p data-i18n="service_bbq_desc">Area BBQ attrezzata nel giardino</p>
                 </div>
             </div>
         </div>
@@ -381,33 +404,41 @@
     <section class="territorio" id="territorio">
         <div class="container">
             <header class="section-header reveal">
-                <span class="section-label">Dintorni</span>
-                <h2 class="section-title">Il Territorio</h2>
+                <span class="section-label" data-i18n="section_label_dintorni">Dintorni</span>
+                <h2 class="section-title" data-i18n="section_title_territorio">Il Territorio</h2>
             </header>
             
             <div class="territorio-content">
                 <div class="territorio-info reveal">
-                    <p class="territorio-intro">
+                    <p class="territorio-intro" data-i18n="territorio_intro">
                         Casia Country House è il punto di partenza ideale per esplorare le meraviglie del Piemonte meridionale, tra borghi storici, vigneti pregiati e paesaggi incantati.
                     </p>
-                    
+
                     <div class="luoghi-grid">
                         <div class="luogo">
-                            <h4>Bene Vagienna</h4>
-                            <p>Borgo romano con i resti archeologici di <em>Augusta Bagiennorum</em>, teatro e terme dell'antica città</p>
+                            <h4 data-i18n="luogo_bene_title">Bene Vagienna</h4>
+                            <p data-i18n-html="luogo_bene_desc">Borgo romano con i resti archeologici di <em>Augusta Bagiennorum</em>, teatro e terme dell'antica città</p>
                         </div>
                         <div class="luogo">
-                            <h4>Langhe e Roero</h4>
-                            <p>A breve distanza, le terre patrimonio UNESCO del Barolo, del tartufo bianco e dei vini pregiati</p>
+                            <h4 data-i18n="luogo_langhe_title">Langhe e Roero</h4>
+                            <p data-i18n="luogo_langhe_desc">A breve distanza, le terre patrimonio UNESCO del Barolo, del tartufo bianco e dei vini pregiati</p>
+                        </div>
+                        <div class="luogo">
+                            <h4 data-i18n="luogo_mare_title">Mare</h4>
+                            <p data-i18n="luogo_mare_desc">La Riviera Ligure a meno di un'ora di macchina, per una giornata di sole e spiaggia</p>
+                        </div>
+                        <div class="luogo">
+                            <h4 data-i18n="luogo_montagna_title">Montagna</h4>
+                            <p data-i18n="luogo_montagna_desc">Prato Nevoso e Limone Piemonte a portata di mano, per sciare d'inverno e camminare d'estate</p>
                         </div>
                     </div>
-                    
+
                     <div class="distanze">
-                        <h4>Distanze</h4>
+                        <h4 data-i18n="distanze_title">Distanze</h4>
                         <ul>
-                            <li><strong>Cuneo</strong> — 42 km</li>
-                            <li><strong>Alba</strong> — 34 km</li>
-                            <li><strong>Torino</strong> — 70 km</li>
+                            <li data-i18n-html="distanza_cuneo"><strong>Cuneo</strong> — 42 km</li>
+                            <li data-i18n-html="distanza_alba"><strong>Alba</strong> — 34 km</li>
+                            <li data-i18n-html="distanza_torino"><strong>Torino</strong> — 70 km</li>
                         </ul>
                     </div>
                 </div>
@@ -416,7 +447,7 @@
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2000!2d7.84763807915861!3d44.53992751735732!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDMyJzIzLjciTiA3wrA1MCc1MS41IkU!5e1!3m2!1sit!2sit!4v1705833600000!5m2!1sit!2sit"
                         width="100%" 
-                        height="400" 
+                        height="550" 
                         style="border:0;" 
                         allowfullscreen="" 
                         loading="lazy" 
@@ -432,36 +463,36 @@
     <section class="esperienze" id="esperienze">
         <div class="container">
             <header class="section-header reveal">
-                <span class="section-label">Vivi il territorio</span>
-                <h2 class="section-title">Esperienze</h2>
+                <span class="section-label" data-i18n="section_label_esperienze">Vivi il territorio</span>
+                <h2 class="section-title" data-i18n="section_title_esperienze">Esperienze</h2>
             </header>
-            
+
             <div class="esperienze-grid">
                 <article class="esperienza-card reveal">
                     <div class="esperienza-image">
                         <img src="images/tartufi.jpg" alt="Cerca tartufi nelle colline piemontesi" loading="lazy">
                     </div>
                     <div class="esperienza-content">
-                        <h3>Caccia al Tartufo</h3>
-                        <p>Una mattinata immersi nei boschi delle Langhe, accompagnati da un tartufaio esperto e dal suo fedele cane. Scoprirete i segreti di questa tradizione antica e, con un po' di fortuna, porterete a casa il vostro prezioso bottino.</p>
-                        <span class="esperienza-tag">Su richiesta</span>
+                        <h3 data-i18n="esp_tartufo_title">Caccia al Tartufo</h3>
+                        <p data-i18n="esp_tartufo_desc">Una mattinata immersi nei boschi delle Langhe, accompagnati da un tartufaio esperto e dal suo fedele cane. Scoprirete i segreti di questa tradizione antica e, con un po' di fortuna, porterete a casa il vostro prezioso bottino.</p>
+                        <span class="esperienza-tag" data-i18n="esp_tartufo_tag">Su richiesta</span>
                     </div>
                 </article>
-                
+
                 <article class="esperienza-card reveal">
                     <div class="esperienza-image">
                         <img src="images/autodepoca.jpg" alt="Tour in auto d'epoca nelle Langhe" loading="lazy">
                     </div>
                     <div class="esperienza-content">
-                        <h3>Tour in Auto d'Epoca</h3>
-                        <p>Esplorate le colline patrimonio UNESCO al volante di un'elegante auto d'epoca. Un itinerario tra vigneti, castelli e borghi incantati, per vivere le Langhe con lo stile e il fascino di un tempo.</p>
-                        <span class="esperienza-tag">Su richiesta</span>
+                        <h3 data-i18n="esp_auto_title">Tour in Auto d'Epoca</h3>
+                        <p data-i18n="esp_auto_desc">Esplorate le colline patrimonio UNESCO al volante di un'elegante auto d'epoca. Un itinerario tra vigneti, castelli e borghi incantati, per vivere le Langhe con lo stile e il fascino di un tempo.</p>
+                        <span class="esperienza-tag" data-i18n="esp_auto_tag">Su richiesta</span>
                     </div>
                 </article>
             </div>
-            
+
             <p class="esperienze-note reveal">
-                <em>Contattaci per organizzare la tua esperienza su misura</em>
+                <em data-i18n="esperienze_note">Contattaci per organizzare la tua esperienza su misura</em>
             </p>
         </div>
     </section>
@@ -471,22 +502,191 @@
         <div class="container">
             <div class="prenota-content reveal">
                 <header class="section-header section-header--light">
-                    <span class="section-label">Soggiorna</span>
-                    <h2 class="section-title">Prenota il tuo soggiorno</h2>
+                    <span class="section-label" data-i18n="section_label_prenota">Soggiorna</span>
+                    <h2 class="section-title" data-i18n="section_title_prenota">Prenota il tuo soggiorno</h2>
                 </header>
-                
-                <p class="prenota-text">
-                    Concediti una pausa dalla routine. Contattaci per verificare la disponibilità e prenotare la tua esperienza nella campagna piemontese.
+
+                <p class="prenota-intro" data-i18n="prenota_intro">
+                    Scegli le date, verifica la disponibilità in tempo reale e prenota in pochi passi.
                 </p>
-                
-                <a href="#booking" class="btn btn-primary btn-large">Richiedi Disponibilità</a>
-                
-                <div class="prenota-contact">
-                    <p>
-                        <a href="mailto:info@casiacountryhouse.it">info@casiacountryhouse.it</a>
-                    </p>
-                    <p class="prenota-note">Risposta entro 24 ore</p>
+            </div>
+
+            <!-- Booking Form -->
+            <div class="booking-widget reveal" id="booking-widget" data-source="index">
+
+                <!-- Step 1: Date + Appartamento -->
+                <div class="booking-step booking-step--active" id="booking-step-1">
+                    <div class="booking-grid">
+                        <div class="booking-calendar-col">
+                            <h3 class="booking-step-title" data-i18n="booking_step1_title">1. Scegli le date</h3>
+                            <div class="booking-apartment-select">
+                                <label class="booking-radio booking-radio--active">
+                                    <input type="radio" name="apartment" value="oliva" checked>
+                                    <span class="booking-radio-label" data-i18n="booking_step1_apt_oliva">Appartamento Oliva</span>
+                                    <span class="booking-radio-tag" data-i18n="booking_apt_tag_available">Disponibile</span>
+                                </label>
+                                <label class="booking-radio booking-radio--disabled">
+                                    <input type="radio" name="apartment" value="venica" disabled>
+                                    <span class="booking-radio-label" data-i18n="booking_step1_apt_venica">Appartamento Venica</span>
+                                    <span class="booking-radio-tag" data-i18n="booking_apt_tag_coming">Estate 2026</span>
+                                </label>
+                            </div>
+                            <div id="booking-calendar"></div>
+                            <p class="booking-calendar-hint" data-i18n="booking_calendar_hint">Seleziona check-in e check-out</p>
+                        </div>
+
+                        <div class="booking-summary-col">
+                            <div class="booking-summary" id="booking-summary">
+                                <h3 class="booking-step-title" data-i18n="booking_summary_title">Riepilogo</h3>
+                                <div class="booking-summary-empty" id="booking-summary-empty">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                                    <p data-i18n="booking_summary_empty">Seleziona le date per vedere il prezzo</p>
+                                </div>
+                                <div class="booking-summary-details" id="booking-summary-details" style="display:none;">
+                                    <div class="booking-summary-row">
+                                        <span data-i18n="booking_summary_apartment">Appartamento</span>
+                                        <strong id="summary-apartment">Oliva</strong>
+                                    </div>
+                                    <div class="booking-summary-row">
+                                        <span data-i18n="booking_summary_checkin">Check-in</span>
+                                        <strong id="summary-checkin">—</strong>
+                                    </div>
+                                    <div class="booking-summary-row">
+                                        <span data-i18n="booking_summary_checkout">Check-out</span>
+                                        <strong id="summary-checkout">—</strong>
+                                    </div>
+                                    <div class="booking-summary-row">
+                                        <span data-i18n="booking_summary_nights">Notti</span>
+                                        <strong id="summary-nights">—</strong>
+                                    </div>
+                                    <div class="booking-summary-divider"></div>
+                                    <div class="booking-guests">
+                                        <div class="booking-guest-row">
+                                            <label for="booking-adults" data-i18n="booking_adults_label">Adulti</label>
+                                            <div class="booking-counter">
+                                                <button type="button" class="booking-counter-btn" data-target="booking-adults" data-dir="-1">−</button>
+                                                <input type="number" id="booking-adults" value="2" min="1" max="4" readonly>
+                                                <button type="button" class="booking-counter-btn" data-target="booking-adults" data-dir="1">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="booking-guest-row">
+                                            <label for="booking-children" data-i18n="booking_children_label">Bambini</label>
+                                            <div class="booking-counter">
+                                                <button type="button" class="booking-counter-btn" data-target="booking-children" data-dir="-1">−</button>
+                                                <input type="number" id="booking-children" value="0" min="0" max="4" readonly>
+                                                <button type="button" class="booking-counter-btn" data-target="booking-children" data-dir="1">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="booking-summary-divider"></div>
+                                    <div class="booking-price-row" id="booking-price-row" style="display:none;">
+                                        <span data-i18n="booking_summary_total">Totale</span>
+                                        <strong class="booking-price" id="summary-price">—</strong>
+                                    </div>
+                                    <div class="booking-price-loading" id="booking-price-loading" style="display:none;">
+                                        <span class="booking-spinner"></span> <span data-i18n="booking_price_loading">Calcolo prezzo...</span>
+                                    </div>
+                                    <div class="booking-price-error" id="booking-price-error" style="display:none;"></div>
+                                    <button type="button" class="btn btn-primary btn-large booking-next-btn" id="booking-next-btn" disabled data-i18n="booking_next_btn">
+                                        Continua
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Step 2: Dati Personali -->
+                <div class="booking-step" id="booking-step-2" style="display:none;">
+                    <div class="booking-step2-topbar">
+                        <button type="button" class="booking-back-btn" id="booking-back-1">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M15 19l-7-7 7-7"/></svg>
+                            <span data-i18n="booking_back_btn">Torna al calendario</span>
+                        </button>
+                        <div class="booking-timer" id="booking-timer" style="display:none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            <span><span data-i18n="timer_complete_within">Completa entro</span> <strong id="booking-timer-text">20:00</strong></span>
+                        </div>
+                    </div>
+                    <div class="booking-grid">
+                        <div class="booking-form-col">
+                            <h3 class="booking-step-title" data-i18n="booking_step2_title">2. I tuoi dati</h3>
+                            <form id="booking-form" novalidate>
+                                <div class="booking-field">
+                                    <label for="guest-name" data-i18n="booking_step2_name_label">Nome e Cognome *</label>
+                                    <input type="text" id="guest-name" name="guest_name" required autocomplete="name" placeholder="Mario Rossi" data-i18n-placeholder="booking_step2_name_placeholder">
+                                    <span class="booking-field-error"></span>
+                                </div>
+                                <div class="booking-field">
+                                    <label for="guest-email" data-i18n="booking_step2_email_label">Email *</label>
+                                    <input type="email" id="guest-email" name="guest_email" required autocomplete="email" placeholder="mario@esempio.it" data-i18n-placeholder="booking_step2_email_placeholder">
+                                    <span class="booking-field-error"></span>
+                                </div>
+                                <div class="booking-field">
+                                    <label for="guest-phone" data-i18n="booking_step2_phone_label">Telefono *</label>
+                                    <input type="tel" id="guest-phone" name="guest_phone" required autocomplete="tel" placeholder="+39 333 1234567">
+                                    <span class="booking-field-error"></span>
+                                </div>
+                                <div class="booking-field">
+                                    <label for="guest-message"><span data-i18n="booking_step2_message_label">Note</span> <span class="booking-optional" data-i18n="booking_step2_message_optional">(facoltativo)</span></label>
+                                    <textarea id="guest-message" name="message" rows="3" placeholder="Esigenze particolari, orario di arrivo..." data-i18n-placeholder="booking_step2_message_placeholder"></textarea>
+                                </div>
+                                <div class="booking-consents">
+                                    <div class="booking-field booking-privacy">
+                                        <label class="booking-checkbox-label">
+                                            <input type="checkbox" id="privacy-consent" required>
+                                            <span data-i18n="booking_step2_privacy">Acconsento al trattamento dei dati personali ai sensi del GDPR (UE 2016/679) per la gestione della prenotazione. *</span>
+                                        </label>
+                                        <span class="booking-field-error"></span>
+                                    </div>
+                                    <div class="booking-field booking-privacy">
+                                        <label class="booking-checkbox-label">
+                                            <input type="checkbox" id="marketing-consent">
+                                            <span data-i18n="booking_step2_marketing">Desidero ricevere comunicazioni su offerte e novità.</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="booking-summary-col">
+                            <div class="booking-summary booking-summary--final" id="booking-summary-final">
+                                <h3 class="booking-step-title" data-i18n="booking_summary_title">Riepilogo</h3>
+                                <div class="booking-summary-row">
+                                    <span data-i18n="booking_summary_apartment">Appartamento</span>
+                                    <strong id="final-apartment">Oliva</strong>
+                                </div>
+                                <div class="booking-summary-row">
+                                    <span data-i18n="booking_summary_checkin">Date</span>
+                                    <strong id="final-dates">—</strong>
+                                </div>
+                                <div class="booking-summary-row">
+                                    <span data-i18n="booking_summary_nights">Notti</span>
+                                    <strong id="final-nights">—</strong>
+                                </div>
+                                <div class="booking-summary-row">
+                                    <span data-i18n="confirmation_guests">Ospiti</span>
+                                    <strong id="final-guests">—</strong>
+                                </div>
+                                <div class="booking-summary-divider"></div>
+                                <div class="booking-price-row">
+                                    <span data-i18n="booking_summary_total">Totale</span>
+                                    <strong class="booking-price" id="final-price">—</strong>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-large booking-pay-btn" id="booking-pay-btn" data-i18n="booking_pay_btn">
+                                    Prenota e paga
+                                </button>
+                                <p class="booking-pay-note" data-i18n="booking_pay_note">Verrai reindirizzato a Stripe per il pagamento sicuro</p>
+                                <div class="booking-pay-error" id="booking-pay-error" style="display:none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Contatto alternativo -->
+            <div class="prenota-fallback reveal">
+                <p><span data-i18n="prenota_fallback">Preferisci il contatto diretto?</span> <a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a> · <a href="tel:+393514321088">351 432 1088</a></p>
             </div>
         </div>
     </section>
@@ -504,27 +704,27 @@
                 </div>
                 
                 <div class="footer-links">
-                    <h4>Contatti</h4>
+                    <h4 data-i18n="footer_contacts">Contatti</h4>
                     <ul>
-                        <li><a href="mailto:info@casiacountryhouse.it">info@casiacountryhouse.it</a></li>
+                        <li><a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a></li>
                         <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-links">
-                    <h4>Esplora</h4>
+                    <h4 data-i18n="footer_explore_title">Esplora</h4>
                     <ul>
-                        <li><a href="#casa">La Casa</a></li>
-                        <li><a href="#servizi">Servizi</a></li>
-                        <li><a href="#territorio">Territorio</a></li>
-                        <li><a href="#prenota">Prenota</a></li>
+                        <li><a href="#casa" data-i18n="footer_link_casa">La Casa</a></li>
+                        <li><a href="#servizi" data-i18n="footer_link_servizi">Servizi</a></li>
+                        <li><a href="#territorio" data-i18n="footer_link_territorio">Territorio</a></li>
+                        <li><a href="#prenota" data-i18n="footer_link_prenota">Prenota</a></li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
                 <p>&copy; 2025 Casia Country House. Tutti i diritti riservati.</p>
-                <p class="footer-piva">P.IVA: 00000000000</p>
+                <p class="footer-piva">Tel: <a href="tel:+393514321088" style="color: inherit;">351 432 1088</a></p>
                 <p style="opacity: 0.7;">
                     <a href="amici.html" style="color: inherit;">Parlando tra amici</a> · 
                     <a href="naturale.html" style="color: inherit;">Versione semplice</a>
@@ -555,6 +755,7 @@
         </button>
     </div>
 
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

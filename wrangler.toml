@@ -1,6 +1,30 @@
 name = "casia"
 compatibility_date = "2026-01-21"
+main = "worker/index.js"
 
-[site]
-bucket = "./"
+# Serve file statici dalla root
+[assets]
+directory = "./"
+binding = "ASSETS"
 
+# Database D1
+[[d1_databases]]
+binding = "DB"
+database_name = "casia-bookings"
+database_id = "a70f16c6-ccb6-4cdf-a316-f6e4951dc9de"
+
+# Variabili d'ambiente (non sensibili)
+[vars]
+SITE_URL = "https://casiavacanze.com"
+HOST_EMAIL = "info@casiavacanze.com"
+
+# R2 Bucket per documenti identità (check-in)
+[[r2_buckets]]
+binding = "DOCS_BUCKET"
+bucket_name = "casia-documents"
+
+# Secrets (da impostare con `wrangler secret put`):
+# - STRIPE_SECRET_KEY
+# - STRIPE_WEBHOOK_SECRET
+# - RESEND_API_KEY
+# - ADMIN_PASSWORD

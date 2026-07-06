@@ -1,0 +1,3047 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>CASIA Admin - Dashboard Prenotazioni</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/it.js"></script>
+    <style>
+        :root {
+            --rame: #B8956B;
+            --rame-light: #D4B896;
+            --antracite: #2D2926;
+            --crema: #F8F5F0;
+            --white: #fff;
+            --text-light: #5a5652;
+            --danger: #dc2626;
+            --success: #059669;
+            --warning: #d97706;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Jost', -apple-system, sans-serif;
+            background: var(--crema);
+            color: var(--antracite);
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .admin-header {
+            background: var(--antracite);
+            color: var(--white);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .admin-header h1 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+        .admin-header h1 span { color: var(--rame); }
+        .admin-header-actions { display: flex; gap: 12px; align-items: center; }
+        .admin-header a {
+            color: var(--rame-light);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        /* Layout: sidebar + content */
+        .admin-layout {
+            display: flex;
+            min-height: calc(100vh - 52px);
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 220px;
+            min-width: 220px;
+            background: var(--white);
+            border-right: 1px solid #e8e4de;
+            padding: 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow-y: auto;
+        }
+        .admin-tab {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 20px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-light);
+            border: none;
+            background: none;
+            text-align: left;
+            width: 100%;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+            font-family: inherit;
+        }
+        .admin-tab:hover { color: var(--antracite); background: rgba(184,149,107,0.05); }
+        .admin-tab.active {
+            color: var(--rame);
+            background: rgba(184,149,107,0.08);
+            border-left-color: var(--rame);
+        }
+        .admin-tab svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: #e8e4de;
+            margin: 8px 16px;
+        }
+
+        /* Content */
+        .admin-content { padding: 24px; flex: 1; min-width: 0; overflow-x: auto; }
+        .admin-panel { display: none; }
+        .admin-panel.active { display: block; }
+
+        /* Cards */
+        .admin-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .admin-card h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--antracite);
+        }
+
+        /* Stats */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .stat-value { font-size: 2rem; font-weight: 600; color: var(--rame); }
+        .stat-label { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+        /* Table */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+        .admin-table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #e8e4de;
+        }
+        .admin-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0ece6;
+            vertical-align: middle;
+        }
+        .admin-table tr:hover td { background: rgba(184,149,107,0.04); }
+
+        /* Status badges */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge--confirmed { background: #ecfdf5; color: var(--success); }
+        .badge--pending { background: #fef3c7; color: var(--warning); }
+        .badge--cancelled { background: #fef2f2; color: var(--danger); }
+        .badge--refunded { background: #f3f4f6; color: #6b7280; }
+
+        /* Buttons */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--rame); color: var(--white); }
+        .btn-primary:hover { background: var(--rame-light); }
+        .btn-danger { background: var(--danger); color: var(--white); }
+        .btn-danger:hover { opacity: 0.85; }
+        .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+
+        /* Forms */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-light);
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1.5px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.88rem;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--rame);
+        }
+
+        /* Filters */
+        .admin-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+        .admin-filters .form-group { min-width: 140px; }
+
+        /* Loading */
+        .loading { text-align: center; padding: 40px; color: var(--text-light); }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 40px; color: var(--text-light); }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 14px 20px;
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: toastIn 0.3s ease;
+        }
+        .toast--success { background: var(--success); }
+        .toast--error { background: var(--danger); }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mini Calendar */
+        .mini-cal-wrap {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+        }
+        .mini-cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .mini-cal-header h3 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--antracite);
+        }
+        .mini-cal-nav {
+            display: flex;
+            gap: 6px;
+        }
+        .mini-cal-nav button {
+            background: var(--crema);
+            border: 1px solid #e0dbd5;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--antracite);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+        .mini-cal-nav button:hover { background: #e8e4de; }
+        .mini-cal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 900px) {
+            .mini-cal-grid { grid-template-columns: 1fr; }
+        }
+        .mini-month { font-size: 0.82rem; }
+        .mini-month-title {
+            font-weight: 500;
+            text-transform: capitalize;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+            color: var(--antracite);
+        }
+        .mini-month table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .mini-month th {
+            font-size: 0.68rem;
+            color: var(--text-light);
+            font-weight: 400;
+            text-transform: uppercase;
+            padding: 4px 0;
+        }
+        .mini-month td {
+            text-align: center;
+            padding: 3px 0;
+            font-size: 0.78rem;
+            position: relative;
+        }
+        .mini-month td span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+        }
+        .mini-month td.today span {
+            font-weight: 600;
+            box-shadow: inset 0 0 0 2px var(--antracite);
+        }
+        .mini-month td.booked-oliva span {
+            background: var(--rame);
+            color: #fff;
+        }
+        .mini-month td.booked-venica span {
+            background: var(--antracite);
+            color: #fff;
+        }
+        .mini-month td.booked-both span {
+            background: linear-gradient(135deg, var(--rame) 50%, var(--antracite) 50%);
+            color: #fff;
+        }
+        .mini-month td.blocked span {
+            background: #e8e4de;
+            color: var(--text-light);
+        }
+        .mini-month td.blocked-booking span {
+            background: #003580;
+            color: #fff;
+        }
+        .mini-month td.blocked-airbnb span {
+            background: #FF5A5F;
+            color: #fff;
+        }
+        .mini-month td.past span {
+            color: #c5c0ba;
+        }
+        .mini-cal-legend {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        .mini-cal-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Confirm Modal */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: confirmFadeIn 0.2s ease;
+        }
+        @keyframes confirmFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .confirm-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 32px;
+            width: 100%;
+            max-width: 420px;
+            margin: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .confirm-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--antracite);
+        }
+        .confirm-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .confirm-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .confirm-actions .btn {
+            min-width: 120px;
+            padding: 10px 20px;
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-light);
+            border: 1.5px solid #ddd;
+        }
+        .btn-ghost:hover { background: #f5f5f5; }
+
+        /* Login */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--antracite);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .login-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 380px;
+            margin: 20px;
+            text-align: center;
+        }
+        .login-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: var(--antracite);
+            margin-bottom: 4px;
+        }
+        .login-header p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+        .login-field {
+            text-align: left;
+            margin-bottom: 16px;
+        }
+        .login-field label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+        .login-field input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+        }
+        .login-field input:focus {
+            outline: none;
+            border-color: var(--rame);
+            box-shadow: 0 0 0 3px rgba(184,149,107,0.15);
+        }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+        .login-error {
+            background: #fef2f2;
+            color: var(--danger);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+        .login-back {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Translation editor */
+        .trans-row {
+            display: grid;
+            grid-template-columns: 180px 1fr 1fr;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0ece6;
+            align-items: start;
+        }
+        .trans-row:hover { background: rgba(184,149,107,0.04); margin: 0 -12px; padding-left: 12px; padding-right: 12px; }
+        .trans-key {
+            font-family: 'Courier New', monospace;
+            font-size: 0.78rem;
+            color: var(--text-light);
+            word-break: break-all;
+            padding-top: 6px;
+        }
+        .trans-key .trans-page-tag {
+            display: inline-block;
+            font-family: 'Jost', sans-serif;
+            background: #e8e4de;
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .trans-ref {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            padding: 6px 8px;
+            background: #fafaf8;
+            border-radius: 4px;
+            line-height: 1.4;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .trans-edit textarea {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1.5px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            resize: vertical;
+            min-height: 38px;
+            line-height: 1.4;
+        }
+        .trans-edit textarea:focus {
+            outline: none;
+            border-color: var(--rame);
+        }
+        .trans-edit textarea.changed {
+            border-color: var(--warning);
+            background: #fffbeb;
+        }
+        .trans-header {
+            display: grid;
+            grid-template-columns: 180px 1fr 1fr;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #e8e4de;
+        }
+
+        /* Translation sub-tabs */
+        .trans-subtabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e8e4de;
+        }
+        .trans-subtab {
+            padding: 10px 18px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-light);
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+        .trans-subtab:hover { color: var(--antracite); }
+        .trans-subtab.active {
+            color: var(--rame);
+            border-bottom-color: var(--rame);
+        }
+        .trans-subtab .trans-subtab-count {
+            display: inline-block;
+            background: #e8e4de;
+            color: var(--text-light);
+            font-size: 0.7rem;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 6px;
+        }
+        .trans-subtab.active .trans-subtab-count {
+            background: rgba(184,149,107,0.15);
+            color: var(--rame);
+        }
+
+        /* Translation section groups */
+        .trans-section {
+            margin-bottom: 8px;
+        }
+        .trans-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .trans-section-header:hover .trans-section-title { color: var(--rame); }
+        .trans-section-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--antracite);
+            transition: color 0.2s;
+        }
+        .trans-section-line {
+            flex: 1;
+            height: 1px;
+            background: #e8e4de;
+        }
+        .trans-section-count {
+            font-size: 0.72rem;
+            color: var(--text-light);
+            background: #f0ece6;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .trans-section-toggle {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            transition: transform 0.2s;
+        }
+        .trans-section.collapsed .trans-section-toggle { transform: rotate(-90deg); }
+        .trans-section.collapsed .trans-section-body { display: none; }
+
+        /* Responsive */
+        @media (max-width: 960px) {
+            .admin-layout { flex-direction: column; }
+            .admin-sidebar {
+                width: 100%;
+                min-width: 0;
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 0;
+                gap: 0;
+                border-right: none;
+                border-bottom: 1px solid #e8e4de;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            .admin-tab {
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 10px 6px 8px;
+                font-size: 0.68rem;
+                gap: 3px;
+                flex: 1 1 0;
+                min-width: 0;
+                text-align: center;
+            }
+            .admin-tab.active { border-left-color: transparent; border-bottom-color: var(--rame); }
+            .admin-tab svg { width: 20px; height: 20px; }
+            .admin-tab .tab-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+            .sidebar-divider { display: none; }
+        }
+        @media (max-width: 768px) {
+            .admin-header { padding: 12px 16px; }
+            .admin-header h1 { font-size: 0.95rem; letter-spacing: 1px; }
+            .admin-header-actions { gap: 8px; }
+            .admin-header a { font-size: 0.78rem; }
+
+            .admin-content { padding: 12px; }
+
+            /* Stats: 2 colonne su mobile */
+            .admin-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+            .stat-card { padding: 14px 10px; }
+            .stat-value { font-size: 1.5rem; }
+            .stat-label { font-size: 0.7rem; }
+
+            /* Tabelle scrollabili */
+            .admin-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -12px; padding: 0 12px; }
+            .admin-table { font-size: 0.78rem; min-width: 500px; }
+            .admin-table th, .admin-table td { padding: 8px 6px; }
+            .admin-table th { font-size: 0.7rem; }
+
+            /* Form */
+            .form-row { grid-template-columns: 1fr !important; gap: 8px; }
+            .admin-filters { flex-direction: column; gap: 8px; }
+            .admin-filters .form-group { min-width: 0; width: 100%; }
+
+            /* Cards */
+            .admin-card { padding: 14px; margin-bottom: 12px; }
+            .admin-card h3 { font-size: 0.92rem; margin-bottom: 12px; }
+
+            /* Mini calendario */
+            .mini-cal-wrap { padding: 14px; margin-bottom: 16px; }
+            .mini-cal-header { flex-direction: column; gap: 10px; align-items: flex-start; }
+            .mini-cal-nav { width: 100%; justify-content: space-between; }
+            .mini-cal-legend { flex-wrap: wrap; gap: 8px; font-size: 0.7rem; }
+
+            /* Traduzioni */
+            .trans-row, .trans-header { grid-template-columns: 1fr; }
+            .trans-header > span:not(:first-child) { display: none; }
+            .trans-key { padding-top: 0; }
+            .trans-subtabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .trans-subtab { padding: 8px 12px; font-size: 0.75rem; flex-shrink: 0; }
+
+            /* Modal prenotazione */
+            #res-modal .confirm-card {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+                max-height: 100vh !important;
+                height: 100vh;
+            }
+
+            /* Confirm modal */
+            .confirm-card { padding: 24px 16px; margin: 12px !important; }
+            .confirm-actions { flex-direction: column; }
+            .confirm-actions .btn { min-width: 0; width: 100%; }
+
+            /* Flatpickr: 1 mese su mobile */
+            .flatpickr-calendar.admin-picker { max-width: 100% !important; }
+            .flatpickr-calendar.admin-picker .flatpickr-months {
+                flex-wrap: wrap;
+            }
+
+            /* Block picker legend */
+            .block-picker-legend { gap: 8px; font-size: 0.7rem; }
+
+            /* Toast */
+            .toast { left: 12px; right: 12px; bottom: 12px; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .admin-tab svg { width: 18px; height: 18px; }
+            .admin-tab { font-size: 0.62rem; padding: 8px 4px 6px; }
+            .admin-stats { gap: 6px; }
+            .stat-value { font-size: 1.3rem; }
+            .mini-month td span { width: 22px; height: 22px; font-size: 0.7rem; }
+        }
+
+        /* Reservation cards (mobile) */
+        .res-cards { display: flex; flex-direction: column; gap: 8px; }
+        .res-card {
+            background: var(--white);
+            border: 1px solid #e8e4de;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: box-shadow 0.15s;
+        }
+        .res-card:active { box-shadow: 0 0 0 2px var(--rame-light); }
+        .res-card--pending { border-left: 3px solid var(--warning); }
+        .res-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .res-card-guest {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--antracite);
+        }
+        .res-card-details {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.82rem;
+        }
+        .res-card-dates {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+            color: var(--text-light);
+            padding-top: 8px;
+            border-top: 1px solid #f0ece6;
+        }
+
+        /* Flatpickr admin overrides */
+        #block-range, #filter-range {
+            cursor: pointer;
+            background: #fff;
+        }
+        .flatpickr-calendar.admin-picker {
+            font-family: 'Jost', sans-serif;
+        }
+        .flatpickr-calendar.admin-picker .fp-day-oliva {
+            background: var(--rame) !important;
+            color: #fff !important;
+            border-radius: 50%;
+        }
+        .flatpickr-calendar.admin-picker .fp-day-venica {
+            background: var(--antracite) !important;
+            color: #fff !important;
+            border-radius: 50%;
+        }
+        .flatpickr-calendar.admin-picker .fp-day-booking {
+            background: #003580 !important;
+            color: #fff !important;
+            border-radius: 50%;
+        }
+        .flatpickr-calendar.admin-picker .fp-day-airbnb {
+            background: #FF5A5F !important;
+            color: #fff !important;
+            border-radius: 50%;
+        }
+        .flatpickr-calendar.admin-picker .fp-day-blocked {
+            background: #e8e4de !important;
+            color: var(--text-light) !important;
+            border-radius: 50%;
+        }
+        .flatpickr-calendar.admin-picker .fp-day-both {
+            background: linear-gradient(135deg, var(--rame) 50%, var(--antracite) 50%) !important;
+            color: #fff !important;
+            border-radius: 50%;
+        }
+        .block-picker-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        .block-picker-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div class="login-overlay" id="login-overlay">
+    <div class="login-card">
+        <div class="login-header">
+            <h1>CASIA</h1>
+            <p>Area riservata</p>
+        </div>
+        <form id="login-form" autocomplete="on">
+            <div class="login-field">
+                <label for="login-user">Utente</label>
+                <input type="text" id="login-user" name="username" autocomplete="username" required>
+            </div>
+            <div class="login-field">
+                <label for="login-pass">Password</label>
+                <input type="password" id="login-pass" name="password" autocomplete="current-password" required>
+            </div>
+            <div class="login-error" id="login-error" style="display:none;">Credenziali non valide</div>
+            <button type="submit" class="btn btn-primary login-btn">Accedi</button>
+        </form>
+        <a href="/" class="login-back">Torna al sito</a>
+    </div>
+</div>
+
+<header class="admin-header" id="admin-header" style="display:none;">
+    <h1>CASIA <span>ADMIN</span></h1>
+    <div class="admin-header-actions">
+        <a href="/">Vai al sito</a>
+        <button class="btn btn-sm" id="btn-logout" style="background:transparent;color:var(--rame-light);border:1px solid var(--rame-light);">Esci</button>
+    </div>
+</header>
+
+<div class="admin-layout" id="admin-layout" style="display:none;">
+
+<nav class="admin-sidebar" id="admin-tabs">
+    <button class="admin-tab active" data-panel="reservations">
+        <svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="tab-label">Prenotazioni</span>
+    </button>
+    <button class="admin-tab" data-panel="blocked">
+        <svg viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+        <span class="tab-label">Bloccate</span>
+    </button>
+    <button class="admin-tab" data-panel="pricing">
+        <svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/></svg>
+        <span class="tab-label">Prezzi</span>
+    </button>
+    <button class="admin-tab" data-panel="translations">
+        <svg viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+        <span class="tab-label">Traduzioni</span>
+    </button>
+    <div class="sidebar-divider"></div>
+    <button class="admin-tab" data-panel="customers">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"/></svg>
+        <span class="tab-label">Clienti</span>
+    </button>
+    <button class="admin-tab" data-panel="marketing">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span class="tab-label">Marketing</span>
+    </button>
+    <div class="sidebar-divider"></div>
+    <button class="admin-tab" data-panel="settings">
+        <svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span class="tab-label">Impostazioni</span>
+    </button>
+</nav>
+
+<div class="admin-content" id="admin-content">
+
+    <!-- Reservations Panel -->
+    <div class="admin-panel active" id="panel-reservations">
+        <div class="admin-stats" id="admin-stats">
+            <div class="stat-card"><div class="stat-value" id="stat-confirmed">—</div><div class="stat-label">Confermate</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-pending">—</div><div class="stat-label">In attesa</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-revenue">—</div><div class="stat-label">Ricavo totale</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-upcoming">—</div><div class="stat-label">Prossime</div></div>
+        </div>
+
+        <!-- Mini Calendario Prenotazioni -->
+        <div class="mini-cal-wrap" id="mini-cal-wrap">
+            <div class="mini-cal-header">
+                <h3>Calendario prenotazioni</h3>
+                <div class="mini-cal-nav">
+                    <button onclick="miniCalNav(-3)" title="3 mesi indietro">&laquo;</button>
+                    <button onclick="miniCalNav(-1)" title="Mese precedente">&lsaquo;</button>
+                    <button onclick="miniCalNav(0)" title="Oggi" style="font-size:0.75rem;width:auto;padding:0 10px;">Oggi</button>
+                    <button onclick="miniCalNav(1)" title="Mese successivo">&rsaquo;</button>
+                    <button onclick="miniCalNav(3)" title="3 mesi avanti">&raquo;</button>
+                </div>
+            </div>
+            <div class="mini-cal-grid" id="mini-cal-grid"></div>
+            <div class="mini-cal-legend">
+                <span><span class="legend-dot" style="background:var(--rame);"></span> Oliva</span>
+                <span><span class="legend-dot" style="background:var(--antracite);"></span> Venica</span>
+                <span><span class="legend-dot" style="background:linear-gradient(135deg,var(--rame) 50%,var(--antracite) 50%);"></span> Entrambi</span>
+                <span><span class="legend-dot" style="background:#003580;"></span> Booking.com</span>
+                <span><span class="legend-dot" style="background:#FF5A5F;"></span> Airbnb</span>
+                <span><span class="legend-dot" style="background:#e8e4de;"></span> Bloccato</span>
+                <span><span class="legend-dot" style="box-shadow:inset 0 0 0 2px var(--antracite);"></span> Oggi</span>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <div class="admin-filters">
+                <div class="form-group">
+                    <label>Stato</label>
+                    <select id="filter-status">
+                        <option value="" selected>Tutti</option>
+                        <option value="confirmed">Confermate</option>
+                        <option value="pending">In attesa</option>
+                        <option value="cancelled">Cancellate</option>
+                        <option value="refunded">Rimborsate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Appartamento</label>
+                    <select id="filter-apartment">
+                        <option value="">Tutti</option>
+                        <option value="oliva">Oliva</option>
+                        <option value="venica">Venica</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Periodo</label>
+                    <input type="text" id="filter-range" placeholder="Tutte le date" readonly>
+                </div>
+                <button class="btn btn-primary" id="btn-filter">Filtra</button>
+            </div>
+
+            <div id="reservations-table-wrap" class="admin-table-wrap">
+                <div class="loading">Caricamento...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blocked Dates Panel -->
+    <div class="admin-panel" id="panel-blocked">
+        <div class="admin-card">
+            <h3>Blocca nuove date</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Appartamento</label>
+                    <select id="block-apartment">
+                        <option value="oliva">Oliva</option>
+                        <option value="venica">Venica</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex:2;">
+                    <label>Periodo da bloccare</label>
+                    <input type="text" id="block-range" placeholder="Seleziona date..." readonly>
+                </div>
+                <div class="form-group">
+                    <label>Fonte / Motivo</label>
+                    <select id="block-source" onchange="toggleBlockFields()">
+                        <option value="booking">Booking.com</option>
+                        <option value="airbnb">Airbnb</option>
+                        <option value="manutenzione">Manutenzione</option>
+                        <option value="uso_personale">Uso personale</option>
+                        <option value="altro">Altro...</option>
+                    </select>
+                </div>
+                <div class="form-group" id="block-reason-custom" style="display:none;">
+                    <label>Specifica motivo</label>
+                    <input type="text" id="block-reason" placeholder="Es: Lavori idraulici">
+                </div>
+            </div>
+            <!-- Campi extra per prenotazioni esterne -->
+            <div id="block-external-fields" style="display:block;">
+                <div class="form-row" style="margin-top:12px;">
+                    <div class="form-group">
+                        <label>Nr. prenotazione OTA</label>
+                        <input type="text" id="block-ext-ref" placeholder="Es: 4829173625">
+                    </div>
+                    <div class="form-group">
+                        <label>Nome ospite</label>
+                        <input type="text" id="block-ext-name" placeholder="Opzionale">
+                    </div>
+                    <div class="form-group">
+                        <label>Email ospite</label>
+                        <input type="email" id="block-ext-email" placeholder="Opzionale">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono ospite</label>
+                        <input type="text" id="block-ext-phone" placeholder="Opzionale">
+                    </div>
+                </div>
+            </div>
+            <div class="block-picker-legend">
+                <span><span class="legend-dot" style="background:var(--rame);"></span> Oliva</span>
+                <span><span class="legend-dot" style="background:var(--antracite);"></span> Venica</span>
+                <span><span class="legend-dot" style="background:#003580;"></span> Booking.com</span>
+                <span><span class="legend-dot" style="background:#FF5A5F;"></span> Airbnb</span>
+                <span><span class="legend-dot" style="background:#e8e4de;"></span> Bloccato</span>
+            </div>
+            <button class="btn btn-primary" id="btn-block" style="margin-top:12px;">Blocca date</button>
+        </div>
+
+        <div class="admin-card">
+            <h3>Date attualmente bloccate</h3>
+            <div id="blocked-table-wrap" class="admin-table-wrap">
+                <div class="loading">Caricamento...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Translations Panel -->
+    <div class="admin-panel" id="panel-translations">
+        <div class="admin-card">
+            <h3>Editor traduzioni</h3>
+            <div class="admin-filters">
+                <div class="form-group">
+                    <label>Lingua</label>
+                    <select id="trans-lang">
+                        <option value="it">Italiano</option>
+                        <option value="en" selected>English</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cerca</label>
+                    <input type="text" id="trans-search" placeholder="Filtra per chiave o testo...">
+                </div>
+                <button class="btn btn-primary" id="btn-load-trans">Carica</button>
+            </div>
+
+            <div class="trans-actions" style="display:flex;gap:12px;margin-bottom:16px;align-items:center;">
+                <button class="btn btn-primary" id="btn-save-trans" disabled>Salva modifiche</button>
+                <span id="trans-changes-count" style="font-size:0.85rem;color:var(--text-light);"></span>
+                <button class="btn btn-sm" id="btn-seed-trans" style="margin-left:auto;background:transparent;color:var(--rame);border:1px solid var(--rame);">Importa da JSON</button>
+            </div>
+
+            <div class="trans-subtabs" id="trans-subtabs">
+                <button class="trans-subtab active" data-page="common">Comune <span class="trans-subtab-count" id="trans-count-common"></span></button>
+                <button class="trans-subtab" data-page="index">Standard <span class="trans-subtab-count" id="trans-count-index"></span></button>
+                <button class="trans-subtab" data-page="amici">Amici <span class="trans-subtab-count" id="trans-count-amici"></span></button>
+            </div>
+
+            <div id="translations-table-wrap" class="admin-table-wrap">
+                <div class="empty-state">Seleziona una lingua e clicca "Carica"</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Panel -->
+    <div class="admin-panel" id="panel-pricing">
+        <div class="admin-card">
+            <h3>Aggiungi/Modifica periodo</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Appartamento</label>
+                    <select id="price-apartment">
+                        <option value="oliva">Oliva</option>
+                        <option value="venica">Venica</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Stagione</label>
+                    <select id="price-season">
+                        <option value="low">Bassa</option>
+                        <option value="mid">Media</option>
+                        <option value="high">Alta</option>
+                        <option value="peak">Altissima</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Dal</label>
+                    <input type="date" id="price-from">
+                </div>
+                <div class="form-group">
+                    <label>Al</label>
+                    <input type="date" id="price-to">
+                </div>
+                <div class="form-group">
+                    <label>Prezzo/notte (EUR)</label>
+                    <input type="number" id="price-night" step="1" placeholder="120">
+                </div>
+                <div class="form-group">
+                    <label>Notti minime</label>
+                    <input type="number" id="price-min-nights" value="2" min="1">
+                </div>
+            </div>
+            <button class="btn btn-primary" id="btn-add-price">Salva periodo</button>
+        </div>
+
+        <div class="admin-card">
+            <h3>Periodi configurati</h3>
+            <div id="pricing-table-wrap" class="admin-table-wrap">
+                <div class="loading">Caricamento...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customers Panel -->
+    <div class="admin-panel" id="panel-customers">
+        <div class="admin-card">
+            <h3>Lista Clienti</h3>
+            <div style="margin-bottom:12px;">
+                <label><input type="checkbox" id="filter-marketing-only"> Solo con consenso marketing</label>
+            </div>
+            <div id="customers-table-wrap" class="admin-table-wrap">
+                <div class="loading">Caricamento...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="admin-panel" id="panel-settings">
+        <div class="admin-card">
+            <h3>Tassa di Soggiorno</h3>
+            <div class="admin-filters" style="flex-wrap:wrap;">
+                <div class="form-group">
+                    <label>Importo per persona/notte (centesimi)</label>
+                    <input type="number" id="setting-tax-amount" placeholder="150" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Età minima esenzione (sotto questa età = esente)</label>
+                    <input type="number" id="setting-tax-min-age" placeholder="14" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Max notti tassabili</label>
+                    <input type="number" id="setting-tax-max-nights" placeholder="7" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Abilitata</label>
+                    <select id="setting-tax-enabled">
+                        <option value="1">Sì</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="btn-save-settings" style="margin-top:12px;">Salva impostazioni</button>
+        </div>
+        <div class="admin-card" style="margin-top:20px;">
+            <h3>Istruzioni di accesso predefinite</h3>
+            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;">Testo precompilato quando invii le istruzioni di accesso all'ospite. Puoi personalizzarlo al momento dell'invio.</p>
+            <div class="form-group" style="margin-bottom:16px;">
+                <label>Appartamento Oliva</label>
+                <textarea id="setting-access-oliva" rows="6" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;font-size:0.88rem;resize:vertical;box-sizing:border-box;" placeholder="Inserisci le istruzioni per Oliva..."></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+                <label>Appartamento Venica</label>
+                <textarea id="setting-access-venica" rows="6" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;font-size:0.88rem;resize:vertical;box-sizing:border-box;" placeholder="Inserisci le istruzioni per Venica..."></textarea>
+            </div>
+            <button class="btn btn-primary" id="btn-save-access-settings">Salva istruzioni</button>
+        </div>
+    </div>
+
+    <!-- Marketing Panel -->
+    <div class="admin-panel" id="panel-marketing">
+        <div class="admin-card">
+            <h3>Nuova Campagna</h3>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Oggetto email</label>
+                <input type="text" id="campaign-subject" placeholder="Offerta speciale estate 2026">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Corpo email (HTML)</label>
+                <textarea id="campaign-body" rows="8" placeholder="<h2>Titolo</h2><p>Testo della campagna...</p>" style="width:100%;font-family:monospace;font-size:0.85rem;padding:10px;border:1px solid #ddd;border-radius:6px;"></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>Destinatari</label>
+                <select id="campaign-recipients">
+                    <option value="marketing">Solo con consenso marketing</option>
+                    <option value="all">Tutti i clienti</option>
+                </select>
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button class="btn btn-primary" id="btn-preview-campaign">Anteprima</button>
+                <button class="btn btn-primary" id="btn-send-campaign">Crea e invia</button>
+            </div>
+        </div>
+        <div class="admin-card">
+            <h3>Campagne inviate</h3>
+            <div id="campaigns-table-wrap" class="admin-table-wrap">
+                <div class="loading">Caricamento...</div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /admin-content -->
+</div><!-- /admin-layout -->
+
+<!-- Reservation Detail Modal -->
+<div class="confirm-overlay" id="res-modal" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+    <div class="confirm-card" style="max-width:820px;max-height:90vh;overflow-y:auto;text-align:left;padding:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid #e8e4de;position:sticky;top:0;background:#fff;z-index:1;border-radius:12px 12px 0 0;">
+            <h3 style="margin:0;font-size:1.1rem;">Prenotazione #<span id="res-modal-id"></span></h3>
+            <button style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-light);padding:0 4px;" onclick="document.getElementById('res-modal').style.display='none'">&times;</button>
+        </div>
+        <div id="res-modal-body" style="padding:24px;"><div class="loading">Caricamento...</div></div>
+    </div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    const API = '/api/admin';
+    let authHeader = sessionStorage.getItem('casia_auth') || '';
+
+    // ----- Auth / Login -----
+    function showApp() {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('admin-header').style.display = '';
+        document.getElementById('admin-layout').style.display = '';
+    }
+
+    function showLogin() {
+        document.getElementById('login-overlay').style.display = '';
+        document.getElementById('admin-header').style.display = 'none';
+        document.getElementById('admin-layout').style.display = 'none';
+        authHeader = '';
+        sessionStorage.removeItem('casia_auth');
+    }
+
+    // Login form
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const user = document.getElementById('login-user').value.trim();
+        const pass = document.getElementById('login-pass').value;
+        const errorEl = document.getElementById('login-error');
+        errorEl.style.display = 'none';
+
+        authHeader = 'Basic ' + btoa(user + ':' + pass);
+
+        // Verifica con una chiamata API
+        const res = await fetch(API + '/reservations?status=confirmed', {
+            headers: { 'Authorization': authHeader },
+        });
+
+        if (res.status === 401) {
+            authHeader = '';
+            errorEl.style.display = 'block';
+            document.getElementById('login-pass').value = '';
+            document.getElementById('login-pass').focus();
+            return;
+        }
+
+        sessionStorage.setItem('casia_auth', authHeader);
+        showApp();
+        loadReservations();
+        loadMiniCalendar();
+    });
+
+    // Logout
+    document.getElementById('btn-logout').addEventListener('click', function() {
+        showLogin();
+    });
+
+    async function apiFetch(endpoint, options = {}) {
+        if (!authHeader) { showLogin(); return null; }
+        const res = await fetch(API + endpoint, {
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': authHeader,
+                ...(options.headers || {}),
+            },
+        });
+        if (res.status === 401) {
+            toast('Sessione scaduta', 'error');
+            showLogin();
+            return null;
+        }
+        return res;
+    }
+
+    // ----- Tabs -----
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('panel-' + this.dataset.panel).classList.add('active');
+
+            if (this.dataset.panel === 'blocked') { loadBlocked(); loadBlockPickerData(); }
+            if (this.dataset.panel === 'pricing') loadPricing();
+            if (this.dataset.panel === 'translations') loadTranslations();
+            if (this.dataset.panel === 'customers') loadCustomers();
+            if (this.dataset.panel === 'settings') loadSettings();
+            if (this.dataset.panel === 'marketing') loadCampaigns();
+        });
+    });
+
+    // ----- Filter date range picker -----
+    let filterRangePicker = flatpickr('#filter-range', {
+        mode: 'range',
+        locale: 'it',
+        dateFormat: 'Y-m-d',
+        altInput: true,
+        altFormat: 'd/m/Y',
+        showMonths: window.innerWidth < 768 ? 1 : 2,
+    });
+
+    // ----- Reservations -----
+    async function loadReservations() {
+        const status = document.getElementById('filter-status').value;
+        const apartment = document.getElementById('filter-apartment').value;
+        const dates = filterRangePicker.selectedDates || [];
+        const from = dates.length >= 1 ? dates[0].toISOString().split('T')[0] : '';
+        const to = dates.length >= 2 ? dates[1].toISOString().split('T')[0] : '';
+
+        const params = new URLSearchParams();
+        if (status) params.set('status', status);
+        if (apartment) params.set('apartment', apartment);
+        if (from) params.set('from', from);
+        if (to) params.set('to', to);
+
+        const wrap = document.getElementById('reservations-table-wrap');
+        wrap.innerHTML = '<div class="loading">Caricamento...</div>';
+
+        const res = await apiFetch('/reservations?' + params.toString());
+        if (!res) return;
+        const data = await res.json();
+
+        if (!data.reservations || data.reservations.length === 0) {
+            wrap.innerHTML = '<div class="empty-state">Nessuna prenotazione trovata</div>';
+            updateStats([]);
+            return;
+        }
+
+        updateStats(data.reservations);
+
+        // Salva i dati per la modale
+        window._reservationsData = {};
+        data.reservations.forEach(r => { window._reservationsData[r.id] = r; });
+
+        const isMobile = window.innerWidth <= 768;
+
+        // Prepara dati comuni per ogni riga
+        function buildResRow(r) {
+            let statusHtml = `<span class="badge badge--${r.status}">${r.status}</span>`;
+            if (r.status === 'pending') {
+                const createdAt = new Date(r.created_at + 'Z').getTime();
+                const expiresAt = createdAt + 30 * 60 * 1000;
+                const remaining = Math.max(0, expiresAt - Date.now());
+                const mins = Math.floor(remaining / 60000);
+                const secs = Math.floor((remaining % 60000) / 1000);
+                if (remaining > 0) {
+                    statusHtml += ` <small class="pending-timer" data-expires="${expiresAt}" style="color:${mins < 5 ? 'var(--danger)' : 'var(--warning)'};">${mins}:${String(secs).padStart(2,'0')}</small>`;
+                } else {
+                    statusHtml += ` <small style="color:var(--danger);">Scaduta</small>`;
+                }
+            }
+            const ciStatusMap = { pending: 'In attesa', submitted: 'Inviato', verified: 'Verificato' };
+            const ciClass = r.checkin_status === 'verified' ? 'success' : (r.checkin_status === 'submitted' ? 'warning' : 'pending');
+            const ciHtml = r.status === 'confirmed'
+                ? `<span class="badge badge--${ciClass}">${ciStatusMap[r.checkin_status] || 'In attesa'}</span>`
+                : '';
+            const src = r.source || 'direct';
+            let srcBadge = '<span style="background:var(--rame);color:#fff;padding:2px 8px;border-radius:10px;font-size:0.7rem;">Diretto</span>';
+            if (src === 'booking') srcBadge = '<span style="background:#003580;color:#fff;padding:2px 8px;border-radius:10px;font-size:0.7rem;">Booking</span>';
+            else if (src === 'airbnb') srcBadge = '<span style="background:#FF5A5F;color:#fff;padding:2px 8px;border-radius:10px;font-size:0.7rem;">Airbnb</span>';
+            const apt = r.apartment === 'oliva' ? 'Oliva' : 'Venica';
+            return { statusHtml, ciHtml, srcBadge, apt };
+        }
+
+        let html = '';
+        if (isMobile) {
+            // Layout a card per mobile
+            html = '<div class="res-cards">';
+            data.reservations.forEach(r => {
+                const { statusHtml, ciHtml, srcBadge, apt } = buildResRow(r);
+                html += `<div class="res-card ${r.status === 'pending' ? 'res-card--pending' : ''}" onclick="showResDetail(${r.id})">
+                    <div class="res-card-header">
+                        <span class="res-card-guest">${esc(r.guest_name)}</span>
+                        <span>${statusHtml}</span>
+                    </div>
+                    <div class="res-card-details">
+                        <span>${srcBadge}</span>
+                        <span style="font-weight:500;">${apt}</span>
+                        ${ciHtml ? '<span>' + ciHtml + '</span>' : ''}
+                    </div>
+                    <div class="res-card-dates">
+                        <span>${formatDateShort(r.checkin)} → ${formatDateShort(r.checkout)}</span>
+                        <span>${r.nights}n</span>
+                        <span style="font-weight:600;color:var(--rame);">${r.total_cents ? formatEuro(r.total_cents) : '—'}</span>
+                    </div>
+                </div>`;
+            });
+            html += '</div>';
+        } else {
+            // Tabella desktop
+            html = `<table class="admin-table">
+                <thead><tr>
+                    <th>ID</th><th>Fonte</th><th>Ospite</th><th>Appartamento</th><th>Date</th><th>Notti</th><th>Totale</th><th>Stato</th><th>Check-in</th>
+                </tr></thead><tbody>`;
+            data.reservations.forEach(r => {
+                const { statusHtml, ciHtml, srcBadge, apt } = buildResRow(r);
+                html += `<tr style="cursor:pointer;${r.status === 'pending' ? 'background:rgba(217,119,6,0.04);' : ''}" onclick="showResDetail(${r.id})">
+                    <td>#${r.id}${r.external_ref ? `<br><small style="color:var(--text-light);">${esc(r.external_ref)}</small>` : ''}</td>
+                    <td>${srcBadge}</td>
+                    <td><strong>${esc(r.guest_name)}</strong>${r.guest_email ? `<br><small style="color:var(--text-light);">${esc(r.guest_email)}</small>` : ''}</td>
+                    <td>${apt}</td>
+                    <td>${formatDate(r.checkin)} — ${formatDate(r.checkout)}</td>
+                    <td>${r.nights}</td>
+                    <td>${r.total_cents ? formatEuro(r.total_cents) : '—'}</td>
+                    <td>${statusHtml}</td>
+                    <td>${ciHtml || '<span style="color:var(--text-light);">—</span>'}</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+        }
+        wrap.innerHTML = html;
+
+        // Avvia aggiornamento timer per le pending
+        startPendingTimers();
+    }
+
+    function updateStats(reservations) {
+        const confirmed = reservations.filter(r => r.status === 'confirmed');
+        const pending = reservations.filter(r => r.status === 'pending');
+        const now = Date.now();
+        const activePending = pending.filter(r => {
+            const created = new Date(r.created_at + 'Z').getTime();
+            return (created + 30 * 60 * 1000) > now;
+        });
+        const today = new Date().toISOString().split('T')[0];
+        const upcoming = confirmed.filter(r => r.checkin >= today);
+        const revenue = confirmed.reduce((sum, r) => sum + (r.total_cents || 0), 0);
+
+        document.getElementById('stat-confirmed').textContent = confirmed.length;
+        document.getElementById('stat-pending').textContent = activePending.length + (activePending.length !== pending.length ? ` (${pending.length - activePending.length} scadute)` : '');
+        document.getElementById('stat-revenue').textContent = formatEuro(revenue);
+        document.getElementById('stat-upcoming').textContent = upcoming.length;
+    }
+
+    // ----- Mini Calendario -----
+    let miniCalStartMonth = new Date().getMonth();
+    let miniCalStartYear = new Date().getFullYear();
+    let miniCalReservations = [];
+    let miniCalBlocked = [];
+
+    window.miniCalNav = function(delta) {
+        if (delta === 0) {
+            miniCalStartMonth = new Date().getMonth();
+            miniCalStartYear = new Date().getFullYear();
+        } else {
+            miniCalStartMonth += delta;
+            while (miniCalStartMonth > 11) { miniCalStartMonth -= 12; miniCalStartYear++; }
+            while (miniCalStartMonth < 0) { miniCalStartMonth += 12; miniCalStartYear--; }
+        }
+        renderMiniCalendar();
+    };
+
+    async function loadMiniCalendar() {
+        // Carica TUTTE le prenotazioni confirmed (senza filtri)
+        const [resRes, blkRes] = await Promise.all([
+            apiFetch('/reservations?status=confirmed'),
+            apiFetch('/blocked-dates'),
+        ]);
+        if (resRes) {
+            const data = await resRes.json();
+            miniCalReservations = data.reservations || [];
+        }
+        if (blkRes) {
+            const data = await blkRes.json();
+            miniCalBlocked = data.blocked_dates || [];
+        }
+        renderMiniCalendar();
+    }
+
+    function renderMiniCalendar() {
+        const grid = document.getElementById('mini-cal-grid');
+        if (!grid) return;
+
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
+
+        // Costruisci set di date prenotate per appartamento e fonte
+        const olivaDates = new Set();
+        const venicaDates = new Set();
+        const dateSource = {}; // ds -> 'direct'|'booking'|'airbnb'
+        miniCalReservations.forEach(r => {
+            if (r.status !== 'confirmed') return;
+            const src = r.source || 'direct';
+            const start = new Date(r.checkin + 'T00:00:00');
+            const end = new Date(r.checkout + 'T00:00:00');
+            for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+                const ds = d.toISOString().split('T')[0];
+                if (r.apartment === 'oliva') olivaDates.add(ds);
+                else venicaDates.add(ds);
+                if (src !== 'direct') dateSource[ds] = src;
+            }
+        });
+
+        const blockedDates = {};
+        miniCalBlocked.forEach(b => {
+            const reason = (b.reason || '').toLowerCase();
+            let source = 'other';
+            if (reason.includes('booking')) source = 'booking';
+            else if (reason.includes('airbnb')) source = 'airbnb';
+            // Per ogni data tieni la source (se più fonti, priorità booking > airbnb > other)
+            if (!blockedDates[b.date] || source !== 'other') blockedDates[b.date] = source;
+        });
+
+        const months = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+        const days = ['Lu','Ma','Me','Gi','Ve','Sa','Do'];
+
+        let html = '';
+        for (let m = 0; m < 3; m++) {
+            let mo = miniCalStartMonth + m;
+            let yr = miniCalStartYear;
+            while (mo > 11) { mo -= 12; yr++; }
+
+            const firstDay = new Date(yr, mo, 1);
+            const daysInMonth = new Date(yr, mo + 1, 0).getDate();
+            let startDay = firstDay.getDay() - 1; // Lunedì = 0
+            if (startDay < 0) startDay = 6;
+
+            html += `<div class="mini-month">
+                <div class="mini-month-title">${months[mo]} ${yr}</div>
+                <table><thead><tr>${days.map(d => `<th>${d}</th>`).join('')}</tr></thead><tbody><tr>`;
+
+            for (let i = 0; i < startDay; i++) html += '<td></td>';
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const ds = `${yr}-${String(mo + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = ds === todayStr;
+                const isPast = ds < todayStr;
+                const inOliva = olivaDates.has(ds);
+                const inVenica = venicaDates.has(ds);
+                const blockedSource = blockedDates[ds];
+
+                const resSrc = dateSource[ds];
+
+                let cls = '';
+                if (inOliva && inVenica) cls = 'booked-both';
+                else if (resSrc === 'booking') cls = 'blocked-booking';
+                else if (resSrc === 'airbnb') cls = 'blocked-airbnb';
+                else if (inOliva) cls = 'booked-oliva';
+                else if (inVenica) cls = 'booked-venica';
+                else if (blockedSource === 'booking') cls = 'blocked-booking';
+                else if (blockedSource === 'airbnb') cls = 'blocked-airbnb';
+                else if (blockedSource) cls = 'blocked';
+                else if (isPast) cls = 'past';
+                if (isToday) cls += ' today';
+
+                html += `<td class="${cls}"><span>${day}</span></td>`;
+
+                const weekday = (startDay + day - 1) % 7;
+                if (weekday === 6 && day < daysInMonth) html += '</tr><tr>';
+            }
+
+            // Celle vuote alla fine
+            const lastWeekday = (startDay + daysInMonth - 1) % 7;
+            for (let i = lastWeekday + 1; i < 7; i++) html += '<td></td>';
+
+            html += '</tr></tbody></table></div>';
+        }
+
+        grid.innerHTML = html;
+    }
+
+    // Timer live per prenotazioni pending
+    let pendingTimerInterval = null;
+
+    function startPendingTimers() {
+        if (pendingTimerInterval) clearInterval(pendingTimerInterval);
+        pendingTimerInterval = setInterval(() => {
+            const timers = document.querySelectorAll('.pending-timer');
+            if (timers.length === 0) { clearInterval(pendingTimerInterval); return; }
+
+            timers.forEach(el => {
+                const expiresAt = parseInt(el.dataset.expires);
+                const remaining = Math.max(0, expiresAt - Date.now());
+                const mins = Math.floor(remaining / 60000);
+                const secs = Math.floor((remaining % 60000) / 1000);
+
+                if (remaining > 0) {
+                    el.textContent = `${mins}:${String(secs).padStart(2,'0')} rimanenti`;
+                    el.style.color = mins < 5 ? 'var(--danger)' : 'var(--warning)';
+                } else {
+                    el.textContent = 'Scaduta';
+                    el.style.color = 'var(--danger)';
+                }
+            });
+        }, 1000);
+    }
+
+    window.cancelRes = async function(id) {
+        const ok = await confirmModal('Cancella prenotazione', 'Cancellare la prenotazione #' + id + '?<br>Se confermata, verrà emesso un rimborso Stripe.', 'Cancella', true);
+        if (!ok) return;
+        const res = await apiFetch('/cancel/' + id, { method: 'POST' });
+        if (!res) return;
+        const data = await res.json();
+        if (data.success) {
+            toast('Prenotazione cancellata (' + data.status + ')', 'success');
+            loadReservations();
+        } else {
+            toast(data.error || 'Errore', 'error');
+        }
+    };
+
+    window.deleteRes = async function(id) {
+        const ok = await confirmModal('Elimina definitivamente', 'Eliminare la prenotazione #' + id + '?<br>Questa azione non è reversibile.', 'Elimina', true);
+        if (!ok) return;
+        const res = await apiFetch('/delete/' + id, { method: 'DELETE' });
+        if (!res) return;
+        const data = await res.json();
+        if (data.success) {
+            toast('Prenotazione eliminata', 'success');
+            loadReservations();
+        } else {
+            toast(data.error || 'Errore', 'error');
+        }
+    };
+
+    document.getElementById('btn-filter').addEventListener('click', loadReservations);
+
+    // ----- Blocked Dates -----
+    let blockPickerInstance = null;
+    let blockPickerData = { reservations: [], blocked: [] };
+
+    function buildBlockPickerDateMap() {
+        const apt = document.getElementById('block-apartment').value;
+        const dateMap = {}; // dateStr -> 'oliva'|'venica'|'booking'|'airbnb'|'blocked'|'both'
+
+        blockPickerData.reservations.forEach(r => {
+            if (r.status !== 'confirmed') return;
+            const src = r.source || 'direct';
+            const start = new Date(r.checkin + 'T00:00:00');
+            const end = new Date(r.checkout + 'T00:00:00');
+            for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+                const ds = d.toISOString().split('T')[0];
+                if (src === 'booking') { dateMap[ds] = 'booking'; continue; }
+                if (src === 'airbnb') { dateMap[ds] = 'airbnb'; continue; }
+                // Prenotazione diretta
+                if (r.apartment === apt) {
+                    if (dateMap[ds] && dateMap[ds] !== (apt === 'oliva' ? 'oliva' : 'venica')) {
+                        dateMap[ds] = 'both';
+                    } else {
+                        dateMap[ds] = apt === 'oliva' ? 'oliva' : 'venica';
+                    }
+                } else {
+                    const other = r.apartment === 'oliva' ? 'oliva' : 'venica';
+                    if (dateMap[ds] && dateMap[ds] !== other) {
+                        dateMap[ds] = 'both';
+                    } else if (!dateMap[ds]) {
+                        dateMap[ds] = other;
+                    }
+                }
+            }
+        });
+
+        blockPickerData.blocked.forEach(b => {
+            if (dateMap[b.date]) return; // prenotazione ha priorità
+            const reason = (b.reason || '').toLowerCase();
+            if (reason.includes('booking')) dateMap[b.date] = 'booking';
+            else if (reason.includes('airbnb')) dateMap[b.date] = 'airbnb';
+            else dateMap[b.date] = 'blocked';
+        });
+
+        return dateMap;
+    }
+
+    function initBlockPicker() {
+        if (blockPickerInstance) blockPickerInstance.destroy();
+        const dateMap = buildBlockPickerDateMap();
+
+        blockPickerInstance = flatpickr('#block-range', {
+            mode: 'range',
+            locale: 'it',
+            dateFormat: 'Y-m-d',
+            altInput: true,
+            altFormat: 'd/m/Y',
+            minDate: 'today',
+            showMonths: window.innerWidth < 768 ? 1 : 2,
+            appendTo: document.querySelector('#panel-blocked .admin-card'),
+            onDayCreate: function(dObj, dStr, fp, dayElem) {
+                const ds = dayElem.dateObj.toISOString().split('T')[0];
+                const cls = dateMap[ds];
+                if (cls) {
+                    dayElem.classList.add('fp-day-' + cls);
+                }
+            },
+            onReady: function(selectedDates, dateStr, instance) {
+                instance.calendarContainer.classList.add('admin-picker');
+            },
+        });
+    }
+
+    async function loadBlockPickerData() {
+        const [resRes, blkRes] = await Promise.all([
+            apiFetch('/reservations?status=confirmed'),
+            apiFetch('/blocked-dates'),
+        ]);
+        if (resRes) {
+            const data = await resRes.json();
+            blockPickerData.reservations = data.reservations || [];
+        }
+        if (blkRes) {
+            const data = await blkRes.json();
+            blockPickerData.blocked = data.blocked_dates || [];
+        }
+        initBlockPicker();
+    }
+
+    async function loadBlocked() {
+        const wrap = document.getElementById('blocked-table-wrap');
+        wrap.innerHTML = '<div class="loading">Caricamento...</div>';
+
+        const [blkRes, resRes] = await Promise.all([
+            apiFetch('/blocked-dates'),
+            apiFetch('/reservations?status=confirmed'),
+        ]);
+        if (!blkRes) return;
+        const blkData = await blkRes.json();
+        const blockedDates = blkData.blocked_dates || [];
+
+        // Prenotazioni esterne (Booking.com / Airbnb)
+        let externalBookings = [];
+        if (resRes) {
+            const resData = await resRes.json();
+            externalBookings = (resData.reservations || []).filter(r =>
+                r.source === 'booking' || r.source === 'airbnb'
+            );
+        }
+
+        if (blockedDates.length === 0 && externalBookings.length === 0) {
+            wrap.innerHTML = '<div class="empty-state">Nessuna data bloccata o prenotazione esterna</div>';
+            return;
+        }
+
+        // Prepara raggruppamento date bloccate
+        const groupedBlocked = [];
+        let currentGroup = null;
+        blockedDates.forEach(b => {
+            if (currentGroup && currentGroup.apartment === b.apartment && currentGroup.reason === b.reason) {
+                currentGroup.dates.push(b);
+                currentGroup.lastDate = b.date;
+            } else {
+                currentGroup = { apartment: b.apartment, reason: b.reason, dates: [b], firstDate: b.date, lastDate: b.date };
+                groupedBlocked.push(currentGroup);
+            }
+        });
+
+        function makeSourceBadge(source) {
+            if (source === 'booking') return '<span style="background:#003580;color:#fff;padding:2px 8px;border-radius:10px;font-size:0.75rem;">Booking.com</span>';
+            if (source === 'airbnb') return '<span style="background:#FF5A5F;color:#fff;padding:2px 8px;border-radius:10px;font-size:0.75rem;">Airbnb</span>';
+            return '';
+        }
+        function makeReasonBadge(reason) {
+            const rl = (reason || '').toLowerCase();
+            if (rl.includes('booking')) return makeSourceBadge('booking');
+            if (rl.includes('airbnb')) return makeSourceBadge('airbnb');
+            return `<span style="background:#e8e4de;color:var(--text-light);padding:2px 8px;border-radius:10px;font-size:0.75rem;">${esc(reason || '—')}</span>`;
+        }
+
+        const isMobile = window.innerWidth <= 768;
+        let html = '';
+
+        if (isMobile) {
+            html = '<div class="res-cards">';
+
+            externalBookings.forEach(r => {
+                const apt = r.apartment === 'oliva' ? 'Oliva' : 'Venica';
+                html += `<div class="res-card">
+                    <div class="res-card-header">
+                        <span class="res-card-guest">${r.guest_name ? esc(r.guest_name) : 'Prenotazione esterna'}</span>
+                        ${makeSourceBadge(r.source)}
+                    </div>
+                    <div class="res-card-dates">
+                        <span>${apt}</span>
+                        <span>${formatDateShort(r.checkin)} → ${formatDateShort(r.checkout)}</span>
+                    </div>
+                    ${r.external_ref ? `<div style="font-size:0.75rem;color:var(--text-light);margin-top:4px;">Rif: ${esc(r.external_ref)}</div>` : ''}
+                    <div style="margin-top:8px;"><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();cancelRes(${r.id})">Elimina</button></div>
+                </div>`;
+            });
+
+            groupedBlocked.forEach(g => {
+                const apt = g.apartment === 'oliva' ? 'Oliva' : 'Venica';
+                const period = g.firstDate === g.lastDate
+                    ? formatDateShort(g.firstDate)
+                    : formatDateShort(g.firstDate) + ' → ' + formatDateShort(g.lastDate);
+                const ids = g.dates.map(d => d.id);
+                html += `<div class="res-card">
+                    <div class="res-card-header">
+                        <span class="res-card-guest">${apt}</span>
+                        ${makeReasonBadge(g.reason)}
+                    </div>
+                    <div class="res-card-dates">
+                        <span>${period}</span>
+                        <span>${g.dates.length} giorn${g.dates.length === 1 ? 'o' : 'i'}</span>
+                    </div>
+                    <div style="margin-top:8px;"><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();unblockGroup([${ids.join(',')}])">Sblocca</button></div>
+                </div>`;
+            });
+
+            html += '</div>';
+        } else {
+            html = `<table class="admin-table">
+                <thead><tr><th>Appartamento</th><th>Periodo</th><th>Fonte</th><th>Dettagli</th><th>Azioni</th></tr></thead><tbody>`;
+
+            externalBookings.forEach(r => {
+                const apt = r.apartment === 'oliva' ? 'Oliva' : 'Venica';
+                const details = [];
+                if (r.guest_name) details.push(esc(r.guest_name));
+                if (r.external_ref) details.push('Rif: ' + esc(r.external_ref));
+                html += `<tr>
+                    <td>${apt}</td>
+                    <td>${formatDate(r.checkin)} → ${formatDate(r.checkout)}</td>
+                    <td>${makeSourceBadge(r.source)}</td>
+                    <td>${details.length ? details.join(' · ') : '—'}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="cancelRes(${r.id})">Elimina</button></td>
+                </tr>`;
+            });
+
+            groupedBlocked.forEach(g => {
+                const period = g.firstDate === g.lastDate
+                    ? formatDate(g.firstDate)
+                    : formatDate(g.firstDate) + ' → ' + formatDate(g.lastDate);
+                const ids = g.dates.map(d => d.id);
+                html += `<tr>
+                    <td>${g.apartment === 'oliva' ? 'Oliva' : 'Venica'}</td>
+                    <td>${period}</td>
+                    <td>${makeReasonBadge(g.reason)}</td>
+                    <td>${g.dates.length} giorn${g.dates.length === 1 ? 'o' : 'i'}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="unblockGroup([${ids.join(',')}])">Sblocca</button></td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+        }
+
+        wrap.innerHTML = html;
+    }
+
+    window.toggleBlockFields = function() {
+        const source = document.getElementById('block-source').value;
+        const isOTA = source === 'booking' || source === 'airbnb';
+        document.getElementById('block-external-fields').style.display = isOTA ? 'block' : 'none';
+        document.getElementById('block-reason-custom').style.display = source === 'altro' ? 'block' : 'none';
+    };
+
+    // Aggiorna picker quando si cambia appartamento
+    document.getElementById('block-apartment').addEventListener('change', function() {
+        initBlockPicker();
+    });
+
+    document.getElementById('btn-block').addEventListener('click', async function() {
+        const apartment = document.getElementById('block-apartment').value;
+        const source = document.getElementById('block-source').value;
+        const customReason = document.getElementById('block-reason').value;
+
+        // Estrai date dal range Flatpickr
+        const selectedDates = blockPickerInstance ? blockPickerInstance.selectedDates : [];
+        if (selectedDates.length < 2) { toast('Seleziona un intervallo di date', 'error'); return; }
+        const from = selectedDates[0].toISOString().split('T')[0];
+        const to = selectedDates[1].toISOString().split('T')[0];
+
+        const isOTA = source === 'booking' || source === 'airbnb';
+
+        if (isOTA) {
+            // Crea prenotazione esterna
+            const extRef = document.getElementById('block-ext-ref').value;
+            const extName = document.getElementById('block-ext-name').value;
+            const extEmail = document.getElementById('block-ext-email').value;
+            const extPhone = document.getElementById('block-ext-phone').value;
+
+            const res = await apiFetch('/external-booking', {
+                method: 'POST',
+                body: JSON.stringify({
+                    source, apartment,
+                    checkin: from, checkout: to,
+                    external_ref: extRef,
+                    guest_name: extName,
+                    guest_email: extEmail,
+                    guest_phone: extPhone,
+                }),
+            });
+            if (!res) return;
+            const data = await res.json();
+            if (data.success) {
+                toast('Prenotazione esterna creata (#' + data.id + ')', 'success');
+                document.getElementById('block-ext-ref').value = '';
+                document.getElementById('block-ext-name').value = '';
+                document.getElementById('block-ext-email').value = '';
+                document.getElementById('block-ext-phone').value = '';
+                loadReservations();
+            } else {
+                toast(data.error || 'Errore', 'error');
+            }
+        } else {
+            // Blocco date classico (manutenzione, uso personale, altro)
+            const sourceLabels = { manutenzione: 'Manutenzione', uso_personale: 'Uso personale' };
+            const reason = source === 'altro' ? (customReason || 'Altro') : sourceLabels[source];
+
+            const dates = [];
+            let current = new Date(from + 'T00:00:00');
+            const end = new Date(to + 'T00:00:00');
+            while (current <= end) {
+                dates.push(current.toISOString().split('T')[0]);
+                current.setDate(current.getDate() + 1);
+            }
+
+            const res = await apiFetch('/block-dates', {
+                method: 'POST',
+                body: JSON.stringify({ apartment, dates, reason }),
+            });
+            if (!res) return;
+            const data = await res.json();
+            toast(`${data.inserted.length} date bloccate`, 'success');
+            loadBlocked();
+        }
+        // Ricarica dati picker + mini calendario
+        if (blockPickerInstance) blockPickerInstance.clear();
+        loadBlockPickerData();
+        loadMiniCalendar();
+    });
+
+    window.unblock = async function(id) {
+        const ok = await confirmModal('Sblocca data', 'Sbloccare questa data e renderla nuovamente disponibile?', 'Sblocca', false);
+        if (!ok) return;
+        const res = await apiFetch('/block-dates/' + id, { method: 'DELETE' });
+        if (!res) return;
+        toast('Data sbloccata', 'success');
+        loadBlocked();
+        loadBlockPickerData();
+        loadMiniCalendar();
+    };
+
+    window.unblockGroup = async function(ids) {
+        const ok = await confirmModal('Sblocca date', `Sbloccare ${ids.length} giorn${ids.length === 1 ? 'o' : 'i'}?`, 'Sblocca', false);
+        if (!ok) return;
+        for (const id of ids) {
+            await apiFetch('/block-dates/' + id, { method: 'DELETE' });
+        }
+        toast(`${ids.length} date sbloccate`, 'success');
+        loadBlocked();
+        loadBlockPickerData();
+        loadMiniCalendar();
+    };
+
+    // ----- Pricing -----
+    async function loadPricing() {
+        const wrap = document.getElementById('pricing-table-wrap');
+        wrap.innerHTML = '<div class="loading">Caricamento...</div>';
+
+        const res = await apiFetch('/pricing');
+        if (!res) return;
+        const data = await res.json();
+
+        if (!data.pricing || data.pricing.length === 0) {
+            wrap.innerHTML = '<div class="empty-state">Nessun periodo configurato</div>';
+            return;
+        }
+
+        const seasonNames = { low: 'Bassa', mid: 'Media', high: 'Alta', peak: 'Altissima' };
+        const isMobile = window.innerWidth <= 768;
+        let html = '';
+
+        if (isMobile) {
+            html = '<div class="res-cards">';
+            data.pricing.forEach(p => {
+                const apt = p.apartment === 'oliva' ? 'Oliva' : 'Venica';
+                html += `<div class="res-card">
+                    <div class="res-card-header">
+                        <span class="res-card-guest">${apt} · ${seasonNames[p.season] || p.season}</span>
+                        <span style="font-weight:600;color:var(--rame);">${formatEuro(p.price_night)}/n</span>
+                    </div>
+                    <div class="res-card-dates">
+                        <span>${formatDateShort(p.date_from)} → ${formatDateShort(p.date_to)}</span>
+                        <span>Min ${p.min_nights} nott${p.min_nights === 1 ? 'e' : 'i'}</span>
+                    </div>
+                    <div style="margin-top:8px;"><button class="btn btn-danger btn-sm" onclick="deletePrice(${p.id})">Elimina</button></div>
+                </div>`;
+            });
+            html += '</div>';
+        } else {
+            html = `<table class="admin-table">
+                <thead><tr><th>Appartamento</th><th>Stagione</th><th>Dal</th><th>Al</th><th>Prezzo/notte</th><th>Min notti</th><th>Azioni</th></tr></thead><tbody>`;
+            data.pricing.forEach(p => {
+                html += `<tr>
+                    <td>${p.apartment === 'oliva' ? 'Oliva' : 'Venica'}</td>
+                    <td>${seasonNames[p.season] || p.season}</td>
+                    <td>${formatDate(p.date_from)}</td>
+                    <td>${formatDate(p.date_to)}</td>
+                    <td>${formatEuro(p.price_night)}</td>
+                    <td>${p.min_nights}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="deletePrice(${p.id})">Elimina</button></td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+        }
+        wrap.innerHTML = html;
+    }
+
+    document.getElementById('btn-add-price').addEventListener('click', async function() {
+        const apartment = document.getElementById('price-apartment').value;
+        const season = document.getElementById('price-season').value;
+        const date_from = document.getElementById('price-from').value;
+        const date_to = document.getElementById('price-to').value;
+        const priceEur = parseFloat(document.getElementById('price-night').value);
+        const min_nights = parseInt(document.getElementById('price-min-nights').value) || 1;
+
+        if (!date_from || !date_to || isNaN(priceEur)) {
+            toast('Compila tutti i campi', 'error');
+            return;
+        }
+
+        const res = await apiFetch('/pricing', {
+            method: 'POST',
+            body: JSON.stringify({
+                apartment, season, date_from, date_to,
+                price_night: Math.round(priceEur * 100),
+                min_nights,
+            }),
+        });
+        if (!res) return;
+        toast('Periodo salvato', 'success');
+        loadPricing();
+    });
+
+    window.deletePrice = async function(id) {
+        const ok = await confirmModal('Elimina periodo', 'Eliminare questo periodo di prezzi?', 'Elimina', true);
+        if (!ok) return;
+        const res = await apiFetch('/pricing/' + id, { method: 'DELETE' });
+        if (!res) return;
+        toast('Periodo eliminato', 'success');
+        loadPricing();
+    };
+
+    // ----- Confirm Modal -----
+    function confirmModal(title, message, confirmLabel, danger) {
+        return new Promise(resolve => {
+            const overlay = document.createElement('div');
+            overlay.className = 'confirm-overlay';
+            overlay.innerHTML = `
+                <div class="confirm-card">
+                    <h3>${title}</h3>
+                    <p>${message}</p>
+                    <div class="confirm-actions">
+                        <button class="btn btn-ghost confirm-cancel">Annulla</button>
+                        <button class="btn ${danger ? 'btn-danger' : 'btn-primary'} confirm-ok">${confirmLabel || 'Conferma'}</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(overlay);
+
+            overlay.querySelector('.confirm-ok').addEventListener('click', () => { overlay.remove(); resolve(true); });
+            overlay.querySelector('.confirm-cancel').addEventListener('click', () => { overlay.remove(); resolve(false); });
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) { overlay.remove(); resolve(false); } });
+        });
+    }
+
+    function promptModal(title, description, defaultValue) {
+        return new Promise(resolve => {
+            const overlay = document.createElement('div');
+            overlay.className = 'confirm-overlay';
+            overlay.innerHTML = `
+                <div class="confirm-card" style="max-width:520px;text-align:left;">
+                    <h3>${title}</h3>
+                    <p style="margin-bottom:12px;">${description}</p>
+                    <textarea class="prompt-textarea" rows="8" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;font-size:0.9rem;resize:vertical;margin-bottom:20px;box-sizing:border-box;" placeholder="Scrivi qui...">${defaultValue ? defaultValue.replace(/</g, '&lt;') : ''}</textarea>
+                    <div class="confirm-actions" style="justify-content:flex-end;">
+                        <button class="btn btn-ghost confirm-cancel">Annulla</button>
+                        <button class="btn btn-primary confirm-ok">Invia</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(overlay);
+
+            const textarea = overlay.querySelector('.prompt-textarea');
+            textarea.focus();
+
+            overlay.querySelector('.confirm-ok').addEventListener('click', () => {
+                const val = textarea.value.trim();
+                overlay.remove();
+                resolve(val || null);
+            });
+            overlay.querySelector('.confirm-cancel').addEventListener('click', () => { overlay.remove(); resolve(null); });
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) { overlay.remove(); resolve(null); } });
+        });
+    }
+
+    // ----- Helpers -----
+    function formatDate(d) {
+        if (!d) return '—';
+        const [y, m, dd] = d.split('-');
+        return `${dd}/${m}/${y}`;
+    }
+    function formatDateShort(d) {
+        if (!d) return '—';
+        const [y, m, dd] = d.split('-');
+        return `${dd}/${m}`;
+    }
+
+    function formatEuro(cents) {
+        return (cents / 100).toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
+    }
+
+    function esc(str) {
+        const el = document.createElement('span');
+        el.textContent = str || '';
+        return el.innerHTML;
+    }
+
+    function toast(msg, type) {
+        const t = document.createElement('div');
+        t.className = `toast toast--${type}`;
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
+    }
+
+    // ----- Translations -----
+    let transData = [];       // dati dal DB { id, lang, page, key, value }
+    let transRefData = {};    // italiano di riferimento { page: { key: value } }
+    let transChanges = {};    // chiavi modificate { "page|key": newValue }
+    let transCurrentPage = 'common';  // sub-tab attivo
+
+    // Mappa raggruppamenti chiavi per sezione logica
+    const SECTION_GROUPS = {
+        common: [
+            { id: 'general', label: 'Generali', prefixes: ['months_short', 'scroll'] },
+            { id: 'booking', label: 'Prenotazione', prefixes: ['booking_'] },
+            { id: 'validation', label: 'Validazione', prefixes: ['validate_'] },
+            { id: 'timer', label: 'Timer', prefixes: ['timer_'] },
+            { id: 'guests', label: 'Ospiti', prefixes: ['adults_', 'children_', 'guests_'] },
+            { id: 'times', label: 'Orari', prefixes: ['checkin_time', 'checkout_time'] },
+            { id: 'confirmation', label: 'Conferma', prefixes: ['confirmation_'] },
+            { id: 'print', label: 'Stampa', prefixes: ['print_'] },
+            { id: 'banner', label: 'Banner / Errori', prefixes: ['banner_', 'url_'] },
+            { id: 'footer', label: 'Footer', prefixes: ['footer_'] },
+            { id: 'modal', label: 'Modale', prefixes: ['modal_'] },
+            { id: 'apartments', label: 'Appartamenti', prefixes: ['oliva_', 'venica_'] },
+        ],
+        index: [
+            { id: 'seo', label: 'SEO / Meta', prefixes: ['meta_', 'og_'] },
+            { id: 'nav', label: 'Navigazione', prefixes: ['nav_'] },
+            { id: 'hero', label: 'Hero', prefixes: ['hero_'] },
+            { id: 'intro', label: 'Intro', prefixes: ['intro_'] },
+            { id: 'sections', label: 'Titoli sezioni', prefixes: ['section_'] },
+            { id: 'apartments', label: 'Appartamenti', prefixes: ['appartamenti_', 'oliva_', 'venica_'] },
+            { id: 'cascina', label: 'Cascina', prefixes: ['cascina_'] },
+            { id: 'services', label: 'Servizi', prefixes: ['service_'] },
+            { id: 'territory', label: 'Territorio', prefixes: ['territorio_', 'luogo_', 'distanz'] },
+            { id: 'experiences', label: 'Esperienze', prefixes: ['esp_', 'esperienze_'] },
+            { id: 'booking', label: 'Prenotazione', prefixes: ['booking_', 'prenota_'] },
+            { id: 'footer', label: 'Footer', prefixes: ['footer_'] },
+        ],
+        amici: [
+            { id: 'seo', label: 'SEO / Meta', prefixes: ['meta_', 'og_'] },
+            { id: 'nav', label: 'Navigazione', prefixes: ['nav_'] },
+            { id: 'hero', label: 'Hero', prefixes: ['hero_'] },
+            { id: 'intro', label: 'Intro', prefixes: ['intro_'] },
+            { id: 'sections', label: 'Titoli sezioni', prefixes: ['section_'] },
+            { id: 'apartments', label: 'Appartamenti', prefixes: ['appartamenti_', 'oliva_', 'venica_'] },
+            { id: 'cascina', label: 'Cascina', prefixes: ['cascina_'] },
+            { id: 'services', label: 'Servizi', prefixes: ['service_'] },
+            { id: 'territory', label: 'Territorio', prefixes: ['territorio_', 'luogo_', 'distanz'] },
+            { id: 'experiences', label: 'Esperienze', prefixes: ['esp_', 'esperienze_'] },
+            { id: 'booking', label: 'Prenotazione', prefixes: ['booking_', 'prenota_'] },
+            { id: 'footer', label: 'Footer', prefixes: ['footer_'] },
+        ],
+    };
+
+    function getKeySection(page, key) {
+        const groups = SECTION_GROUPS[page] || [];
+        for (const group of groups) {
+            for (const prefix of group.prefixes) {
+                if (key === prefix || key.startsWith(prefix)) return group.id;
+            }
+        }
+        return '_other';
+    }
+
+    // Sub-tabs
+    document.querySelectorAll('.trans-subtab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.trans-subtab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            transCurrentPage = this.dataset.page;
+            renderTranslations();
+        });
+    });
+
+    async function loadTranslations() {
+        const lang = document.getElementById('trans-lang').value;
+        const wrap = document.getElementById('translations-table-wrap');
+        wrap.innerHTML = '<div class="loading">Caricamento...</div>';
+        transChanges = {};
+        updateTransChangesCount();
+
+        // Carica italiano come riferimento (se non già caricato)
+        if (Object.keys(transRefData).length === 0) {
+            const refRes = await apiFetch('/translations?lang=it');
+            if (refRes) {
+                const refJson = await refRes.json();
+                transRefData = {};
+                (refJson.translations || []).forEach(t => {
+                    if (!transRefData[t.page]) transRefData[t.page] = {};
+                    transRefData[t.page][t.key] = t.value;
+                });
+            }
+        }
+
+        // Carica lingua target (tutte le pagine)
+        const res = await apiFetch('/translations?lang=' + lang);
+        if (!res) return;
+        const data = await res.json();
+        transData = data.translations || [];
+
+        // Aggiorna contatori sub-tab
+        ['common', 'index', 'amici'].forEach(p => {
+            const count = Object.keys(transRefData[p] || {}).length;
+            const el = document.getElementById('trans-count-' + p);
+            if (el) el.textContent = count || '';
+        });
+
+        renderTranslations();
+    }
+
+    function renderTranslations() {
+        const wrap = document.getElementById('translations-table-wrap');
+        const search = (document.getElementById('trans-search').value || '').toLowerCase();
+        const lang = document.getElementById('trans-lang').value;
+        const page = transCurrentPage;
+
+        // Crea mappa di dati target
+        const targetMap = {};
+        transData.forEach(t => {
+            const k = t.page + '|' + t.key;
+            targetMap[k] = t.value;
+        });
+
+        // Raccogli chiavi della pagina corrente
+        const refKeys = transRefData[page] || {};
+        let allKeys = Object.keys(refKeys).map(key => ({ page, key }));
+
+        // Filtra per ricerca
+        if (search) {
+            allKeys = allKeys.filter(item => {
+                const refVal = (transRefData[item.page] || {})[item.key] || '';
+                const targetVal = targetMap[item.page + '|' + item.key] || '';
+                return item.key.toLowerCase().includes(search)
+                    || refVal.toLowerCase().includes(search)
+                    || targetVal.toLowerCase().includes(search);
+            });
+        }
+
+        if (allKeys.length === 0) {
+            wrap.innerHTML = '<div class="empty-state">Nessuna chiave trovata. Importa prima le traduzioni con "Importa da JSON".</div>';
+            return;
+        }
+
+        // Raggruppa per sezione
+        const groups = SECTION_GROUPS[page] || [];
+        const grouped = {};
+        const groupOrder = [];
+        groups.forEach(g => { grouped[g.id] = []; groupOrder.push(g.id); });
+        grouped['_other'] = [];
+
+        allKeys.forEach(item => {
+            const sectionId = getKeySection(page, item.key);
+            if (!grouped[sectionId]) { grouped[sectionId] = []; groupOrder.push(sectionId); }
+            grouped[sectionId].push(item);
+        });
+
+        // Aggiungi _other alla fine se ha chiavi
+        if (grouped['_other'].length > 0 && !groupOrder.includes('_other')) {
+            groupOrder.push('_other');
+        }
+
+        const groupLabels = {};
+        groups.forEach(g => { groupLabels[g.id] = g.label; });
+        groupLabels['_other'] = 'Altro';
+
+        let html = '';
+
+        groupOrder.forEach(sectionId => {
+            const items = grouped[sectionId];
+            if (!items || items.length === 0) return;
+
+            const label = groupLabels[sectionId] || sectionId;
+
+            html += `<div class="trans-section" data-section="${sectionId}">
+                <div class="trans-section-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                    <span class="trans-section-toggle">&#9660;</span>
+                    <span class="trans-section-title">${esc(label)}</span>
+                    <span class="trans-section-line"></span>
+                    <span class="trans-section-count">${items.length}</span>
+                </div>
+                <div class="trans-section-body">
+                    <div class="trans-header"><span>Chiave</span><span>Italiano (riferimento)</span><span>${lang.toUpperCase()}</span></div>`;
+
+            items.forEach(item => {
+                const compositeKey = item.page + '|' + item.key;
+                const refVal = (transRefData[item.page] || {})[item.key] || '';
+                const targetVal = transChanges[compositeKey] !== undefined ? transChanges[compositeKey] : (targetMap[compositeKey] || '');
+                const isChanged = transChanges[compositeKey] !== undefined;
+                const rows = Math.max(1, Math.min(4, Math.ceil(Math.max(refVal.length, targetVal.length) / 60)));
+
+                html += `<div class="trans-row" data-composite="${esc(compositeKey)}">
+                    <div class="trans-key">${esc(item.key)}</div>
+                    <div class="trans-ref">${esc(refVal)}</div>
+                    <div class="trans-edit">
+                        <textarea rows="${rows}" data-page="${esc(item.page)}" data-key="${esc(item.key)}" data-original="${esc(targetMap[compositeKey] || '')}" class="${isChanged ? 'changed' : ''}">${esc(targetVal)}</textarea>
+                    </div>
+                </div>`;
+            });
+
+            html += '</div></div>';
+        });
+
+        wrap.innerHTML = html;
+
+        // Listener per cambi
+        wrap.querySelectorAll('.trans-edit textarea').forEach(ta => {
+            ta.addEventListener('input', function() {
+                const compositeKey = this.dataset.page + '|' + this.dataset.key;
+                const original = this.dataset.original;
+                if (this.value !== original) {
+                    transChanges[compositeKey] = this.value;
+                    this.classList.add('changed');
+                } else {
+                    delete transChanges[compositeKey];
+                    this.classList.remove('changed');
+                }
+                updateTransChangesCount();
+            });
+        });
+    }
+
+    function updateTransChangesCount() {
+        const count = Object.keys(transChanges).length;
+        const el = document.getElementById('trans-changes-count');
+        const btn = document.getElementById('btn-save-trans');
+        el.textContent = count > 0 ? count + ' modific' + (count === 1 ? 'a' : 'he') + ' non salvat' + (count === 1 ? 'a' : 'e') : '';
+        btn.disabled = count === 0;
+    }
+
+    document.getElementById('btn-load-trans').addEventListener('click', loadTranslations);
+    document.getElementById('trans-search').addEventListener('input', renderTranslations);
+
+    document.getElementById('btn-save-trans').addEventListener('click', async function() {
+        const lang = document.getElementById('trans-lang').value;
+        const updates = Object.entries(transChanges).map(([compositeKey, value]) => {
+            const [page, key] = compositeKey.split('|');
+            return { lang, page, key, value };
+        });
+
+        if (updates.length === 0) return;
+
+        const res = await apiFetch('/translations', {
+            method: 'PUT',
+            body: JSON.stringify({ updates }),
+        });
+        if (!res) return;
+        const data = await res.json();
+        if (data.success) {
+            toast(updates.length + ' traduzion' + (updates.length === 1 ? 'e salvata' : 'i salvate'), 'success');
+            transChanges = {};
+            loadTranslations();
+        } else {
+            toast(data.error || 'Errore nel salvataggio', 'error');
+        }
+    });
+
+    document.getElementById('btn-seed-trans').addEventListener('click', async function() {
+        const lang = document.getElementById('trans-lang').value;
+        const ok = await confirmModal(
+            'Importa traduzioni',
+            'Importare le traduzioni dal file JSON per <strong>' + lang.toUpperCase() + '</strong>?<br>I testi esistenti nel DB verranno sovrascritti.',
+            'Importa',
+            false
+        );
+        if (!ok) return;
+
+        toast('Caricamento file lang/' + lang + '.json...', 'success');
+
+        try {
+            const jsonRes = await fetch('/lang/' + lang + '.json');
+            if (!jsonRes.ok) { toast('File lang/' + lang + '.json non trovato', 'error'); return; }
+            const translations = await jsonRes.json();
+
+            const res = await apiFetch('/translations/seed', {
+                method: 'POST',
+                body: JSON.stringify({ lang, translations }),
+            });
+            if (!res) return;
+            const data = await res.json();
+            if (data.success) {
+                toast(data.keys_imported + ' chiavi importate per ' + lang.toUpperCase(), 'success');
+                transRefData = {};
+                loadTranslations();
+            } else {
+                toast(data.error || 'Errore', 'error');
+            }
+        } catch (err) {
+            toast('Errore nel caricamento del file JSON', 'error');
+        }
+    });
+
+    // ----- Reservation Detail Modal -----
+    window.showResDetail = async function(id) {
+        const modal = document.getElementById('res-modal');
+        const body = document.getElementById('res-modal-body');
+        document.getElementById('res-modal-id').textContent = id;
+        body.innerHTML = '<div class="loading">Caricamento...</div>';
+        modal.style.display = '';
+
+        // Dati base dalla cache
+        const r = window._reservationsData?.[id];
+        if (!r) { modal.style.display = 'none'; return; }
+
+        // Carica check-in + travelers dal server
+        let travelers = [];
+        let checkinData = null;
+        if (r.status === 'confirmed' || r.status === 'refunded') {
+            const ciRes = await apiFetch('/checkin/' + id);
+            if (ciRes && ciRes.ok) {
+                checkinData = await ciRes.json();
+                travelers = checkinData.travelers || [];
+            }
+        }
+
+        const siteUrl = location.origin;
+        const ciStatusMap = { pending: 'In attesa', submitted: 'Inviato', verified: 'Verificato' };
+        const ciClass = r.checkin_status === 'verified' ? 'success' : (r.checkin_status === 'submitted' ? 'warning' : 'pending');
+        const statusLabels = { confirmed: 'Confermata', pending: 'In attesa di pagamento', cancelled: 'Cancellata', refunded: 'Rimborsata' };
+        const docTypeNames = { CI: "Carta d'identità", PA: 'Passaporto', PT: 'Patente', ID: 'ID' };
+
+        let html = '';
+
+        // ── SEZIONE 1: Info prenotazione ──
+        html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;margin-bottom:20px;">
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Stato</div>
+                <span class="badge badge--${r.status}">${statusLabels[r.status] || r.status}</span>
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Fonte</div>
+                ${(function() {
+                    const s = r.source || 'direct';
+                    if (s === 'booking') return '<span style="background:#003580;color:#fff;padding:3px 10px;border-radius:10px;font-size:0.78rem;">Booking.com</span>';
+                    if (s === 'airbnb') return '<span style="background:#FF5A5F;color:#fff;padding:3px 10px;border-radius:10px;font-size:0.78rem;">Airbnb</span>';
+                    return '<span style="background:var(--rame);color:#fff;padding:3px 10px;border-radius:10px;font-size:0.78rem;">Diretto</span>';
+                })()}
+                ${r.external_ref ? `<span style="margin-left:6px;font-size:0.82rem;color:var(--text-light);">Rif: ${esc(r.external_ref)}</span>` : ''}
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Appartamento</div>
+                <strong>${r.apartment === 'oliva' ? 'Appartamento Oliva' : 'Appartamento Venica'}</strong>
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Ospite</div>
+                <strong>${esc(r.guest_name)}</strong>
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Email</div>
+                <a href="mailto:${esc(r.guest_email)}">${esc(r.guest_email)}</a>
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Telefono</div>
+                ${r.guest_phone ? `<a href="tel:${esc(r.guest_phone)}">${esc(r.guest_phone)}</a>` : '—'}
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Lingua</div>
+                ${(r.lang || 'it').toUpperCase()}
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Check-in / Check-out</div>
+                <strong>${formatDate(r.checkin)}</strong> &rarr; <strong>${formatDate(r.checkout)}</strong> &nbsp; (${r.nights} notti)
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Ospiti</div>
+                ${r.adults} adulti${r.children > 0 ? ` + ${r.children} bambini` : ''}
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Totale</div>
+                <strong style="color:var(--rame);font-size:1.1rem;">${r.total_cents ? formatEuro(r.total_cents) : '—'}</strong>
+            </div>
+            <div>
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Creata il</div>
+                ${r.created_at ? formatDate(r.created_at.split('T')[0] || r.created_at.split(' ')[0]) : '—'}
+            </div>
+        </div>`;
+
+        // Messaggio ospite
+        if (r.message) {
+            html += `<div style="background:#faf8f5;border-left:3px solid var(--rame);padding:12px 16px;margin-bottom:20px;border-radius:0 6px 6px 0;">
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:4px;">Messaggio dell'ospite</div>
+                ${esc(r.message)}
+            </div>`;
+        }
+
+        // Marketing consent
+        html += `<div style="font-size:0.85rem;color:var(--text-light);margin-bottom:20px;">
+            Consenso marketing: ${r.marketing_consent ? '<span style="color:var(--success);font-weight:500;">Si</span>' : 'No'}
+            &nbsp;&middot;&nbsp; Pagina: ${esc(r.source_page || 'index')}.html
+        </div>`;
+
+        // ── SEZIONE 2: Check-in online ──
+        if (r.status === 'confirmed') {
+            html += `<div style="border-top:2px solid #e8e4de;padding-top:20px;margin-top:4px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                    <h4 style="margin:0;font-size:1rem;">Check-in Online</h4>
+                    <span class="badge badge--${ciClass}">${ciStatusMap[r.checkin_status] || 'In attesa'}</span>
+                </div>`;
+
+            // Link check-in
+            if (r.checkin_token) {
+                const checkinUrl = `${siteUrl}/checkin.html?token=${r.checkin_token}`;
+                html += `<div style="background:#faf8f5;border:1px solid #e8e4de;border-radius:8px;padding:12px 16px;margin-bottom:16px;">
+                    <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:6px;">Link check-in ospite</div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <input type="text" value="${esc(checkinUrl)}" readonly onclick="this.select()" style="flex:1;padding:8px 10px;border:1px solid #ddd;border-radius:4px;font-size:0.82rem;font-family:monospace;background:#fff;">
+                        <button class="btn btn-sm btn-primary" onclick="navigator.clipboard.writeText('${checkinUrl}');toast('Link copiato!','success');" style="white-space:nowrap;">Copia</button>
+                    </div>
+                </div>`;
+            }
+
+            // Travelers
+            if (travelers.length > 0) {
+                html += `<div style="font-size:0.82rem;color:var(--text-light);margin-bottom:12px;">${travelers.length} viaggiator${travelers.length === 1 ? 'e' : 'i'} registrat${travelers.length === 1 ? 'o' : 'i'}</div>`;
+                travelers.forEach((t) => {
+                    html += `<div style="border:1px solid #e8e4de;border-radius:8px;padding:14px 16px;margin-bottom:10px;${t.is_primary ? 'border-color:var(--rame);border-width:2px;' : ''}">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                            <strong style="font-size:1rem;">${esc(t.first_name)} ${esc(t.last_name)}</strong>
+                            ${t.is_primary ? '<span style="background:var(--rame);color:#fff;padding:2px 10px;border-radius:12px;font-size:0.72rem;font-weight:500;">Capogruppo</span>' : ''}
+                            ${t.gender ? `<span style="background:#f0ece6;padding:2px 8px;border-radius:10px;font-size:0.72rem;">${t.gender}</span>` : ''}
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 16px;font-size:0.84rem;">
+                            <div><span style="color:var(--text-light);">Data nascita:</span> ${t.birth_date ? formatDate(t.birth_date) : '—'}</div>
+                            <div><span style="color:var(--text-light);">Luogo:</span> ${esc(t.birth_place || '—')}${t.birth_province ? ' (' + esc(t.birth_province) + ')' : ''}</div>
+                            <div><span style="color:var(--text-light);">Stato:</span> ${esc(t.birth_country || '—')}</div>
+                            <div><span style="color:var(--text-light);">Cittadinanza:</span> ${esc(t.citizenship || '—')}</div>
+                            <div style="grid-column:span 2;"><span style="color:var(--text-light);">Documento:</span> ${docTypeNames[t.doc_type] || t.doc_type || '—'} <strong>${esc(t.doc_number || '—')}</strong></div>
+                        </div>`;
+                    if (t.doc_front_data || t.doc_back_data) {
+                        html += `<div style="display:flex;gap:10px;margin-top:10px;">
+                            ${t.doc_front_data ? `<div><div style="font-size:0.7rem;color:var(--text-light);margin-bottom:4px;">FRONTE</div><img src="${t.doc_front_data}" style="max-width:220px;max-height:150px;border-radius:6px;border:1px solid #ddd;display:block;" alt="Fronte"></div>` : ''}
+                            ${t.doc_back_data ? `<div><div style="font-size:0.7rem;color:var(--text-light);margin-bottom:4px;">RETRO</div><img src="${t.doc_back_data}" style="max-width:220px;max-height:150px;border-radius:6px;border:1px solid #ddd;display:block;" alt="Retro"></div>` : ''}
+                        </div>`;
+                    }
+                    html += '</div>';
+                });
+            } else {
+                html += '<p style="color:var(--text-light);font-size:0.88rem;">Nessun viaggiatore registrato. L\'ospite non ha ancora compilato il check-in online.</p>';
+            }
+
+            // Azioni check-in
+            html += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">';
+            if (r.checkin_status === 'submitted') {
+                html += `<button class="btn btn-primary btn-sm" onclick="verifyCheckin(${id})">Segna verificato</button>`;
+            }
+            html += `<button class="btn btn-sm" style="background:var(--antracite);color:#fff;" onclick="sendAccessInstructions(${id}, '${r.apartment}')">Invia istruzioni accesso</button>`;
+            if (travelers.length > 0) {
+                html += `<button class="btn btn-sm" style="background:#374151;color:#fff;" onclick="downloadAlloggiati(${id})">Scarica Schedina Alloggiati</button>`;
+            }
+            html += '</div>';
+
+            // Tassa di soggiorno
+            html += `<div style="margin-top:20px;padding-top:16px;border-top:1px solid #e8e4de;">
+                <h4 style="margin:0 0 10px;font-size:0.95rem;">Tassa di soggiorno</h4>
+                <div id="tax-section-${id}">
+                    <button class="btn btn-sm btn-primary" onclick="generateTaxLink(${id})">Genera link pagamento</button>
+                </div>
+            </div>`;
+
+            html += '</div>'; // chiude sezione check-in
+        }
+
+        // ── SEZIONE 3: Azioni prenotazione ──
+        html += `<div style="border-top:2px solid #e8e4de;padding-top:20px;margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">`;
+        if (r.status === 'pending') {
+            html += `<button class="btn btn-danger btn-sm" onclick="cancelRes(${id});document.getElementById('res-modal').style.display='none';">Elimina prenotazione</button>`;
+        } else if (r.status === 'confirmed') {
+            html += `<button class="btn btn-danger btn-sm" onclick="cancelRes(${id});document.getElementById('res-modal').style.display='none';">Cancella + Rimborso</button>`;
+        } else if (r.status === 'cancelled' || r.status === 'refunded') {
+            html += `<button class="btn btn-danger btn-sm" onclick="deleteRes(${id});document.getElementById('res-modal').style.display='none';">Elimina definitivamente</button>`;
+        }
+        html += '</div>';
+
+        body.innerHTML = html;
+    };
+
+    // Alias per backward compat
+    window.showCheckinDetail = window.showResDetail;
+
+    window.downloadAlloggiati = async function(id) {
+        const res = await apiFetch('/alloggiati/' + id);
+        if (!res) return;
+        if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            toast(data.error || 'Errore download', 'error');
+            return;
+        }
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `alloggiati_${id}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
+    window.verifyCheckin = async function(id) {
+        const res = await apiFetch('/verify/' + id, { method: 'POST' });
+        if (!res) return;
+        const data = await res.json();
+        if (data.success) {
+            toast('Identità verificata', 'success');
+            // Aggiorna cache locale
+            if (window._reservationsData?.[id]) window._reservationsData[id].checkin_status = 'verified';
+            showResDetail(id);
+            loadReservations();
+        } else {
+            toast(data.error || 'Errore', 'error');
+        }
+    };
+
+    window.sendAccessInstructions = async function(id, apartment) {
+        // Precarica istruzioni predefinite dal setting
+        let defaultText = '';
+        try {
+            const sRes = await apiFetch('/settings');
+            if (sRes) {
+                const sData = await sRes.json();
+                const s = sData.settings || {};
+                defaultText = s['access_instructions_' + apartment] || '';
+            }
+        } catch(e) {}
+        const instructions = await promptModal('Istruzioni di accesso', 'Inserisci le istruzioni di accesso da inviare all\'ospite via email (codice porta, WiFi, indicazioni, ecc.)', defaultText);
+        if (!instructions) return;
+        const res = await apiFetch('/send-access/' + id, {
+            method: 'POST',
+            body: JSON.stringify({ instructions }),
+        });
+        if (!res) return;
+        const data = await res.json();
+        if (data.success) {
+            toast('Istruzioni inviate via email', 'success');
+        } else {
+            toast(data.error || 'Errore', 'error');
+        }
+    };
+
+    window.generateTaxLink = async function(id) {
+        const section = document.getElementById('tax-section-' + id);
+        section.innerHTML = '<span style="color:var(--text-light);">Generazione in corso...</span>';
+        const res = await apiFetch('/tourist-tax/' + id, { method: 'POST' });
+        if (!res) { section.innerHTML = '<span style="color:var(--danger);">Errore</span>'; return; }
+        const data = await res.json();
+        if (data.error) {
+            section.innerHTML = `<span style="color:var(--danger);">${esc(data.error)}</span>`;
+            return;
+        }
+        section.innerHTML = `
+            <div style="font-size:0.85rem;">
+                <div>Persone: ${data.taxable_persons} | Notti: ${data.taxable_nights} | Importo: ${formatEuro(data.amount_cents)}</div>
+                <div style="margin-top:8px;">
+                    <input type="text" value="${esc(data.payment_url)}" readonly style="width:100%;padding:6px;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;" onclick="this.select()">
+                </div>
+                <button class="btn btn-sm btn-primary" style="margin-top:8px;font-size:0.8rem;" onclick="sendTaxEmail(${id})">Invia email con link</button>
+                <span style="margin-left:8px;">Stato: <span class="badge badge--${data.status === 'paid' ? 'success' : 'pending'}">${data.status}</span></span>
+            </div>`;
+    };
+
+    window.sendTaxEmail = async function(id) {
+        const res = await apiFetch('/send-tax-link/' + id, { method: 'POST' });
+        if (!res) return;
+        const data = await res.json();
+        if (data.success) {
+            toast('Email tassa di soggiorno inviata', 'success');
+        } else {
+            toast(data.error || 'Errore', 'error');
+        }
+    };
+
+    // ----- Customers / CRM -----
+    async function loadCustomers() {
+        const wrap = document.getElementById('customers-table-wrap');
+        wrap.innerHTML = '<div class="loading">Caricamento...</div>';
+
+        const marketingOnly = document.getElementById('filter-marketing-only').checked;
+        const res = await apiFetch('/customers' + (marketingOnly ? '?marketing=1' : ''));
+        if (!res) return;
+        const data = await res.json();
+
+        if (!data.customers || data.customers.length === 0) {
+            wrap.innerHTML = '<div class="empty-state">Nessun cliente trovato</div>';
+            return;
+        }
+
+        const isMobile = window.innerWidth <= 768;
+        let html = '';
+
+        if (isMobile) {
+            html = '<div class="res-cards">';
+            data.customers.forEach(c => {
+                html += `<div class="res-card" onclick="toggleCustomerBookingsMobile(this, '${esc(c.email)}')">
+                    <div class="res-card-header">
+                        <span class="res-card-guest">${esc(c.name)}</span>
+                        ${c.marketing_consent ? '<span style="color:var(--success);font-size:0.75rem;">Marketing OK</span>' : ''}
+                    </div>
+                    <div class="res-card-details">
+                        <a href="mailto:${esc(c.email)}" onclick="event.stopPropagation();" style="font-size:0.8rem;color:var(--rame);">${esc(c.email)}</a>
+                    </div>
+                    <div class="res-card-dates">
+                        <span>${c.booking_count} prenotaz.</span>
+                        <span style="font-weight:600;color:var(--rame);">${formatEuro(c.total_spent)}</span>
+                        <span>${formatDate(c.last_visit)}</span>
+                    </div>
+                    <div class="customer-bookings-mobile" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid #f0ece6;"></div>
+                </div>`;
+            });
+            html += '</div>';
+        } else {
+            html = `<table class="admin-table">
+                <thead><tr><th>Nome</th><th>Email</th><th>Telefono</th><th>Prenotazioni</th><th>Spesa totale</th><th>Ultima visita</th><th>Marketing</th></tr></thead><tbody>`;
+            data.customers.forEach(c => {
+                html += `<tr style="cursor:pointer;" onclick="toggleCustomerBookings(this, '${esc(c.email)}')">
+                    <td>${esc(c.name)}</td>
+                    <td><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></td>
+                    <td>${c.phone ? `<a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : '—'}</td>
+                    <td>${c.booking_count}</td>
+                    <td>${formatEuro(c.total_spent)}</td>
+                    <td>${formatDate(c.last_visit)}</td>
+                    <td>${c.marketing_consent ? '<span style="color:var(--success);">Si</span>' : 'No'}</td>
+                </tr>
+                <tr class="customer-bookings" style="display:none;" data-email="${esc(c.email)}">
+                    <td colspan="7" style="padding:0;"><div class="customer-bookings-content" style="padding:12px;background:#faf8f5;"></div></td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+        }
+        wrap.innerHTML = html;
+    }
+
+    document.getElementById('filter-marketing-only').addEventListener('change', loadCustomers);
+
+    window.toggleCustomerBookings = async function(row, email) {
+        const nextRow = row.nextElementSibling;
+        if (!nextRow) return;
+        const content = nextRow.querySelector('.customer-bookings-content');
+
+        if (nextRow.style.display !== 'none') {
+            nextRow.style.display = 'none';
+            return;
+        }
+
+        nextRow.style.display = '';
+        content.innerHTML = '<span style="color:var(--text-light);">Caricamento...</span>';
+
+        const res = await apiFetch('/customers/' + encodeURIComponent(email) + '/bookings');
+        if (!res) return;
+        const data = await res.json();
+
+        if (!data.bookings || data.bookings.length === 0) {
+            content.innerHTML = '<span style="color:var(--text-light);">Nessuna prenotazione</span>';
+            return;
+        }
+
+        let html = '<table style="width:100%;font-size:0.85rem;"><thead><tr><th>ID</th><th>Appartamento</th><th>Date</th><th>Notti</th><th>Totale</th><th>Stato</th></tr></thead><tbody>';
+        data.bookings.forEach(b => {
+            html += `<tr>
+                <td>#${b.id}</td>
+                <td>${b.apartment === 'oliva' ? 'Oliva' : 'Venica'}</td>
+                <td>${formatDate(b.checkin)} — ${formatDate(b.checkout)}</td>
+                <td>${b.nights}</td>
+                <td>${b.total_cents ? formatEuro(b.total_cents) : '—'}</td>
+                <td><span class="badge badge--${b.status}">${b.status}</span></td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+        content.innerHTML = html;
+    };
+
+    window.toggleCustomerBookingsMobile = async function(card, email) {
+        const content = card.querySelector('.customer-bookings-mobile');
+        if (!content) return;
+        if (content.style.display !== 'none') {
+            content.style.display = 'none';
+            return;
+        }
+        content.style.display = '';
+        content.innerHTML = '<span style="color:var(--text-light);font-size:0.82rem;">Caricamento...</span>';
+        const res = await apiFetch('/customers/' + encodeURIComponent(email) + '/bookings');
+        if (!res) return;
+        const data = await res.json();
+        if (!data.bookings || data.bookings.length === 0) {
+            content.innerHTML = '<span style="color:var(--text-light);font-size:0.82rem;">Nessuna prenotazione</span>';
+            return;
+        }
+        let html = '';
+        data.bookings.forEach(b => {
+            html += `<div style="font-size:0.8rem;padding:4px 0;border-bottom:1px solid #f0ece6;display:flex;justify-content:space-between;align-items:center;">
+                <span>${b.apartment === 'oliva' ? 'Oliva' : 'Venica'} · ${formatDateShort(b.checkin)} → ${formatDateShort(b.checkout)}</span>
+                <span><span class="badge badge--${b.status}">${b.status}</span> ${b.total_cents ? formatEuro(b.total_cents) : ''}</span>
+            </div>`;
+        });
+        content.innerHTML = html;
+    };
+
+    // ----- Settings -----
+    async function loadSettings() {
+        const res = await apiFetch('/settings');
+        if (!res) return;
+        const data = await res.json();
+        const s = data.settings || {};
+
+        document.getElementById('setting-tax-amount').value = s.tourist_tax_per_person_night || '150';
+        document.getElementById('setting-tax-min-age').value = s.tourist_tax_child_min_age || '14';
+        document.getElementById('setting-tax-max-nights').value = s.tourist_tax_max_nights || '7';
+        document.getElementById('setting-tax-enabled').value = s.tourist_tax_enabled || '1';
+        document.getElementById('setting-access-oliva').value = s.access_instructions_oliva || '';
+        document.getElementById('setting-access-venica').value = s.access_instructions_venica || '';
+    }
+
+    document.getElementById('btn-save-settings').addEventListener('click', async function() {
+        const settings = {
+            tourist_tax_per_person_night: document.getElementById('setting-tax-amount').value,
+            tourist_tax_child_min_age: document.getElementById('setting-tax-min-age').value,
+            tourist_tax_max_nights: document.getElementById('setting-tax-max-nights').value,
+            tourist_tax_enabled: document.getElementById('setting-tax-enabled').value,
+        };
+
+        const res = await apiFetch('/settings', {
+            method: 'PUT',
+            body: JSON.stringify({ settings }),
+        });
+        if (!res) return;
+        const data = await res.json();
+        if (data.success) {
+            toast('Impostazioni salvate', 'success');
+        } else {
+            toast(data.error || 'Errore', 'error');
+        }
+    });
+
+    document.getElementById('btn-save-access-settings').addEventListener('click', async function() {
+        const settings = {
+            access_instructions_oliva: document.getElementById('setting-access-oliva').value,
+            access_instructions_venica: document.getElementById('setting-access-venica').value,
+        };
+        const res = await apiFetch('/settings', {
+            method: 'PUT',
+            body: JSON.stringify({ settings }),
+        });
+        if (!res) return;
+        const data = await res.json();
+        if (data.success) {
+            toast('Istruzioni salvate', 'success');
+        } else {
+            toast(data.error || 'Errore', 'error');
+        }
+    });
+
+    // ----- Marketing / Campaigns -----
+    async function loadCampaigns() {
+        const wrap = document.getElementById('campaigns-table-wrap');
+        wrap.innerHTML = '<div class="loading">Caricamento...</div>';
+
+        const res = await apiFetch('/campaigns');
+        if (!res) return;
+        const data = await res.json();
+
+        if (!data.campaigns || data.campaigns.length === 0) {
+            wrap.innerHTML = '<div class="empty-state">Nessuna campagna creata</div>';
+            return;
+        }
+
+        const isMobile = window.innerWidth <= 768;
+        let html = '';
+
+        if (isMobile) {
+            html = '<div class="res-cards">';
+            data.campaigns.forEach(c => {
+                html += `<div class="res-card">
+                    <div class="res-card-header">
+                        <span class="res-card-guest">${esc(c.subject)}</span>
+                        <span class="badge badge--${c.status === 'sent' ? 'success' : 'pending'}">${c.status}</span>
+                    </div>
+                    <div class="res-card-dates">
+                        <span>#${c.id}</span>
+                        <span>${c.recipients_count} destinatari</span>
+                        <span>${c.sent_at ? formatDate(c.sent_at.split('T')[0] || c.sent_at.split(' ')[0]) : '—'}</span>
+                    </div>
+                </div>`;
+            });
+            html += '</div>';
+        } else {
+            html = `<table class="admin-table">
+                <thead><tr><th>ID</th><th>Oggetto</th><th>Stato</th><th>Destinatari</th><th>Data invio</th></tr></thead><tbody>`;
+            data.campaigns.forEach(c => {
+                html += `<tr>
+                    <td>#${c.id}</td>
+                    <td>${esc(c.subject)}</td>
+                    <td><span class="badge badge--${c.status === 'sent' ? 'success' : 'pending'}">${c.status}</span></td>
+                    <td>${c.recipients_count}</td>
+                    <td>${c.sent_at ? formatDate(c.sent_at.split('T')[0] || c.sent_at.split(' ')[0]) : '—'}</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+        }
+        wrap.innerHTML = html;
+    }
+
+    document.getElementById('btn-preview-campaign').addEventListener('click', function() {
+        const subject = document.getElementById('campaign-subject').value;
+        const body = document.getElementById('campaign-body').value;
+        if (!subject || !body) { toast('Compila oggetto e corpo', 'error'); return; }
+        const win = window.open('', '_blank');
+        win.document.write(`<!DOCTYPE html><html><head><title>Anteprima: ${esc(subject)}</title></head><body style="font-family:Georgia,serif;color:#2D2926;margin:0;padding:0;background:#F8F5F0;">
+            <div style="max-width:600px;margin:0 auto;background:#fff;">
+                <div style="background:#2D2926;padding:32px;text-align:center;"><h1 style="color:#B8956B;font-size:24px;margin:0;font-weight:400;letter-spacing:2px;">CASIA COUNTRY HOUSE</h1></div>
+                <div style="padding:32px;line-height:1.7;">${body}</div>
+                <div style="padding:24px 32px;text-align:center;color:#5a5652;font-size:13px;border-top:1px solid #f0ece6;">
+                    <p>&copy; CASIA Country House</p>
+                </div>
+            </div>
+        </body></html>`);
+    });
+
+    document.getElementById('btn-send-campaign').addEventListener('click', async function() {
+        const subject = document.getElementById('campaign-subject').value.trim();
+        const body = document.getElementById('campaign-body').value.trim();
+        const recipients = document.getElementById('campaign-recipients').value;
+
+        if (!subject || !body) { toast('Compila oggetto e corpo', 'error'); return; }
+
+        const ok = await confirmModal('Invia campagna', `Inviare la campagna "<strong>${esc(subject)}</strong>" a ${recipients === 'marketing' ? 'clienti con consenso marketing' : 'tutti i clienti'}?`, 'Invia', false);
+        if (!ok) return;
+
+        const res = await apiFetch('/campaigns', {
+            method: 'POST',
+            body: JSON.stringify({ subject, body_html: body, recipients }),
+        });
+        if (!res) return;
+        const data = await res.json();
+
+        if (data.campaign_id) {
+            toast('Campagna creata, invio in corso...', 'success');
+
+            const sendRes = await apiFetch('/campaigns/' + data.campaign_id + '/send', { method: 'POST' });
+            if (sendRes) {
+                const sendData = await sendRes.json();
+                if (sendData.success) {
+                    toast(`Campagna inviata a ${sendData.sent_count} destinatari`, 'success');
+                    document.getElementById('campaign-subject').value = '';
+                    document.getElementById('campaign-body').value = '';
+                    loadCampaigns();
+                } else {
+                    toast(sendData.error || 'Errore invio', 'error');
+                }
+            }
+        } else {
+            toast(data.error || 'Errore creazione campagna', 'error');
+        }
+    });
+
+    // ----- Init -----
+    if (authHeader) {
+        // Verifica sessione esistente
+        fetch(API + '/reservations?status=confirmed', { headers: { 'Authorization': authHeader } })
+            .then(res => {
+                if (res.ok) { showApp(); loadReservations(); loadMiniCalendar(); }
+                else showLogin();
+            })
+            .catch(() => showLogin());
+    }
+})();
+</script>
+</body>
+</html>

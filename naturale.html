@@ -21,6 +21,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
+
+    <!-- Flatpickr Calendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/it.js"></script>
 </head>
 <body>
     <!-- Safari iOS Status Bar Cover -->
@@ -149,6 +154,8 @@
                             <li>Aria condizionata</li>
                             <li>Smart TV</li>
                         </ul>
+
+                        <a href="#prenota" class="btn btn-primary appartamento-cta" data-apartment="oliva">Prenota</a>
                     </div>
                 </div>
             </article>
@@ -199,7 +206,7 @@
                                 <span class="spec-label">Camera</span>
                             </div>
                             <div class="spec-item">
-                                <span class="spec-value">2+2</span>
+                                <span class="spec-value">2+2+1</span>
                                 <span class="spec-label">Posti letto</span>
                             </div>
                             <div class="spec-item">
@@ -207,7 +214,7 @@
                                 <span class="spec-label">Bagno</span>
                             </div>
                         </div>
-                        
+
                         <ul class="appartamento-features">
                             <li>Cucina attrezzata</li>
                             <li>Studio con divano letto</li>
@@ -216,10 +223,12 @@
                             <li>Uscita sul giardino</li>
                             <li>Aria condizionata</li>
                         </ul>
-                        
+
                         <p class="appartamento-coming-note">
-                            <em>Dovrebbe essere pronto per primavera 2026 — scrivici per aggiornamenti</em>
+                            <em>Dovrebbe essere pronto per estate 2026 — scrivici per aggiornamenti</em>
                         </p>
+
+                        <span class="btn btn-outline appartamento-cta appartamento-cta--disabled">Non ancora disponibile</span>
                     </div>
                 </div>
             </article>
@@ -339,7 +348,7 @@
                         </svg>
                     </div>
                     <h3>Piscina</h3>
-                    <p>6 metri per 4, acqua pulita</p>
+                    <p>8 metri per 4, acqua pulita</p>
                 </div>
                 
                 <div class="servizio-item reveal">
@@ -400,6 +409,14 @@
                             <h4>Le Langhe</h4>
                             <p>Mezz'ora di macchina. Terra del Barolo, del tartufo, delle cantine. Patrimonio UNESCO, per dire.</p>
                         </div>
+                        <div class="luogo">
+                            <h4>Mare</h4>
+                            <p>La Liguria sta a meno di un'ora di macchina. Vai al mare e torni in giornata.</p>
+                        </div>
+                        <div class="luogo">
+                            <h4>Montagna</h4>
+                            <p>Prato Nevoso e Limone Piemonte a portata di mano. Sci d'inverno, sentieri d'estate.</p>
+                        </div>
                     </div>
                     
                     <div class="distanze">
@@ -416,7 +433,7 @@
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2000!2d7.84763807915861!3d44.53992751735732!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDMyJzIzLjciTiA3wrA1MCc1MS41IkU!5e1!3m2!1sit!2sit!4v1705833600000!5m2!1sit!2sit"
                         width="100%" 
-                        height="400" 
+                        height="550" 
                         style="border:0;" 
                         allowfullscreen="" 
                         loading="lazy" 
@@ -474,19 +491,188 @@
                     <span class="section-label">Contatti</span>
                     <h2 class="section-title">Prenota</h2>
                 </header>
-                
-                <p class="prenota-text">
-                    Scrivici le date che hai in mente. Ti diciamo subito se c'è posto e quanto costa. Niente moduli complicati, solo una mail.
+
+                <p class="prenota-intro">
+                    Scegli le date, vedi il prezzo, prenota.
                 </p>
-                
-                <a href="mailto:info@casiacountryhouse.it" class="btn btn-primary btn-large">Scrivi una mail</a>
-                
-                <div class="prenota-contact">
-                    <p>
-                        <a href="mailto:info@casiacountryhouse.it">info@casiacountryhouse.it</a>
-                    </p>
-                    <p class="prenota-note">Rispondiamo entro 24 ore</p>
+            </div>
+
+            <!-- Booking Form -->
+            <div class="booking-widget reveal" id="booking-widget" data-source="naturale">
+
+                <!-- Step 1: Date + Appartamento -->
+                <div class="booking-step booking-step--active" id="booking-step-1">
+                    <div class="booking-grid">
+                        <div class="booking-calendar-col">
+                            <h3 class="booking-step-title">1. Date</h3>
+                            <div class="booking-apartment-select">
+                                <label class="booking-radio booking-radio--active">
+                                    <input type="radio" name="apartment" value="oliva" checked>
+                                    <span class="booking-radio-label">Appartamento Oliva</span>
+                                    <span class="booking-radio-tag">Disponibile</span>
+                                </label>
+                                <label class="booking-radio booking-radio--disabled">
+                                    <input type="radio" name="apartment" value="venica" disabled>
+                                    <span class="booking-radio-label">Appartamento Venica</span>
+                                    <span class="booking-radio-tag">In ristrutturazione</span>
+                                </label>
+                            </div>
+                            <div id="booking-calendar"></div>
+                            <p class="booking-calendar-hint">Seleziona arrivo e partenza</p>
+                        </div>
+
+                        <div class="booking-summary-col">
+                            <div class="booking-summary" id="booking-summary">
+                                <h3 class="booking-step-title">Riepilogo</h3>
+                                <div class="booking-summary-empty" id="booking-summary-empty">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                                    <p>Seleziona le date</p>
+                                </div>
+                                <div class="booking-summary-details" id="booking-summary-details" style="display:none;">
+                                    <div class="booking-summary-row">
+                                        <span>Appartamento</span>
+                                        <strong id="summary-apartment">Oliva</strong>
+                                    </div>
+                                    <div class="booking-summary-row">
+                                        <span>Arrivo</span>
+                                        <strong id="summary-checkin">—</strong>
+                                    </div>
+                                    <div class="booking-summary-row">
+                                        <span>Partenza</span>
+                                        <strong id="summary-checkout">—</strong>
+                                    </div>
+                                    <div class="booking-summary-row">
+                                        <span>Notti</span>
+                                        <strong id="summary-nights">—</strong>
+                                    </div>
+                                    <div class="booking-summary-divider"></div>
+                                    <div class="booking-guests">
+                                        <div class="booking-guest-row">
+                                            <label for="booking-adults">Adulti</label>
+                                            <div class="booking-counter">
+                                                <button type="button" class="booking-counter-btn" data-target="booking-adults" data-dir="-1">−</button>
+                                                <input type="number" id="booking-adults" value="2" min="1" max="6" readonly>
+                                                <button type="button" class="booking-counter-btn" data-target="booking-adults" data-dir="1">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="booking-guest-row">
+                                            <label for="booking-children">Bambini</label>
+                                            <div class="booking-counter">
+                                                <button type="button" class="booking-counter-btn" data-target="booking-children" data-dir="-1">−</button>
+                                                <input type="number" id="booking-children" value="0" min="0" max="4" readonly>
+                                                <button type="button" class="booking-counter-btn" data-target="booking-children" data-dir="1">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="booking-summary-divider"></div>
+                                    <div class="booking-price-row" id="booking-price-row" style="display:none;">
+                                        <span>Totale</span>
+                                        <strong class="booking-price" id="summary-price">—</strong>
+                                    </div>
+                                    <div class="booking-price-loading" id="booking-price-loading" style="display:none;">
+                                        <span class="booking-spinner"></span> Calcolo...
+                                    </div>
+                                    <div class="booking-price-error" id="booking-price-error" style="display:none;"></div>
+                                    <button type="button" class="btn btn-primary btn-large booking-next-btn" id="booking-next-btn" disabled>
+                                        Continua
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Step 2: Dati Personali -->
+                <div class="booking-step" id="booking-step-2" style="display:none;">
+                    <div class="booking-step2-topbar">
+                        <button type="button" class="booking-back-btn" id="booking-back-1">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M15 19l-7-7 7-7"/></svg>
+                            Indietro
+                        </button>
+                        <div class="booking-timer" id="booking-timer" style="display:none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            <span>Completa entro <strong id="booking-timer-text">20:00</strong></span>
+                        </div>
+                    </div>
+                    <div class="booking-grid">
+                        <div class="booking-form-col">
+                            <h3 class="booking-step-title">2. I tuoi dati</h3>
+                            <form id="booking-form" novalidate>
+                                <div class="booking-field">
+                                    <label for="guest-name">Nome e Cognome *</label>
+                                    <input type="text" id="guest-name" name="guest_name" required autocomplete="name" placeholder="Mario Rossi">
+                                    <span class="booking-field-error"></span>
+                                </div>
+                                <div class="booking-field">
+                                    <label for="guest-email">Email *</label>
+                                    <input type="email" id="guest-email" name="guest_email" required autocomplete="email" placeholder="mario@esempio.it">
+                                    <span class="booking-field-error"></span>
+                                </div>
+                                <div class="booking-field">
+                                    <label for="guest-phone">Telefono *</label>
+                                    <input type="tel" id="guest-phone" name="guest_phone" required autocomplete="tel" placeholder="+39 333 1234567">
+                                    <span class="booking-field-error"></span>
+                                </div>
+                                <div class="booking-field">
+                                    <label for="guest-message">Note <span class="booking-optional">(facoltativo)</span></label>
+                                    <textarea id="guest-message" name="message" rows="3" placeholder="Orario di arrivo, esigenze particolari..."></textarea>
+                                </div>
+                                <div class="booking-consents">
+                                    <div class="booking-field booking-privacy">
+                                        <label class="booking-checkbox-label">
+                                            <input type="checkbox" id="privacy-consent" required>
+                                            <span>Acconsento al trattamento dei dati personali ai sensi del GDPR (UE 2016/679) per la gestione della prenotazione. *</span>
+                                        </label>
+                                        <span class="booking-field-error"></span>
+                                    </div>
+                                    <div class="booking-field booking-privacy">
+                                        <label class="booking-checkbox-label">
+                                            <input type="checkbox" id="marketing-consent">
+                                            <span>Desidero ricevere comunicazioni su offerte e novità.</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="booking-summary-col">
+                            <div class="booking-summary booking-summary--final" id="booking-summary-final">
+                                <h3 class="booking-step-title">Riepilogo</h3>
+                                <div class="booking-summary-row">
+                                    <span>Appartamento</span>
+                                    <strong id="final-apartment">Oliva</strong>
+                                </div>
+                                <div class="booking-summary-row">
+                                    <span>Date</span>
+                                    <strong id="final-dates">—</strong>
+                                </div>
+                                <div class="booking-summary-row">
+                                    <span>Notti</span>
+                                    <strong id="final-nights">—</strong>
+                                </div>
+                                <div class="booking-summary-row">
+                                    <span>Ospiti</span>
+                                    <strong id="final-guests">—</strong>
+                                </div>
+                                <div class="booking-summary-divider"></div>
+                                <div class="booking-price-row">
+                                    <span>Totale</span>
+                                    <strong class="booking-price" id="final-price">—</strong>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-large booking-pay-btn" id="booking-pay-btn">
+                                    Prenota e paga
+                                </button>
+                                <p class="booking-pay-note">Pagamento sicuro con Stripe</p>
+                                <div class="booking-pay-error" id="booking-pay-error" style="display:none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Contatto alternativo -->
+            <div class="prenota-fallback reveal">
+                <p>Preferisci scrivere? <a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a> · <a href="tel:+393514321088">351 432 1088</a></p>
             </div>
         </div>
     </section>
@@ -506,7 +692,7 @@
                 <div class="footer-links">
                     <h4>Contatti</h4>
                     <ul>
-                        <li><a href="mailto:info@casiacountryhouse.it">info@casiacountryhouse.it</a></li>
+                        <li><a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a></li>
                         <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
                     </ul>
                 </div>
@@ -524,6 +710,7 @@
             
             <div class="footer-bottom">
                 <p>&copy; 2025 Casia Country House</p>
+                <p class="footer-piva">Tel: <a href="tel:+393514321088" style="color: inherit;">351 432 1088</a></p>
                 <p><a href="index.html" style="color: inherit; opacity: 0.7;">Versione classica</a></p>
             </div>
         </div>
@@ -554,4 +741,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
