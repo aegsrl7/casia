@@ -1004,6 +1004,11 @@
                     <input type="text" id="filter-range" placeholder="Tutte le date" readonly>
                 </div>
                 <button class="btn btn-primary" id="btn-filter">Filtra</button>
+                <div class="form-group" style="margin-left:auto;">
+                    <label>Stampa mese</label>
+                    <input type="month" id="print-month">
+                </div>
+                <button class="btn" id="btn-print-month" title="Apre il foglio stampabile delle prenotazioni del mese">&#128424; Stampa PDF</button>
             </div>
 
             <div id="reservations-table-wrap" class="admin-table-wrap">
@@ -1687,6 +1692,90 @@
     };
 
     document.getElementById('btn-filter').addEventListener('click', loadReservations);
+
+    // ----- Stampa PDF prenotazioni del mese -----
+    document.getElementById('print-month').value = new Date().toISOString().slice(0, 7);
+    document.getElementById('btn-print-month').addEventListener('click', printMonthReservations);
+
+    async function printMonthReservations() {
+        const monthVal = document.getElementById('print-month').value || new Date().toISOString().slice(0, 7);
+        const [year, month] = monthVal.split('-').map(Number);
+        const first = `${monthVal}-01`;
+        const lastDay = `${monthVal}-${String(new Date(year, month, 0).getDate()).padStart(2, '0')}`;
+
+        const res = await apiFetch(`/reservations?from=${first}&to=${lastDay}`);
+        if (!res) return;
+        const data = await res.json();
+        const monthNames = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+        const title = `${monthNames[month - 1]} ${year}`;
+
+        const rows = (data.reservations || [])
+            .filter(r => r.status === 'confirmed')
+            .sort((a, b) => a.checkin.localeCompare(b.checkin));
+
+        if (rows.length === 0) {
+            toast('Nessuna prenotazione confermata per ' + title, 'error');
+            return;
+        }
+
+        const fmtD = d => { const p = d.split('-'); return `${p[2]}/${p[1]}/${p[0].slice(2)}`; };
+        const srcLabel = { direct: 'Diretta', booking: 'Booking', airbnb: 'Airbnb' };
+        let totNights = 0, totCents = 0;
+        const trs = rows.map(r => {
+            totNights += r.nights;
+            totCents += r.total_cents || 0;
+            const guests = (r.adults || 0) + (r.children || 0) > 0 ? `${r.adults}${r.children ? '+' + r.children : ''}` : '';
+            return `<tr>
+                <td>${r.apartment === 'oliva' ? 'Oliva' : 'Venica'}</td>
+                <td><strong>${esc(r.guest_name)}</strong>${r.external_ref ? `<br><span class="sub">rif. ${esc(r.external_ref)}</span>` : ''}</td>
+                <td>${esc(r.guest_phone || '')}</td>
+                <td>${fmtD(r.checkin)}</td>
+                <td>${fmtD(r.checkout)}</td>
+                <td class="c">${r.nights}</td>
+                <td class="c">${guests}</td>
+                <td>${srcLabel[r.source || 'direct'] || esc(r.source)}</td>
+                <td class="r">${r.total_cents ? formatEuro(r.total_cents) : ''}</td>
+                <td>${esc(r.admin_notes || '')}</td>
+            </tr>`;
+        }).join('');
+
+        const doc = `<!DOCTYPE html><html lang="it"><head><meta charset="utf-8">
+<title>Prenotazioni ${title}</title>
+<style>
+@page { size: A4 landscape; margin: 12mm; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Helvetica Neue', Arial, sans-serif; color:#2D2926; font-size:10pt; padding:8px; }
+header { display:flex; justify-content:space-between; align-items:baseline; border-bottom:2px solid #B8956B; padding-bottom:8px; margin-bottom:14px; }
+h1 { font-family: Georgia, serif; font-size:15pt; font-weight:600; letter-spacing:2px; color:#B8956B; }
+h1 small { color:#2D2926; font-weight:normal; letter-spacing:0; }
+.meta { font-size:8.5pt; color:#8a8078; }
+table { width:100%; border-collapse:collapse; }
+th { text-align:left; font-size:8.5pt; text-transform:uppercase; letter-spacing:0.5px; color:#8a8078; border-bottom:1.5px solid #2D2926; padding:4px 6px; }
+td { padding:5px 6px; border-bottom:1px solid #e5ded4; vertical-align:top; }
+tr:nth-child(even) td { background:#faf7f2; }
+.c { text-align:center; } .r { text-align:right; }
+.sub { font-size:8pt; color:#8a8078; }
+tfoot td { border-top:2px solid #2D2926; border-bottom:none; font-weight:600; background:none !important; }
+footer { margin-top:14px; font-size:8pt; color:#8a8078; display:flex; justify-content:space-between; }
+</style></head><body>
+<header>
+    <h1>CASIA <small>&middot; Prenotazioni ${title}</small></h1>
+    <span class="meta">${rows.length} prenotazioni &middot; ${totNights} notti &middot; ${formatEuro(totCents)}</span>
+</header>
+<table>
+<thead><tr><th>App.</th><th>Ospite</th><th>Telefono</th><th>Arrivo</th><th>Partenza</th><th>Notti</th><th>Ospiti</th><th>Fonte</th><th>Totale</th><th>Note</th></tr></thead>
+<tbody>${trs}</tbody>
+<tfoot><tr><td colspan="5">Totale</td><td class="c">${totNights}</td><td></td><td></td><td class="r">${formatEuro(totCents)}</td><td></td></tr></tfoot>
+</table>
+<footer><span>CASIA Country House &middot; Santo Stefano, Bene Vagienna (CN)</span><span>Generato il ${new Date().toLocaleDateString('it-IT')}</span></footer>
+<script>window.onload = function(){ window.print(); };<\/script>
+</body></html>`;
+
+        const w = window.open('', '_blank');
+        if (!w) { toast('Sblocca i popup del browser per stampare', 'error'); return; }
+        w.document.write(doc);
+        w.document.close();
+    }
 
     // ----- Blocked Dates -----
     let blockPickerInstance = null;
