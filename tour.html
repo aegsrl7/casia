@@ -15,7 +15,7 @@
     --antracite: #2D2926;
     --crema: #F8F5F0;
   }
-  html { scroll-behavior: smooth; }
+
   body { font-family: 'Jost', sans-serif; background: var(--antracite); color: var(--crema); overflow-x: hidden; }
   video { object-fit: cover; width: 100%; height: 100%; }
 
@@ -80,6 +80,14 @@
   .scene-caption h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(2.1rem, 5.5vw, 4.2rem); line-height: 1.04; color: #fff; text-shadow: 0 3px 26px rgba(0,0,0,0.7); margin-top: 12px; }
   .scene-caption p { margin-top: 14px; font-weight: 200; font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(248,245,240,0.88); }
   .placeholder-note { display: inline-block; margin-top: 14px; font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(212,184,150,0.75); border: 1px solid rgba(212,184,150,0.35); padding: 4px 10px; border-radius: 20px; }
+  .tour-loading {
+    position: absolute; z-index: 4; left: 50%; bottom: 26px; transform: translateX(-50%);
+    font-size: 0.62rem; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(248,245,240,0.85); background: rgba(45,41,38,0.55); backdrop-filter: blur(6px);
+    border: 1px solid rgba(212,184,150,0.4); padding: 6px 14px; border-radius: 20px;
+    transition: opacity 0.5s ease;
+  }
+  .tour-loading.done { opacity: 0; }
   .scene-index {
     position: absolute; z-index: 3; right: clamp(24px, 6vw, 90px); bottom: clamp(60px, 12vh, 130px);
     font-family: 'Cormorant Garamond', serif; font-size: 1rem; letter-spacing: 3px; color: rgba(212,184,150,0.8);
@@ -131,7 +139,7 @@
 <!-- TOUR -->
 <div class="tour" id="tour">
   <div class="tour-viewport">
-    <video class="scene-media active" id="tour-video" src="videos/tour.mp4" poster="videos/tour-poster.jpg" muted playsinline preload="auto"></video>
+    <video class="scene-media active" id="tour-video" poster="videos/tour-poster.jpg" muted playsinline preload="none"></video>
     <div class="scene-shade"></div>
 
     <div class="scene-caption" data-scene="0">
@@ -166,6 +174,7 @@
     </div>
 
     <div class="scene-index" id="scene-index">01 / 05</div>
+    <div class="tour-loading" id="tour-loading">Caricamento del tour&hellip;</div>
   </div>
 </div>
 
@@ -185,16 +194,63 @@
 <script>
 (function () {
   var SCENES = 5;
-  var VH_PER_SCENE = 220; // scroll necessario per ogni scena
+  var VH_PER_SCENE = 220;
   var tour = document.getElementById('tour');
   tour.style.height = (SCENES * VH_PER_SCENE) + 'vh';
 
   var video = document.getElementById('tour-video');
   var captions = Array.prototype.slice.call(document.querySelectorAll('.scene-caption'));
   var indexLabel = document.getElementById('scene-index');
+  var loadingLabel = document.getElementById('tour-loading');
   var ticking = false;
+  var ready = false;
 
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  // Pre-scarica tutto il video: il seek diventa locale e istantaneo
+  fetch('videos/tour.mp4').then(function (res) {
+    if (!res.ok || !res.body) throw new Error('http ' + res.status);
+    var total = parseInt(res.headers.get('Content-Length') || '0', 10);
+    var reader = res.body.getReader();
+    var chunks = [], received = 0;
+    function pump() {
+      return reader.read().then(function (r) {
+        if (r.done) return;
+        chunks.push(r.value);
+        received += r.value.length;
+        if (total) {
+          loadingLabel.textContent = 'Caricamento del tour \u00b7 ' + Math.round(received / total * 100) + '%';
+        }
+        return pump();
+      });
+    }
+    return pump().then(function () { return new Blob(chunks, { type: 'video/mp4' }); });
+  }).then(function (blob) {
+    video.src = URL.createObjectURL(blob);
+    video.load();
+  }).catch(function () {
+    // Fallback: sorgente diretta (scrubbing possibile appena il browser bufferizza)
+    video.src = 'videos/tour.mp4';
+    video.preload = 'auto';
+    video.load();
+  });
+
+  // Chrome rimanda l'inizializzazione dei video nelle schede nascoste:
+  // quando la scheda torna visibile, riprova finche' i metadati non arrivano.
+  function tryInit() {
+    if (ready) return;
+    if (video.readyState >= 1 && !isNaN(video.duration)) {
+      ready = true;
+      loadingLabel.classList.add('done');
+      update();
+      return;
+    }
+    if (document.visibilityState === 'visible' && video.src) { video.load(); }
+  }
+  video.addEventListener('loadedmetadata', tryInit);
+  video.addEventListener('canplay', tryInit);
+  document.addEventListener('visibilitychange', tryInit);
+  setInterval(tryInit, 1200);
 
   function update() {
     ticking = false;
@@ -203,17 +259,15 @@
     if (total <= 0) return;
     var p = Math.min(Math.max(-rect.top / total, 0), 0.9999);
 
-    // Il video unico avanza SOLO con lo scroll
-    if (video.readyState >= 1 && !isNaN(video.duration)) {
+    if (ready && !isNaN(video.duration)) {
       var t = p * Math.max(video.duration - 0.05, 0);
       if (Math.abs((video.currentTime || 0) - t) > 0.01) { video.currentTime = t; }
     }
 
     var scene = Math.floor(p * SCENES);
-    var local = p * SCENES - scene; // 0..1 dentro la scena
+    var local = p * SCENES - scene;
     indexLabel.textContent = pad(scene + 1) + ' / ' + pad(SCENES);
 
-    // Didascalie: salgono dal basso col cursore, poi escono verso l'alto
     captions.forEach(function (c, k) {
       if (k !== scene) { c.style.opacity = 0; return; }
       var y, o;
@@ -236,7 +290,6 @@
     if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
   }
 
-  video.load();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   update();
