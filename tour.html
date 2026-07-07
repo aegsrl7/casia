@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>CASIA Country House · Tour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --rame: #B8956B;
+    --rame-chiaro: #D4B896;
+    --antracite: #2D2926;
+    --crema: #F8F5F0;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--antracite); color: var(--crema); overflow-x: hidden; }
+  video { object-fit: cover; width: 100%; height: 100%; }
+
+  .eyebrow {
+    font-size: clamp(0.65rem, 1.2vw, 0.8rem); letter-spacing: 4px; text-transform: uppercase;
+    color: var(--rame-chiaro); font-weight: 400;
+  }
+  .display {
+    font-family: 'Cormorant Garamond', serif; font-weight: 400;
+    line-height: 1.05; text-shadow: 0 3px 26px rgba(0,0,0,0.65);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero { position: relative; height: 100svh; overflow: hidden; }
+  .hero video, .scene-media { position: absolute; inset: 0; }
+  .hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(20,16,12,0.35), rgba(20,16,12,0.15) 45%, rgba(20,16,12,0.55));
+  }
+  .hero-content {
+    position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; padding: 24px;
+  }
+  .hero-logo {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 9vw, 6rem);
+    font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase; color: #fff;
+    text-shadow: 0 3px 30px rgba(0,0,0,0.7); margin: 14px 0 4px;
+  }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(1rem, 2.4vw, 1.4rem); letter-spacing: 6px; color: var(--rame-chiaro);
+  }
+  .hero-tagline {
+    margin-top: 26px; font-weight: 200; font-size: clamp(1rem, 2.2vw, 1.3rem);
+    color: rgba(248,245,240,0.92); max-width: 560px;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 30px; left: 0; right: 0; z-index: 2; text-align: center;
+    font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(248,245,240,0.75);
+  }
+  .scroll-hint::after {
+    content: ''; display: block; width: 1px; height: 42px; margin: 10px auto 0;
+    background: linear-gradient(to bottom, var(--rame), transparent);
+    animation: drop 2.2s ease-in-out infinite;
+  }
+  @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 45% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+
+  /* ---------- TOUR SCROLLYTELLING ---------- */
+  .tour { position: relative; }
+  .tour-viewport { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+  .scene-media { opacity: 0; transition: opacity 0.9s ease; }
+  .scene-media.active { opacity: 1; }
+  .scene-shade {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(to top, rgba(20,16,12,0.62) 0%, rgba(20,16,12,0.12) 45%, rgba(20,16,12,0.25));
+  }
+  .scene-caption {
+    position: absolute; z-index: 3; left: clamp(24px, 7vw, 110px); bottom: clamp(60px, 12vh, 130px);
+    max-width: 620px; opacity: 0; transform: translateY(26px); transition: opacity 0.8s ease, transform 0.8s ease;
+    pointer-events: none;
+  }
+  .scene-caption.active { opacity: 1; transform: translateY(0); }
+  .scene-caption h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(2.1rem, 5.5vw, 4.2rem); line-height: 1.04; color: #fff; text-shadow: 0 3px 26px rgba(0,0,0,0.7); margin-top: 12px; }
+  .scene-caption p { margin-top: 14px; font-weight: 200; font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(248,245,240,0.88); }
+  .placeholder-note { display: inline-block; margin-top: 14px; font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(212,184,150,0.75); border: 1px solid rgba(212,184,150,0.35); padding: 4px 10px; border-radius: 20px; }
+  .scene-index {
+    position: absolute; z-index: 3; right: clamp(24px, 6vw, 90px); bottom: clamp(60px, 12vh, 130px);
+    font-family: 'Cormorant Garamond', serif; font-size: 1rem; letter-spacing: 3px; color: rgba(212,184,150,0.8);
+  }
+
+  /* ---------- OUTRO ---------- */
+  .outro {
+    min-height: 90svh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 90px 24px; background: var(--antracite);
+  }
+  .outro .divider { width: 56px; height: 1px; background: var(--rame); margin: 30px auto; }
+  .outro h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(2rem, 5vw, 3.4rem); color: var(--crema); }
+  .outro p { margin-top: 18px; font-weight: 200; max-width: 520px; color: rgba(248,245,240,0.8); line-height: 1.8; }
+  .outro-actions { margin-top: 44px; display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    display: inline-block; padding: 15px 38px; letter-spacing: 3px; text-transform: uppercase;
+    font-size: 0.75rem; text-decoration: none; transition: all 0.3s ease;
+  }
+  .btn-solid { background: var(--rame); color: #fff; }
+  .btn-solid:hover { background: var(--rame-chiaro); }
+  .btn-ghost { border: 1px solid var(--rame); color: var(--rame-chiaro); }
+  .btn-ghost:hover { background: rgba(184,149,107,0.15); }
+  .outro footer { margin-top: 70px; font-size: 0.72rem; letter-spacing: 1px; color: rgba(248,245,240,0.45); }
+
+  .draft-badge {
+    position: fixed; top: 14px; right: 14px; z-index: 50;
+    font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(248,245,240,0.85); background: rgba(45,41,38,0.55); backdrop-filter: blur(6px);
+    border: 1px solid rgba(212,184,150,0.4); padding: 6px 12px; border-radius: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="draft-badge">Bozza di lavoro · testi provvisori</div>
+
+<!-- HERO -->
+<section class="hero">
+  <video src="videos/esterno.mp4" poster="videos/esterno-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+  <div class="hero-content">
+    <div class="eyebrow">Santo Stefano · Bene Vagienna · Piemonte</div>
+    <div class="hero-logo">Casia</div>
+    <div class="hero-sub">Country House</div>
+    <div class="hero-tagline">Riposo autentico nella campagna piemontese.</div>
+  </div>
+  <div class="scroll-hint">Scorri per esplorare</div>
+</section>
+
+<!-- TOUR -->
+<div class="tour" id="tour">
+  <div class="tour-viewport">
+    <video class="scene-media" data-scene="0" src="videos/drone.mp4" poster="videos/drone-poster.jpg" muted loop playsinline preload="metadata"></video>
+    <video class="scene-media" data-scene="1" src="videos/piscina.mp4" poster="videos/piscina-poster.jpg" muted loop playsinline preload="metadata"></video>
+    <video class="scene-media" data-scene="2" src="videos/vigna.mp4" poster="videos/vigna-poster.jpg" muted loop playsinline preload="metadata"></video>
+    <video class="scene-media" data-scene="3" src="videos/terrazza.mp4" poster="videos/terrazza-poster.jpg" muted loop playsinline preload="metadata"></video>
+    <video class="scene-media" data-scene="4" src="videos/camera.mp4" poster="videos/camera-poster.jpg" muted loop playsinline preload="metadata"></video>
+    <div class="scene-shade"></div>
+
+    <div class="scene-caption" data-scene="0">
+      <div class="eyebrow">Dall'alto</div>
+      <h2>Un piccolo mondo tra vigne e lavanda</h2>
+      <p>Una cascina, i filari, il campo di lavanda e il bosco intorno: tutto quello che serve per rallentare.</p>
+      <span class="placeholder-note">Testo indicativo, in attesa della copy</span>
+    </div>
+    <div class="scene-caption" data-scene="1">
+      <div class="eyebrow">L'estate</div>
+      <h2>L'acqua che guarda le Alpi</h2>
+      <p>La piscina tra i filari, con le montagne all'orizzonte e il rumore delle foglie.</p>
+      <span class="placeholder-note">Testo indicativo, in attesa della copy</span>
+    </div>
+    <div class="scene-caption" data-scene="2">
+      <div class="eyebrow">Il territorio</div>
+      <h2>A passo lento tra i filari</h2>
+      <p>Il sentiero nella vigna, la luce della sera, il tempo che torna ad avere il ritmo giusto.</p>
+      <span class="placeholder-note">Testo indicativo, in attesa della copy</span>
+    </div>
+    <div class="scene-caption" data-scene="3">
+      <div class="eyebrow">Il rito della sera</div>
+      <h2>L'aperitivo sulla terrazza</h2>
+      <p>Un tavolo apparecchiato, le colline davanti, il cielo che si spegne piano.</p>
+      <span class="placeholder-note">Testo indicativo, in attesa della copy</span>
+    </div>
+    <div class="scene-caption" data-scene="4">
+      <div class="eyebrow">Il riposo</div>
+      <h2>Il silenzio sotto le travi</h2>
+      <p>La camera in mansarda, la luce calda, il sonno che arriva senza chiederlo.</p>
+      <span class="placeholder-note">Testo indicativo, in attesa della copy</span>
+    </div>
+
+    <div class="scene-index" id="scene-index">01 / 05</div>
+  </div>
+</div>
+
+<!-- OUTRO -->
+<section class="outro">
+  <div class="eyebrow">CASIA Country House</div>
+  <h2>La storia continua dal vivo</h2>
+  <div class="divider"></div>
+  <p>Testo provvisorio: qui la copy chiuderà il racconto e inviterà alla prenotazione, con il richiamo alla famiglia e al territorio.</p>
+  <div class="outro-actions">
+    <a class="btn btn-ghost" href="/">Scopri la casa</a>
+    <a class="btn btn-solid" href="/#prenota">Prenota ora</a>
+  </div>
+  <footer>CASIA Country House · Santo Stefano, Bene Vagienna (CN) · casiavacanze.com</footer>
+</section>
+
+<script>
+(function () {
+  var SCENES = 5;
+  var tour = document.getElementById('tour');
+  // Altezza totale: una "pagina" di scroll per scena
+  tour.style.height = (SCENES * 160) + 'vh';
+
+  var medias = Array.prototype.slice.call(document.querySelectorAll('.scene-media'));
+  var captions = Array.prototype.slice.call(document.querySelectorAll('.scene-caption'));
+  var indexLabel = document.getElementById('scene-index');
+  var current = -1;
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function setScene(i) {
+    if (i === current) return;
+    current = i;
+    medias.forEach(function (v, k) {
+      var on = (k === i);
+      v.classList.toggle('active', on);
+      if (on) { v.play().catch(function () {}); }
+      else { v.pause(); }
+    });
+    captions.forEach(function (c, k) { c.classList.toggle('active', k === i); });
+    indexLabel.textContent = pad(i + 1) + ' / ' + pad(SCENES);
+  }
+
+  function onScroll() {
+    var rect = tour.getBoundingClientRect();
+    var total = tour.offsetHeight - window.innerHeight;
+    var progress = Math.min(Math.max(-rect.top / total, 0), 0.9999);
+    setScene(Math.floor(progress * SCENES));
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
