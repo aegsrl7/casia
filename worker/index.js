@@ -6,6 +6,7 @@ import { handleCreateCheckout } from './handlers/checkout.js';
 import { handleWebhook } from './handlers/webhook.js';
 import { handleAdmin } from './handlers/admin.js';
 import { handleGetCheckin, handleSaveTravelers, handleDocUpload } from './handlers/checkin.js';
+import { syncIcal } from './handlers/ical.js';
 
 // Header CORS per le API
 const corsHeaders = {
@@ -22,6 +23,11 @@ function jsonResponse(data, status = 200) {
 }
 
 export default {
+  // Cron: sincronizzazione periodica dei calendari Booking.com
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(syncIcal(env));
+  },
+
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const path = url.pathname;

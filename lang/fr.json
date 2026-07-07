@@ -1,8 +1,20 @@
 {
   "common": {
-    "months_short": ["jan", "fév", "mar", "avr", "mai", "jun", "jul", "aoû", "sep", "oct", "nov", "déc"],
+    "months_short": [
+      "jan",
+      "fév",
+      "mar",
+      "avr",
+      "mai",
+      "jun",
+      "jul",
+      "aoû",
+      "sep",
+      "oct",
+      "nov",
+      "déc"
+    ],
     "scroll": "Défiler",
-
     "booking_step1_apt_oliva": "Appartement Oliva",
     "booking_step1_apt_venica": "Appartement Venica",
     "booking_apt_tag_available": "Disponible",
@@ -20,7 +32,6 @@
     "booking_price_loading": "Calcul du prix...",
     "booking_price_error": "Erreur lors du calcul du prix",
     "booking_connection_error": "Erreur de connexion",
-
     "booking_step2_name_label": "Nom et Prénom *",
     "booking_step2_email_label": "Email *",
     "booking_step2_phone_label": "Téléphone *",
@@ -31,20 +42,16 @@
     "booking_pay_note": "Vous serez redirigé vers Stripe pour un paiement sécurisé",
     "booking_pay_error": "Erreur lors de la création du paiement",
     "booking_pay_processing": "Traitement en cours...",
-
     "validate_name": "Veuillez saisir votre nom",
     "validate_email": "Veuillez saisir votre email",
     "validate_email_invalid": "Email non valide",
     "validate_phone": "Veuillez saisir votre numéro de téléphone",
     "validate_privacy": "Vous devez accepter la politique de confidentialité pour continuer",
-
     "timer_complete_within": "À compléter sous",
     "timer_expired": "Le délai pour finaliser la réservation a expiré. Veuillez sélectionner à nouveau vos dates.",
-
     "adults_count": "{count} adulte||{count} adultes",
     "children_count": "{count} enfant||{count} enfants",
     "guests_separator": " + ",
-
     "confirmation_loading": "Chargement...",
     "confirmation_title": "Merci pour votre réservation !",
     "confirmation_subtitle": "La réservation <strong>#{id}</strong> a été confirmée avec succès.",
@@ -60,11 +67,9 @@
     "confirmation_thankyou": "Nous vous attendons à CASIA !",
     "confirmation_fallback_title": "Réservation confirmée !",
     "confirmation_fallback_subtitle": "Consultez votre email pour le récapitulatif complet de la réservation.",
-
     "banner_success": "Réservation confirmée ! Consultez votre email pour le récapitulatif.",
     "banner_cancelled": "Paiement annulé. Vous pouvez réessayer quand vous le souhaitez.",
     "url_payment_error": "URL de paiement non disponible",
-
     "print_title": "Confirmation de Réservation",
     "print_header": "CASIA Country House",
     "print_location": "Santo Stefano · Bene Vagienna · Cuneo",
@@ -80,41 +85,32 @@
     "print_total": "Total payé",
     "print_thanks": "Nous vous attendons à CASIA !",
     "print_address": "Loc. Santo Stefano, Bene Vagienna (CN)",
-
     "footer_contacts": "Contacts",
     "footer_copyright": "© 2025 Casia Country House. Tous droits réservés.",
     "footer_address": "Santo Stefano, Bene Vagienna (CN)<br>Piémont, Italie",
-
     "modal_close": "Fermer",
     "modal_prev": "Précédent",
     "modal_next": "Suivant",
-
     "oliva_name": "Oliva",
     "venica_name": "Venica"
   },
-
   "index": {
     "meta_description": "Casia Country House - Repos authentique dans la campagne piémontaise. Maison de vacances à Santo Stefano, Bene Vagienna (Cuneo).",
     "og_title": "Casia Country House - Campagne Piémontaise",
     "og_description": "Repos authentique dans la campagne piémontaise. Une ferme historique restaurée avec soin.",
-
     "nav_casa": "La Maison",
     "nav_servizi": "Services",
     "nav_territorio": "Environs",
     "nav_esperienze": "Expériences",
     "nav_prenota": "Réserver",
-
     "hero_title": "Repos authentique dans la campagne piémontaise",
     "hero_subtitle": "Santo Stefano, Bene Vagienna",
     "hero_cta_discover": "Découvrir la maison",
     "hero_cta_book": "Réserver maintenant",
-
     "intro_text": "Au cœur des collines du Cuneese, <strong>Casia Country House</strong> est un havre de paix où le temps suspend son cours. Une ferme historique restaurée avec soin, alliant le charme de l'architecture piémontaise traditionnelle au confort contemporain.",
-
     "section_label_alloggi": "Nos hébergements",
     "section_title_casa": "La Maison",
     "appartamenti_intro": "Deux appartements indépendants, chacun avec son caractère et sa propre histoire. Tous deux disposent d'une entrée privée, d'un jardin et d'un accès à la piscine.",
-
     "oliva_tag": "Disponible",
     "oliva_description": "Au premier étage de la ferme, l'appartement Oliva vous accueille dans ses espaces lumineux aux poutres apparentes d'origine. Idéal pour les couples ou les petites familles en quête du confort d'une véritable maison piémontaise.",
     "oliva_spec_sqm": "m²",
@@ -128,7 +124,6 @@
     "oliva_feat_ac": "Climatisation",
     "oliva_feat_tv": "Smart TV",
     "oliva_cta": "Réserver cet appartement",
-
     "venica_tag": "Prochainement",
     "venica_description": "Au rez-de-chaussée avec accès direct au jardin, l'appartement Venica est actuellement en cours de rénovation. Il sera bientôt prêt à vous accueillir avec des espaces entièrement rénovés et tout le confort moderne.",
     "venica_placeholder_title": "En rénovation",
@@ -142,10 +137,8 @@
     "venica_feat_ac": "Climatisation",
     "venica_coming_note": "Disponible dès l'été 2026 — Contactez-nous pour en savoir plus",
     "venica_cta_disabled": "Disponible dès l'été 2026",
-
     "cascina_title": "La Ferme",
     "cascina_subtitle": "Un coin de Piémont rien que pour vous, où les tons chauds de la façade accueillent chaque arrivée",
-
     "section_label_comfort": "Confort",
     "section_title_servizi": "Nos Services",
     "service_wifi_title": "WiFi Gratuit",
@@ -166,7 +159,6 @@
     "service_pets_desc": "Les petits compagnons à quatre pattes sont les bienvenus",
     "service_bbq_title": "Barbecue",
     "service_bbq_desc": "Espace barbecue équipé dans le jardin",
-
     "section_label_dintorni": "Alentours",
     "section_title_territorio": "Le Territoire",
     "territorio_intro": "Casia Country House est le point de départ idéal pour explorer les merveilles du Piémont méridional, entre bourgs historiques, vignobles prestigieux et paysages enchanteurs.",
@@ -182,17 +174,15 @@
     "distanza_cuneo": "<strong>Cuneo</strong> — 42 km",
     "distanza_alba": "<strong>Alba</strong> — 34 km",
     "distanza_torino": "<strong>Torino</strong> — 70 km",
-
     "section_label_esperienze": "Vivez la région",
     "section_title_esperienze": "Expériences",
     "esp_tartufo_title": "Chasse à la Truffe",
     "esp_tartufo_desc": "Une matinée en immersion dans les bois des Langhe, accompagnés d'un trufficulteur expérimenté et de son fidèle chien. Vous découvrirez les secrets de cette tradition ancestrale et, avec un peu de chance, repartirez avec votre précieux butin.",
     "esp_tartufo_tag": "Sur demande",
-    "esp_auto_title": "Tour en Voiture d'Époque",
-    "esp_auto_desc": "Explorez les collines classées au patrimoine UNESCO au volant d'une élégante voiture d'époque. Un itinéraire entre vignobles, châteaux et bourgs enchanteurs, pour vivre les Langhe avec le style et le charme d'autrefois.",
-    "esp_auto_tag": "Sur demande",
+    "esp_auto_title": "Friends of Bikers & Cars Lovers",
+    "esp_auto_desc": "Des sorties de groupe organisées pour les passionnés de deux et quatre roues : itinéraires panoramiques entre Langhe et Roero, virages doux, villages et pauses gourmandes, avec ceux qui connaissent chaque route. Pas de location : une balade entre amis.",
+    "esp_auto_tag": "Sorties organisées",
     "esperienze_note": "Contactez-nous pour organiser votre expérience sur mesure",
-
     "section_label_prenota": "Séjournez",
     "section_title_prenota": "Réservez votre séjour",
     "prenota_intro": "Choisissez vos dates, vérifiez la disponibilité en temps réel et réservez en quelques étapes.",
@@ -204,36 +194,29 @@
     "booking_step2_title": "2. Vos coordonnées",
     "booking_pay_btn": "Réserver et payer",
     "prenota_fallback": "Vous préférez nous contacter directement ?",
-
     "footer_explore_title": "Explorer",
     "footer_link_casa": "La Maison",
     "footer_link_servizi": "Services",
     "footer_link_territorio": "Environs",
     "footer_link_prenota": "Réserver"
   },
-
   "amici": {
     "meta_description": "Casia Country House - Une vraie ferme piémontaise pour décrocher vraiment. Pas de chichis, juste la paix.",
     "og_title": "Casia Country House - Viens nous voir",
     "og_description": "Une vraie ferme piémontaise pour décrocher vraiment.",
-
     "nav_casa": "Où tu dors",
     "nav_servizi": "Ce qu'il y a",
     "nav_territorio": "Le coin",
     "nav_esperienze": "À faire",
     "nav_prenota": "Viens",
-
     "hero_title": "Cette maison de campagne que tu cherchais",
     "hero_subtitle": "Piémont, collines du Cuneese",
     "hero_cta_discover": "Montre-moi",
     "hero_cta_book": "Je veux venir",
-
     "intro_text": "Tu sais quand tu te dis \"stop, j'ai besoin de couper\" ? Voilà, <strong>Casia</strong> c'est cet endroit-là. Une ferme centenaire, retapée comme il faut, au milieu des collines. Rien de faux, rien de fabriqué pour les touristes. Juste une vraie maison où le téléphone capte à peine, et c'est très bien comme ça.",
-
     "section_label_alloggi": "Où tu seras",
     "section_title_casa": "Les appartements",
     "appartamenti_intro": "Il y en a deux, séparés, chacun avec sa porte et son bout de jardin. Tu ne croises personne si tu n'en as pas envie. Et la piscine est là pour tout le monde.",
-
     "oliva_tag": "Disponible",
     "oliva_description": "Au premier étage. Des vraies poutres apparentes (pas celles d'Ikea), de la lumière qui entre de partout, et ce silence qu'en ville tu oublies vite. Parfait à deux, ou à quatre en se serrant un peu sur le canapé-lit.",
     "oliva_spec_sqm": "m²",
@@ -247,7 +230,6 @@
     "oliva_feat_ac": "Clim (en été c'est pas du luxe)",
     "oliva_feat_tv": "TV (mais éteins-la de temps en temps)",
     "oliva_cta": "Je veux venir ici",
-
     "venica_tag": "On y travaille",
     "venica_description": "Rez-de-chaussée, tu sors et t'es dans le jardin. On est en plein travaux — maçons, peintres, le bazar habituel. Mais quand ce sera fini, ça va être top. Fais-moi confiance.",
     "venica_placeholder_title": "Travaux en cours",
@@ -261,10 +243,8 @@
     "venica_feat_ac": "Climatisation",
     "venica_coming_note": "Été 2026, si tout se passe bien. Écris-nous si tu veux des nouvelles.",
     "venica_cta_disabled": "Pas encore possible, désolé",
-
     "cascina_title": "La ferme",
     "cascina_subtitle": "Ce que tu vois sur les photos, c'est exactement ça. Pas de filtres, pas de triche. C'est comme ça.",
-
     "section_label_comfort": "Le pratique",
     "section_title_servizi": "Ce que tu trouves",
     "service_wifi_title": "WiFi",
@@ -285,7 +265,6 @@
     "service_pets_desc": "Petits, bien élevés. Pas de dogues.",
     "service_bbq_title": "Barbecue",
     "service_bbq_desc": "Gril prêt à l'emploi. Ramène la viande.",
-
     "section_label_dintorni": "Où t'es",
     "section_title_territorio": "Le coin",
     "territorio_intro": "On est dans le Cuneese, juste en dessous des Langhe. Traduction : du bon vin partout, des truffes en saison, des collines qui ont l'air peintes. Et personne pour te stresser.",
@@ -301,17 +280,15 @@
     "distanza_cuneo": "<strong>Cuneo</strong> — 42 km, 40 minutes",
     "distanza_alba": "<strong>Alba</strong> — 34 km, une demi-heure",
     "distanza_torino": "<strong>Torino</strong> — 70 km, une petite heure",
-
     "section_label_esperienze": "Si t'as envie",
     "section_title_esperienze": "Trucs à faire",
     "esp_tartufo_title": "Chasse aux truffes",
     "esp_tartufo_desc": "Un gars du coin t'emmène dans les bois avec son chien. Tu cherches des truffes pendant deux heures, tu comprends comment ça marche, et si tu trouves quelque chose tu le ramènes chez toi. C'est le genre de truc que tu racontes après.",
     "esp_tartufo_tag": "Demande-nous",
-    "esp_auto_title": "Balade en voiture d'époque",
-    "esp_auto_desc": "Tu prends une vieille bagnole (une belle, pas une épave) et tu fais le tour des Langhe. Vignobles, châteaux, petits villages. C'est touristique ? Oui. Mais c'est aussi vachement fun.",
+    "esp_auto_title": "Friends of Bikers & Cars Lovers",
+    "esp_auto_desc": "Tu roules à moto ou tu aimes les belles voitures ? On organise des sorties de groupe sur les routes des Langhe et du Roero. Pas de location : on part ensemble, on roule, on s'arrête bien manger. Point.",
     "esp_auto_tag": "Demande-nous",
     "esperienze_note": "T'es pas obligé de faire quoi que ce soit. Rester sur la pelouse à bouquiner, c'est très bien aussi.",
-
     "section_label_prenota": "Alors ?",
     "section_title_prenota": "Tu viens ?",
     "prenota_intro": "Regarde si les dates que tu veux sont libres, choisis et réserve. Simple.",
@@ -335,7 +312,6 @@
     "booking_summary_guests": "Qui vient",
     "booking_adults_label": "Vous êtes combien",
     "prenota_fallback": "Tu préfères nous écrire ?",
-
     "footer_explore_title": "Navigue",
     "footer_link_casa": "Où tu dors",
     "footer_link_servizi": "Ce qu'il y a",

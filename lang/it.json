@@ -1,8 +1,20 @@
 {
   "common": {
-    "months_short": ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"],
+    "months_short": [
+      "gen",
+      "feb",
+      "mar",
+      "apr",
+      "mag",
+      "giu",
+      "lug",
+      "ago",
+      "set",
+      "ott",
+      "nov",
+      "dic"
+    ],
     "scroll": "Scorri",
-
     "booking_step1_apt_oliva": "Appartamento Oliva",
     "booking_step1_apt_venica": "Appartamento Venica",
     "booking_apt_tag_available": "Disponibile",
@@ -20,7 +32,6 @@
     "booking_price_loading": "Calcolo prezzo...",
     "booking_price_error": "Errore nel calcolo prezzo",
     "booking_connection_error": "Errore di connessione",
-
     "booking_step2_name_label": "Nome e Cognome *",
     "booking_step2_email_label": "Email *",
     "booking_step2_phone_label": "Telefono *",
@@ -31,20 +42,16 @@
     "booking_pay_note": "Verrai reindirizzato a Stripe per il pagamento sicuro",
     "booking_pay_error": "Errore nella creazione del pagamento",
     "booking_pay_processing": "Elaborazione...",
-
     "validate_name": "Inserisci il tuo nome",
     "validate_email": "Inserisci la tua email",
     "validate_email_invalid": "Email non valida",
     "validate_phone": "Inserisci il tuo numero di telefono",
     "validate_privacy": "Devi accettare la privacy policy per procedere",
-
     "timer_complete_within": "Completa entro",
     "timer_expired": "Il tempo per completare la prenotazione è scaduto. Seleziona di nuovo le date.",
-
     "adults_count": "{count} adulto||{count} adulti",
     "children_count": "{count} bambino||{count} bambini",
     "guests_separator": " + ",
-
     "confirmation_loading": "Caricamento...",
     "confirmation_title": "Grazie per la tua prenotazione!",
     "confirmation_subtitle": "La prenotazione <strong>#{id}</strong> è stata confermata con successo.",
@@ -60,11 +67,9 @@
     "confirmation_thankyou": "Vi aspettiamo a CASIA!",
     "confirmation_fallback_title": "Prenotazione confermata!",
     "confirmation_fallback_subtitle": "Controlla la tua email per il riepilogo completo della prenotazione.",
-
     "banner_success": "Prenotazione confermata! Controlla la tua email per il riepilogo.",
     "banner_cancelled": "Pagamento annullato. Puoi riprovare quando vuoi.",
     "url_payment_error": "URL pagamento non disponibile",
-
     "print_title": "Conferma Prenotazione",
     "print_header": "CASIA Country House",
     "print_location": "Santo Stefano · Bene Vagienna · Cuneo",
@@ -80,41 +85,32 @@
     "print_total": "Totale pagato",
     "print_thanks": "Vi aspettiamo a CASIA!",
     "print_address": "Loc. Santo Stefano, Bene Vagienna (CN)",
-
     "footer_contacts": "Contatti",
     "footer_copyright": "© 2025 Casia Country House. Tutti i diritti riservati.",
     "footer_address": "Santo Stefano, Bene Vagienna (CN)<br>Piemonte, Italia",
-
     "modal_close": "Chiudi",
     "modal_prev": "Precedente",
     "modal_next": "Successivo",
-
     "oliva_name": "Oliva",
     "venica_name": "Venica"
   },
-
   "index": {
     "meta_description": "Casia Country House - Riposo autentico nella campagna piemontese. Casa vacanze a Santo Stefano, Bene Vagienna (Cuneo).",
     "og_title": "Casia Country House - Campagna Piemontese",
     "og_description": "Riposo autentico nella campagna piemontese. Una cascina storica restaurata con cura.",
-
     "nav_casa": "La Casa",
     "nav_servizi": "Servizi",
     "nav_territorio": "Territorio",
     "nav_esperienze": "Esperienze",
     "nav_prenota": "Prenota",
-
     "hero_title": "Riposo autentico nella campagna piemontese",
     "hero_subtitle": "Santo Stefano, Bene Vagienna",
     "hero_cta_discover": "Scopri la casa",
     "hero_cta_book": "Prenota ora",
-
     "intro_text": "Nel cuore delle colline del Cuneese, <strong>Casia Country House</strong> è un rifugio di pace dove il tempo rallenta. Una cascina storica restaurata con cura, che unisce il fascino dell'architettura piemontese tradizionale al comfort contemporaneo.",
-
     "section_label_alloggi": "I nostri alloggi",
     "section_title_casa": "La Casa",
     "appartamenti_intro": "Due appartamenti indipendenti, ciascuno con il proprio carattere e la propria storia. Entrambi con ingresso privato, giardino e accesso alla piscina.",
-
     "oliva_tag": "Disponibile",
     "oliva_description": "Al primo piano della cascina, l'appartamento Oliva vi accoglie con i suoi spazi luminosi e le travi a vista originali. Perfetto per coppie o piccole famiglie che cercano il comfort di una vera casa piemontese.",
     "oliva_spec_sqm": "mq",
@@ -128,7 +124,6 @@
     "oliva_feat_ac": "Aria condizionata",
     "oliva_feat_tv": "Smart TV",
     "oliva_cta": "Prenota questo appartamento",
-
     "venica_tag": "Prossimamente",
     "venica_description": "Al piano terra con accesso diretto al giardino, l'appartamento Venica è attualmente in fase di ristrutturazione. Presto sarà pronto ad accogliervi con ambienti rinnovati e tutti i comfort moderni.",
     "venica_placeholder_title": "In ristrutturazione",
@@ -142,10 +137,8 @@
     "venica_feat_ac": "Aria condizionata",
     "venica_coming_note": "Disponibile da Estate 2026 — Contattaci per info",
     "venica_cta_disabled": "Disponibile da Estate 2026",
-
     "cascina_title": "La Cascina",
     "cascina_subtitle": "Un angolo di Piemonte tutto per voi, dove i colori caldi della facciata accolgono ogni arrivo",
-
     "section_label_comfort": "Comfort",
     "section_title_servizi": "I Nostri Servizi",
     "service_wifi_title": "WiFi Gratuito",
@@ -166,7 +159,6 @@
     "service_pets_desc": "Benvenuti amici a 4 zampe di piccola taglia",
     "service_bbq_title": "Barbecue",
     "service_bbq_desc": "Area BBQ attrezzata nel giardino",
-
     "section_label_dintorni": "Dintorni",
     "section_title_territorio": "Il Territorio",
     "territorio_intro": "Casia Country House è il punto di partenza ideale per esplorare le meraviglie del Piemonte meridionale, tra borghi storici, vigneti pregiati e paesaggi incantati.",
@@ -182,17 +174,15 @@
     "distanza_cuneo": "<strong>Cuneo</strong> — 42 km",
     "distanza_alba": "<strong>Alba</strong> — 34 km",
     "distanza_torino": "<strong>Torino</strong> — 70 km",
-
     "section_label_esperienze": "Vivi il territorio",
     "section_title_esperienze": "Esperienze",
     "esp_tartufo_title": "Caccia al Tartufo",
     "esp_tartufo_desc": "Una mattinata immersi nei boschi delle Langhe, accompagnati da un tartufaio esperto e dal suo fedele cane. Scoprirete i segreti di questa tradizione antica e, con un po' di fortuna, porterete a casa il vostro prezioso bottino.",
     "esp_tartufo_tag": "Su richiesta",
-    "esp_auto_title": "Tour in Auto d'Epoca",
-    "esp_auto_desc": "Esplorate le colline patrimonio UNESCO al volante di un'elegante auto d'epoca. Un itinerario tra vigneti, castelli e borghi incantati, per vivere le Langhe con lo stile e il fascino di un tempo.",
-    "esp_auto_tag": "Su richiesta",
+    "esp_auto_title": "Friends of Bikers & Cars Lovers",
+    "esp_auto_desc": "Uscite di gruppo organizzate per chi ama le due e le quattro ruote: itinerari panoramici tra Langhe e Roero, curve dolci, borghi e soste golose, in compagnia di chi conosce ogni strada. Non è un noleggio: è un giro tra amici.",
+    "esp_auto_tag": "Uscite organizzate",
     "esperienze_note": "Contattaci per organizzare la tua esperienza su misura",
-
     "section_label_prenota": "Soggiorna",
     "section_title_prenota": "Prenota il tuo soggiorno",
     "prenota_intro": "Scegli le date, verifica la disponibilità in tempo reale e prenota in pochi passi.",
@@ -204,36 +194,29 @@
     "booking_step2_title": "2. I tuoi dati",
     "booking_pay_btn": "Prenota e paga",
     "prenota_fallback": "Preferisci il contatto diretto?",
-
     "footer_explore_title": "Esplora",
     "footer_link_casa": "La Casa",
     "footer_link_servizi": "Servizi",
     "footer_link_territorio": "Territorio",
     "footer_link_prenota": "Prenota"
   },
-
   "amici": {
     "meta_description": "Casia Country House - Una cascina vera in Piemonte dove staccare davvero. Niente fronzoli, solo pace.",
     "og_title": "Casia Country House - Vieni a trovarci",
     "og_description": "Una cascina vera in Piemonte dove staccare davvero.",
-
     "nav_casa": "Dove dormi",
     "nav_servizi": "Cosa c'è",
     "nav_territorio": "Zona",
     "nav_esperienze": "Da fare",
     "nav_prenota": "Vieni",
-
     "hero_title": "Quella casa in campagna che cercavi",
     "hero_subtitle": "Piemonte, colline del Cuneese",
     "hero_cta_discover": "Fammi vedere",
     "hero_cta_book": "Voglio venire",
-
     "intro_text": "Sai quando dici \"basta, ho bisogno di staccare\"? Ecco, <strong>Casia</strong> è quel posto. Una cascina vecchia di cent'anni, sistemata come si deve, in mezzo alle colline. Niente di finto, niente di costruito per i turisti. Solo una casa vera dove il telefono prende poco e va benissimo così.",
-
     "section_label_alloggi": "Dove starai",
     "section_title_casa": "Gli appartamenti",
     "appartamenti_intro": "Sono due, separati, ognuno con la sua porta e il suo pezzo di giardino. Non vi incrociate con nessuno se non volete. E la piscina è lì per tutti.",
-
     "oliva_tag": "Disponibile",
     "oliva_description": "Al primo piano. Travi a vista vere (non quelle finte da Ikea), luce che entra da tutte le parti, e quel silenzio che in città te lo scordi. Perfetto se siete in due, o in quattro spremendovi un po' sul divano letto.",
     "oliva_spec_sqm": "mq",
@@ -247,7 +230,6 @@
     "oliva_feat_ac": "Aria condizionata (d'estate serve)",
     "oliva_feat_tv": "TV (ma spegnila ogni tanto)",
     "oliva_cta": "Voglio venire qui",
-
     "venica_tag": "Ci stiamo lavorando",
     "venica_description": "Piano terra, esci e sei in giardino. Lo stiamo sistemando adesso — muratori, imbianchini, il solito casino. Ma quando sarà pronto sarà una bomba. Fidati.",
     "venica_placeholder_title": "Lavori in corso",
@@ -261,10 +243,8 @@
     "venica_feat_ac": "Aria condizionata",
     "venica_coming_note": "Estate 2026, se tutto va bene. Scrivici se vuoi sapere come procede.",
     "venica_cta_disabled": "Ancora non si può, sorry",
-
     "cascina_title": "La cascina",
     "cascina_subtitle": "Quella che vedi nelle foto è proprio quella. Niente filtri, niente trucchi. È così.",
-
     "section_label_comfort": "Il pratico",
     "section_title_servizi": "Cosa trovi",
     "service_wifi_title": "WiFi",
@@ -285,7 +265,6 @@
     "service_pets_desc": "Piccoli, educati. Niente alani.",
     "service_bbq_title": "Barbecue",
     "service_bbq_desc": "Griglia pronta. Porta la carne.",
-
     "section_label_dintorni": "Dove sei",
     "section_title_territorio": "La zona",
     "territorio_intro": "Siamo nel Cuneese, sotto le Langhe. Tradotto: vino buono ovunque, tartufi in stagione, colline che sembrano dipinte. E nessuno che ti stressa.",
@@ -301,17 +280,15 @@
     "distanza_cuneo": "<strong>Cuneo</strong> — 42 km, 40 minuti",
     "distanza_alba": "<strong>Alba</strong> — 34 km, mezz'ora",
     "distanza_torino": "<strong>Torino</strong> — 70 km, un'oretta",
-
     "section_label_esperienze": "Se ti va",
     "section_title_esperienze": "Cose da fare",
     "esp_tartufo_title": "Andare a tartufi",
     "esp_tartufo_desc": "Un tizio del posto ti porta nel bosco col suo cane. Cerchi tartufi per un paio d'ore, capisci come funziona, e se trovi qualcosa te lo porti a casa. È una di quelle esperienze che poi racconti.",
     "esp_tartufo_tag": "Chiedici",
-    "esp_auto_title": "Giro in auto d'epoca",
-    "esp_auto_desc": "Prendi una macchina vecchia (bella, non un catorcio) e giri per le Langhe. Vigneti, castelli, paesini. È turistico? Sì. Ma è anche divertente da matti.",
+    "esp_auto_title": "Friends of Bikers & Cars Lovers",
+    "esp_auto_desc": "Se vai in moto o ami le belle macchine, organizziamo uscite di gruppo sulle strade di Langhe e Roero. Niente noleggio: si parte insieme, si guida, ci si ferma a mangiare bene. Fine.",
     "esp_auto_tag": "Chiedici",
     "esperienze_note": "Non devi per forza fare niente. Stare sul prato a leggere va benissimo.",
-
     "section_label_prenota": "Allora?",
     "section_title_prenota": "Vieni?",
     "prenota_intro": "Guarda se le date che vuoi sono libere, scegli e prenota. Semplice.",
@@ -335,7 +312,6 @@
     "booking_summary_guests": "Chi viene",
     "booking_adults_label": "Quanti siete",
     "prenota_fallback": "Preferisci scriverci?",
-
     "footer_explore_title": "Naviga",
     "footer_link_casa": "Dove dormi",
     "footer_link_servizi": "Cosa c'è",

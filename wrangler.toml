@@ -28,3 +28,7 @@ bucket_name = "casia-documents"
 # - STRIPE_WEBHOOK_SECRET
 # - RESEND_API_KEY
 # - ADMIN_PASSWORD
+
+# Sincronizzazione iCal Booking.com ogni 3 ore
+[triggers]
+crons = ["0 */3 * * *"]

@@ -1228,6 +1228,23 @@
             </div>
             <button class="btn btn-primary" id="btn-save-access-settings">Salva istruzioni</button>
         </div>
+        <div class="admin-card" style="margin-top:20px;">
+            <h3>Sincronizzazione Booking.com (iCal)</h3>
+            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;">Incolla le URL dei calendari esportati da Booking.com (extranet &rarr; Calendario &rarr; Sincronizzazione calendari &rarr; Esporta calendario). La sincronizzazione avviene in automatico ogni 3 ore, oppure subito col bottone.</p>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>URL iCal Appartamento Oliva</label>
+                <input type="url" id="setting-ical-oliva" placeholder="https://ical.booking.com/v1/export?t=..." style="width:100%;box-sizing:border-box;">
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+                <label>URL iCal Appartamento Venica</label>
+                <input type="url" id="setting-ical-venica" placeholder="https://ical.booking.com/v1/export?t=..." style="width:100%;box-sizing:border-box;">
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <button class="btn btn-primary" id="btn-save-ical-settings">Salva URL</button>
+                <button class="btn" id="btn-sync-ical">&#8635; Sincronizza ora</button>
+                <span id="ical-sync-status" style="font-size:0.82rem;color:var(--text-light);"></span>
+            </div>
+        </div>
     </div>
 
     <!-- Marketing Panel -->
@@ -2976,6 +2993,14 @@ footer { margin-top:14px; font-size:8pt; color:#8a8078; display:flex; justify-co
         document.getElementById('setting-tax-enabled').value = s.tourist_tax_enabled || '1';
         document.getElementById('setting-access-oliva').value = s.access_instructions_oliva || '';
         document.getElementById('setting-access-venica').value = s.access_instructions_venica || '';
+        document.getElementById('setting-ical-oliva').value = s.ical_url_oliva || '';
+        document.getElementById('setting-ical-venica').value = s.ical_url_venica || '';
+        if (s.ical_last_sync) {
+            try {
+                const last = JSON.parse(s.ical_last_sync);
+                document.getElementById('ical-sync-status').textContent = 'Ultima sincronizzazione: ' + new Date(last.at).toLocaleString('it-IT');
+            } catch (e) {}
+        }
     }
 
     document.getElementById('btn-save-settings').addEventListener('click', async function() {
@@ -2997,6 +3022,37 @@ footer { margin-top:14px; font-size:8pt; color:#8a8078; display:flex; justify-co
         } else {
             toast(data.error || 'Errore', 'error');
         }
+    });
+
+    document.getElementById('btn-save-ical-settings').addEventListener('click', async function() {
+        const settings = {
+            ical_url_oliva: document.getElementById('setting-ical-oliva').value.trim(),
+            ical_url_venica: document.getElementById('setting-ical-venica').value.trim(),
+        };
+        const res = await apiFetch('/settings', { method: 'PUT', body: JSON.stringify({ settings }) });
+        if (res && res.ok) toast('URL iCal salvate', 'success'); else toast('Errore nel salvataggio', 'error');
+    });
+
+    document.getElementById('btn-sync-ical').addEventListener('click', async function() {
+        const btn = this;
+        btn.disabled = true;
+        document.getElementById('ical-sync-status').textContent = 'Sincronizzazione in corso...';
+        const res = await apiFetch('/sync-ical', { method: 'POST' });
+        btn.disabled = false;
+        if (!res) return;
+        const data = await res.json();
+        if (!data.ok) {
+            document.getElementById('ical-sync-status').textContent = data.message || 'Nessun feed configurato';
+            toast(data.message || 'Nessun feed configurato', 'error');
+            return;
+        }
+        const parts = data.reports.map(function(r) {
+            if (r.error) return r.apartment + ': errore (' + r.error + ')';
+            return r.apartment + ': ' + r.events + ' eventi, +' + r.imported + ' nuove, ' + r.updated + ' aggiornate, ' + r.cancelled + ' cancellate';
+        });
+        document.getElementById('ical-sync-status').textContent = parts.join(' · ');
+        toast('Sincronizzazione completata', 'success');
+        loadReservations();
     });
 
     document.getElementById('btn-save-access-settings').addEventListener('click', async function() {

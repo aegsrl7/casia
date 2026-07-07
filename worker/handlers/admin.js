@@ -1,3 +1,4 @@
+import { handleSyncIcal } from './ical.js';
 // Handler per API Admin (protette da password)
 
 import { handleAdminGetCheckin, handleAdminVerify, handleAdminSendAccess, handleAlloggiatiExport } from './checkin.js';
@@ -636,6 +637,11 @@ export async function handleAdmin(request, env, path) {
   // GET /api/admin/reservations
   if (method === 'GET' && path === '/api/admin/reservations') {
     return getReservations(request, env);
+  }
+
+  // POST /api/admin/sync-ical
+  if (method === 'POST' && path === '/api/admin/sync-ical') {
+    return handleSyncIcal(request, env);
   }
 
   // POST /api/admin/external-booking
