@@ -74,10 +74,9 @@
   }
   .scene-caption {
     position: absolute; z-index: 3; left: clamp(24px, 7vw, 110px); bottom: clamp(60px, 12vh, 130px);
-    max-width: 620px; opacity: 0; transform: translateY(26px); transition: opacity 0.8s ease, transform 0.8s ease;
+    max-width: 620px; opacity: 0; transform: translateY(60px); will-change: transform, opacity;
     pointer-events: none;
   }
-  .scene-caption.active { opacity: 1; transform: translateY(0); }
   .scene-caption h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(2.1rem, 5.5vw, 4.2rem); line-height: 1.04; color: #fff; text-shadow: 0 3px 26px rgba(0,0,0,0.7); margin-top: 12px; }
   .scene-caption p { margin-top: 14px; font-weight: 200; font-size: clamp(0.95rem, 1.8vw, 1.1rem); color: rgba(248,245,240,0.88); }
   .placeholder-note { display: inline-block; margin-top: 14px; font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(212,184,150,0.75); border: 1px solid rgba(212,184,150,0.35); padding: 4px 10px; border-radius: 20px; }
@@ -132,11 +131,11 @@
 <!-- TOUR -->
 <div class="tour" id="tour">
   <div class="tour-viewport">
-    <video class="scene-media" data-scene="0" src="videos/drone.mp4" poster="videos/drone-poster.jpg" muted loop playsinline preload="metadata"></video>
-    <video class="scene-media" data-scene="1" src="videos/piscina.mp4" poster="videos/piscina-poster.jpg" muted loop playsinline preload="metadata"></video>
-    <video class="scene-media" data-scene="2" src="videos/vigna.mp4" poster="videos/vigna-poster.jpg" muted loop playsinline preload="metadata"></video>
-    <video class="scene-media" data-scene="3" src="videos/terrazza.mp4" poster="videos/terrazza-poster.jpg" muted loop playsinline preload="metadata"></video>
-    <video class="scene-media" data-scene="4" src="videos/camera.mp4" poster="videos/camera-poster.jpg" muted loop playsinline preload="metadata"></video>
+    <video class="scene-media" data-scene="0" src="videos/drone.mp4" poster="videos/drone-poster.jpg" muted playsinline preload="auto"></video>
+    <video class="scene-media" data-scene="1" src="videos/piscina.mp4" poster="videos/piscina-poster.jpg" muted playsinline preload="auto"></video>
+    <video class="scene-media" data-scene="2" src="videos/vigna.mp4" poster="videos/vigna-poster.jpg" muted playsinline preload="auto"></video>
+    <video class="scene-media" data-scene="3" src="videos/terrazza.mp4" poster="videos/terrazza-poster.jpg" muted playsinline preload="auto"></video>
+    <video class="scene-media" data-scene="4" src="videos/camera.mp4" poster="videos/camera-poster.jpg" muted playsinline preload="auto"></video>
     <div class="scene-shade"></div>
 
     <div class="scene-caption" data-scene="0">
@@ -190,40 +189,72 @@
 <script>
 (function () {
   var SCENES = 5;
+  var VH_PER_SCENE = 220; // scroll necessario per far avanzare ogni scena
   var tour = document.getElementById('tour');
-  // Altezza totale: una "pagina" di scroll per scena
-  tour.style.height = (SCENES * 160) + 'vh';
+  tour.style.height = (SCENES * VH_PER_SCENE) + 'vh';
 
   var medias = Array.prototype.slice.call(document.querySelectorAll('.scene-media'));
   var captions = Array.prototype.slice.call(document.querySelectorAll('.scene-caption'));
   var indexLabel = document.getElementById('scene-index');
   var current = -1;
+  var ticking = false;
 
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
-  function setScene(i) {
+  function setActive(i) {
     if (i === current) return;
     current = i;
-    medias.forEach(function (v, k) {
-      var on = (k === i);
-      v.classList.toggle('active', on);
-      if (on) { v.play().catch(function () {}); }
-      else { v.pause(); }
-    });
-    captions.forEach(function (c, k) { c.classList.toggle('active', k === i); });
+    medias.forEach(function (v, k) { v.classList.toggle('active', k === i); });
     indexLabel.textContent = pad(i + 1) + ' / ' + pad(SCENES);
   }
 
-  function onScroll() {
+  function update() {
+    ticking = false;
     var rect = tour.getBoundingClientRect();
     var total = tour.offsetHeight - window.innerHeight;
-    var progress = Math.min(Math.max(-rect.top / total, 0), 0.9999);
-    setScene(Math.floor(progress * SCENES));
+    if (total <= 0) return;
+    var p = Math.min(Math.max(-rect.top / total, 0), 0.9999);
+    var scene = Math.floor(p * SCENES);
+    var local = p * SCENES - scene; // 0..1 dentro la scena
+
+    setActive(scene);
+
+    // Il video avanza SOLO con lo scroll: currentTime legato al progresso
+    var v = medias[scene];
+    if (v && v.readyState >= 1 && !isNaN(v.duration)) {
+      var t = local * Math.max(v.duration - 0.05, 0);
+      if (Math.abs((v.currentTime || 0) - t) > 0.01) { v.currentTime = t; }
+    }
+
+    // Didascalia: sale dal basso seguendo lo scroll, poi esce verso l'alto
+    captions.forEach(function (c, k) {
+      if (k !== scene) { c.style.opacity = 0; return; }
+      var y, o;
+      if (local < 0.30) {            // entra dal basso
+        var e = local / 0.30;
+        y = 90 * (1 - e); o = e;
+      } else if (local < 0.75) {     // resta leggibile, deriva leggera
+        var m = (local - 0.30) / 0.45;
+        y = -14 * m; o = 1;
+      } else {                       // esce verso l'alto
+        var u = (local - 0.75) / 0.25;
+        y = -14 - 70 * u; o = 1 - u;
+      }
+      c.style.transform = 'translateY(' + y + 'px)';
+      c.style.opacity = o;
+    });
   }
+
+  function onScroll() {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+  }
+
+  // Precarica i metadati per avere subito duration
+  medias.forEach(function (v) { v.load(); });
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
-  onScroll();
+  update();
 })();
 </script>
 
