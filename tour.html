@@ -131,11 +131,7 @@
 <!-- TOUR -->
 <div class="tour" id="tour">
   <div class="tour-viewport">
-    <video class="scene-media" data-scene="0" src="videos/drone.mp4" poster="videos/drone-poster.jpg" muted playsinline preload="auto"></video>
-    <video class="scene-media" data-scene="1" src="videos/piscina.mp4" poster="videos/piscina-poster.jpg" muted playsinline preload="auto"></video>
-    <video class="scene-media" data-scene="2" src="videos/vigna.mp4" poster="videos/vigna-poster.jpg" muted playsinline preload="auto"></video>
-    <video class="scene-media" data-scene="3" src="videos/terrazza.mp4" poster="videos/terrazza-poster.jpg" muted playsinline preload="auto"></video>
-    <video class="scene-media" data-scene="4" src="videos/camera.mp4" poster="videos/camera-poster.jpg" muted playsinline preload="auto"></video>
+    <video class="scene-media active" id="tour-video" src="videos/tour.mp4" poster="videos/tour-poster.jpg" muted playsinline preload="auto"></video>
     <div class="scene-shade"></div>
 
     <div class="scene-caption" data-scene="0">
@@ -189,24 +185,16 @@
 <script>
 (function () {
   var SCENES = 5;
-  var VH_PER_SCENE = 220; // scroll necessario per far avanzare ogni scena
+  var VH_PER_SCENE = 220; // scroll necessario per ogni scena
   var tour = document.getElementById('tour');
   tour.style.height = (SCENES * VH_PER_SCENE) + 'vh';
 
-  var medias = Array.prototype.slice.call(document.querySelectorAll('.scene-media'));
+  var video = document.getElementById('tour-video');
   var captions = Array.prototype.slice.call(document.querySelectorAll('.scene-caption'));
   var indexLabel = document.getElementById('scene-index');
-  var current = -1;
   var ticking = false;
 
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
-
-  function setActive(i) {
-    if (i === current) return;
-    current = i;
-    medias.forEach(function (v, k) { v.classList.toggle('active', k === i); });
-    indexLabel.textContent = pad(i + 1) + ' / ' + pad(SCENES);
-  }
 
   function update() {
     ticking = false;
@@ -214,29 +202,28 @@
     var total = tour.offsetHeight - window.innerHeight;
     if (total <= 0) return;
     var p = Math.min(Math.max(-rect.top / total, 0), 0.9999);
-    var scene = Math.floor(p * SCENES);
-    var local = p * SCENES - scene; // 0..1 dentro la scena
 
-    setActive(scene);
-
-    // Il video avanza SOLO con lo scroll: currentTime legato al progresso
-    var v = medias[scene];
-    if (v && v.readyState >= 1 && !isNaN(v.duration)) {
-      var t = local * Math.max(v.duration - 0.05, 0);
-      if (Math.abs((v.currentTime || 0) - t) > 0.01) { v.currentTime = t; }
+    // Il video unico avanza SOLO con lo scroll
+    if (video.readyState >= 1 && !isNaN(video.duration)) {
+      var t = p * Math.max(video.duration - 0.05, 0);
+      if (Math.abs((video.currentTime || 0) - t) > 0.01) { video.currentTime = t; }
     }
 
-    // Didascalia: sale dal basso seguendo lo scroll, poi esce verso l'alto
+    var scene = Math.floor(p * SCENES);
+    var local = p * SCENES - scene; // 0..1 dentro la scena
+    indexLabel.textContent = pad(scene + 1) + ' / ' + pad(SCENES);
+
+    // Didascalie: salgono dal basso col cursore, poi escono verso l'alto
     captions.forEach(function (c, k) {
       if (k !== scene) { c.style.opacity = 0; return; }
       var y, o;
-      if (local < 0.30) {            // entra dal basso
+      if (local < 0.30) {
         var e = local / 0.30;
         y = 90 * (1 - e); o = e;
-      } else if (local < 0.75) {     // resta leggibile, deriva leggera
+      } else if (local < 0.75) {
         var m = (local - 0.30) / 0.45;
         y = -14 * m; o = 1;
-      } else {                       // esce verso l'alto
+      } else {
         var u = (local - 0.75) / 0.25;
         y = -14 - 70 * u; o = 1 - u;
       }
@@ -249,9 +236,7 @@
     if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
   }
 
-  // Precarica i metadati per avere subito duration
-  medias.forEach(function (v) { v.load(); });
-
+  video.load();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   update();
