@@ -51,6 +51,22 @@ async function syncApartment(env, apartment, url) {
   const events = parseIcs(await res.text());
 
   const today = new Date().toISOString().split('T')[0];
+
+  // Protezione: se il feed è vuoto ma abbiamo prenotazioni future sincronizzate,
+  // probabilmente il link è stato rigenerato o è rotto. Non cancellare nulla.
+  if (events.length === 0) {
+    const future = await env.DB.prepare(
+      `SELECT COUNT(*) AS n FROM reservations
+       WHERE source = 'booking' AND external_ref LIKE 'ical:%' AND apartment = ?
+         AND checkin >= ? AND status = 'confirmed'`
+    ).bind(apartment, today).first();
+    if (future && future.n > 0) {
+      return {
+        apartment, events: 0, imported: 0, updated: 0, cancelled: 0, closedDays: 0,
+        warning: `Feed vuoto ma ${future.n} prenotazioni future presenti: nessuna modifica applicata. Verificare che il link iCal sia ancora valido.`,
+      };
+    }
+  }
   // Su Booking si prenota al massimo 16 mesi in anticipo: eventi oltre
   // quell'orizzonte sono chiusure di calendario, non soggiorni.
   const horizon = new Date();
