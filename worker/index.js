@@ -7,6 +7,7 @@ import { handleWebhook } from './handlers/webhook.js';
 import { handleAdmin } from './handlers/admin.js';
 import { handleGetCheckin, handleSaveTravelers, handleDocUpload } from './handlers/checkin.js';
 import { syncIcal } from './handlers/ical.js';
+import { handleIcalExport } from './handlers/ical-export.js';
 
 // Header CORS per le API
 const corsHeaders = {
@@ -40,6 +41,12 @@ export default {
     // --- API Routes ---
     if (path.startsWith('/api/')) {
       try {
+        // Export iCal pubblico (protetto da token) per Booking.com e altri canali
+        const icalMatch = path.match(/^\/api\/ical\/(oliva|venica)\.ics$/);
+        if (request.method === 'GET' && icalMatch) {
+          return handleIcalExport(request, env, icalMatch[1]);
+        }
+
         // Disponibilità
         if (request.method === 'GET' && path === '/api/availability') {
           const res = await handleAvailability(request, env);
