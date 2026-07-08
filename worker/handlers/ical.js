@@ -51,10 +51,19 @@ async function syncApartment(env, apartment, url) {
   const events = parseIcs(await res.text());
 
   const today = new Date().toISOString().split('T')[0];
+  // Su Booking si prenota al massimo 16 mesi in anticipo: eventi oltre
+  // quell'orizzonte sono chiusure di calendario, non soggiorni.
+  const horizon = new Date();
+  horizon.setUTCMonth(horizon.getUTCMonth() + 16);
+  const horizonStr = horizon.toISOString().split('T')[0];
+
+  const stays = events.filter(ev => ev.start <= horizonStr);
+  const closures = events.filter(ev => ev.start > horizonStr);
+
   const seen = [];
   let imported = 0, updated = 0;
 
-  for (const ev of events) {
+  for (const ev of stays) {
     if (!ev.uid) ev.uid = `${ev.start}_${ev.end}`;
     const ref = `ical:${ev.uid}`;
     seen.push(ref);
@@ -85,6 +94,24 @@ async function syncApartment(env, apartment, url) {
     }
   }
 
+  // Chiusure di calendario → date bloccate (ricostruite a ogni sync)
+  await env.DB.prepare(
+    "DELETE FROM blocked_dates WHERE apartment = ? AND reason LIKE 'Booking.com iCal%' AND date >= ?"
+  ).bind(apartment, today).run();
+  let closedDays = 0;
+  for (const ev of closures) {
+    let d = new Date(ev.start + 'T00:00:00Z');
+    const end = new Date(ev.end + 'T00:00:00Z');
+    while (d < end) {
+      const ds = d.toISOString().split('T')[0];
+      await env.DB.prepare(
+        'INSERT INTO blocked_dates (apartment, date, reason) VALUES (?, ?, ?) ON CONFLICT(apartment, date) DO NOTHING'
+      ).bind(apartment, ds, 'Booking.com iCal (chiusura calendario)').run();
+      closedDays++;
+      d.setUTCDate(d.getUTCDate() + 1);
+    }
+  }
+
   // Prenotazioni future importate in passato ma sparite dal feed → cancellate su Booking
   let cancelled = 0;
   if (events.length >= 0) {
@@ -102,7 +129,7 @@ async function syncApartment(env, apartment, url) {
     }
   }
 
-  return { apartment, events: events.length, imported, updated, cancelled };
+  return { apartment, events: events.length, imported, updated, cancelled, closedDays };
 }
 
 /**
