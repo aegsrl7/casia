@@ -42,9 +42,9 @@ export default {
     if (path.startsWith('/api/')) {
       try {
         // Export iCal pubblico (protetto da token) per Booking.com e altri canali
-        const icalMatch = path.match(/^\/api\/ical\/(oliva|venica)\.ics$/);
-        if (request.method === 'GET' && icalMatch) {
-          return handleIcalExport(request, env, icalMatch[1]);
+        const icalMatch = path.match(/^\/api\/ical\/(oliva|venica)(?:-([a-f0-9]{16,64}))?\.ics$/);
+        if ((request.method === 'GET' || request.method === 'HEAD') && icalMatch) {
+          return handleIcalExport(request, env, icalMatch[1], icalMatch[2] || null);
         }
 
         // Disponibilità

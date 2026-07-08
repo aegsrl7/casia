@@ -32,9 +32,9 @@ function daysToRanges(days) {
   });
 }
 
-export async function handleIcalExport(request, env, apartment) {
+export async function handleIcalExport(request, env, apartment, pathKey) {
   const url = new URL(request.url);
-  const key = url.searchParams.get('key') || '';
+  const key = pathKey || url.searchParams.get('key') || '';
 
   const setting = await env.DB.prepare(
     "SELECT value FROM settings WHERE key = 'ical_export_key'"
@@ -94,12 +94,26 @@ export async function handleIcalExport(request, env, apartment) {
     );
   }
 
+  // Alcuni importatori rifiutano i calendari senza eventi: sentinella nel passato
+  if (reservations.results.length === 0 && blocked.results.length === 0) {
+    lines.push(
+      'BEGIN:VEVENT',
+      `UID:casia-sentinel-${apartment}@casiavacanze.com`,
+      `DTSTAMP:${now}`,
+      'DTSTART;VALUE=DATE:20260101',
+      'DTEND;VALUE=DATE:20260102',
+      'SUMMARY:CASIA - Sincronizzazione attiva',
+      'END:VEVENT'
+    );
+  }
+
   lines.push('END:VCALENDAR');
 
-  return new Response(lines.join('\r\n'), {
+  const body = lines.join('\r\n') + '\r\n';
+  return new Response(request.method === 'HEAD' ? null : body, {
     headers: {
       'Content-Type': 'text/calendar; charset=utf-8',
-      'Content-Disposition': `attachment; filename="casia-${apartment}.ics"`,
+      'Content-Length': String(new TextEncoder().encode(body).length),
       'Cache-Control': 'no-cache',
     },
   });
