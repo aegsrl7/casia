@@ -1739,12 +1739,13 @@
             let lanes = '';
             ['oliva', 'venica'].forEach(apt => {
                 const cls = apt === 'oliva' ? 'o' : 'v';
+                const sig = apt === 'oliva' ? 'O' : 'V';
                 const res = rows.find(r => r.apartment === apt && r.checkin <= ds && ds < r.checkout);
                 if (res) {
                     if (res.checkin === ds) {
                         const who = res.source === 'booking' && /^Booking/i.test(res.guest_name || '')
                             ? 'Booking' : esc((res.guest_name || '').split(' ').pop());
-                        lanes += '<div class="lane ' + cls + ' in">&#9654; ' + who + '</div>';
+                        lanes += '<div class="lane ' + cls + ' big"><div class="lab">' + sig + ' &#9654; ' + who + '</div><div class="inklines"></div></div>';
                     } else {
                         lanes += '<div class="lane ' + cls + ' cont"></div>';
                     }
@@ -1752,7 +1753,7 @@
                     lanes += '<div class="lane blk"></div>';
                 }
             });
-            cells.push('<td class="day' + weekend + '"><span class="dn">' + day + '</span>' + lanes + '<div class="write"></div></td>');
+            cells.push('<td class="day' + weekend + '"><span class="dn">' + day + '</span>' + lanes + '</td>');
         }
         while (cells.length % 7 !== 0) cells.push('<td class="empty"></td>');
         let calRows = '';
@@ -1778,9 +1779,9 @@
         return '<!DOCTYPE html><html lang="it"><head><meta charset="utf-8">' +
 '<title>Prenotazioni ' + title + '</title>' +
 '<style>' +
-'@page { size: A4 landscape; margin: 9mm; }' +
+'@page { size: A4 landscape; margin: 12mm; }' +
 '* { margin:0; padding:0; box-sizing:border-box; }' +
-'body { font-family: \'Helvetica Neue\', Arial, sans-serif; color:#2D2926; }' +
+'body { font-family: \'Helvetica Neue\', Arial, sans-serif; color:#2D2926; -webkit-print-color-adjust: exact; print-color-adjust: exact; }' +
 'header { display:flex; justify-content:space-between; align-items:baseline; border-bottom:2px solid #B8956B; padding-bottom:4px; margin-bottom:6px; }' +
 'h1 { font-family: Georgia, serif; font-size:14pt; font-weight:600; letter-spacing:2px; color:#B8956B; }' +
 'h1 small { color:#2D2926; font-weight:normal; letter-spacing:0; }' +
@@ -1792,17 +1793,17 @@
 '.dot.b { background:#e2e2e2; border:1px solid #aaa; }' +
 'table.cal { width:100%; border-collapse:collapse; table-layout:fixed; }' +
 'table.cal th { font-size:7.5pt; text-transform:uppercase; letter-spacing:1px; color:#8a8078; border:1px solid #d8d0c4; padding:2px; background:#faf7f2; }' +
-'table.cal td { border:1px solid #d8d0c4; vertical-align:top; height:' + (168 / weeks).toFixed(1) + 'mm; padding:1.5mm; position:relative; }' +
+'table.cal td { border:1px solid #d8d0c4; vertical-align:top; height:' + (158 / weeks).toFixed(1) + 'mm; padding:1.5mm; }' +
 'td.weekend { background:#faf7f2; }' +
 'td.empty { background:#f1ede6; }' +
 '.dn { font-size:8.5pt; font-weight:600; color:#8a8078; }' +
-'.lane { font-size:7pt; border-radius:2px; padding:0.6mm 1mm; margin-top:0.8mm; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }' +
-'.lane.o { background:#e8d5bc; border:1px solid #B8956B; }' +
+'.lane { font-size:7pt; border-radius:2px; margin-top:0.8mm; overflow:hidden; }' +
+'.lane.o { background:#efe2cd; border:1.5px solid #B8956B; }' +
 '.lane.v { background:#fff; border:1.5px solid #2D2926; }' +
+'.lane.big .lab { font-weight:600; padding:0.6mm 1mm 0; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }' +
+'.lane.big .inklines { height:9.5mm; margin:0 1mm 0.6mm; background-image: repeating-linear-gradient(to bottom, transparent, transparent 4.2mm, #b7a88f 4.2mm, #b7a88f 4.4mm); }' +
 '.lane.cont { height:2.2mm; padding:0; }' +
 '.lane.blk { background:#e2e2e2; border:1px solid #aaa; height:2.2mm; padding:0; }' +
-'.write { position:absolute; left:1.5mm; right:1.5mm; bottom:1mm; height:9mm; ' +
-'background-image: repeating-linear-gradient(to bottom, transparent, transparent 4mm, #d8d0c4 4mm, #d8d0c4 4.2mm); }' +
 '.pagina2 { page-break-before: always; }' +
 'table.list { width:100%; border-collapse:collapse; margin-top:4mm; }' +
 'table.list th { text-align:left; font-size:8pt; text-transform:uppercase; letter-spacing:0.5px; color:#8a8078; border-bottom:1.5px solid #2D2926; padding:3px 5px; }' +
