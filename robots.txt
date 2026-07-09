@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin
+Disallow: /checkin
+Allow: /
+
+Sitemap: https://casiavacanze.com/sitemap.xml
