@@ -71,7 +71,7 @@
     "banner_cancelled": "Payment cancelled. You can try again whenever you like.",
     "url_payment_error": "Payment URL not available",
     "print_title": "Booking Confirmation",
-    "print_header": "CASIA Country House",
+    "print_header": "Casia Vacanze",
     "print_location": "Santo Stefano · Bene Vagienna · Cuneo",
     "print_badge": "Booking confirmed",
     "print_details_title": "Booking details",
@@ -86,7 +86,7 @@
     "print_thanks": "We look forward to welcoming you at CASIA!",
     "print_address": "Loc. Santo Stefano, Bene Vagienna (CN)",
     "footer_contacts": "Contacts",
-    "footer_copyright": "© 2025 Casia Country House. All rights reserved.",
+    "footer_copyright": "© 2025 Casia Vacanze. All rights reserved.",
     "footer_address": "Santo Stefano, Bene Vagienna (CN)<br>Piedmont, Italy",
     "modal_close": "Close",
     "modal_prev": "Previous",
@@ -95,8 +95,8 @@
     "venica_name": "Venica"
   },
   "index": {
-    "meta_description": "Casia Country House - Authentic rest in the Piedmontese countryside. Holiday home in Santo Stefano, Bene Vagienna (Cuneo).",
-    "og_title": "Casia Country House - Piedmontese Countryside",
+    "meta_description": "Casia Vacanze - Authentic rest in the Piedmontese countryside. Holiday home in Santo Stefano, Bene Vagienna (Cuneo).",
+    "og_title": "Casia Vacanze - Piedmontese Countryside",
     "og_description": "Authentic rest in the Piedmontese countryside. A historic farmhouse carefully restored.",
     "nav_casa": "The House",
     "nav_servizi": "Amenities",
@@ -107,7 +107,7 @@
     "hero_subtitle": "Santo Stefano, Bene Vagienna",
     "hero_cta_discover": "Discover the house",
     "hero_cta_book": "Book now",
-    "intro_text": "In the heart of the Cuneo hills, <strong>Casia Country House</strong> is a peaceful retreat where time slows down. A historic farmhouse carefully restored, blending the charm of traditional Piedmontese architecture with contemporary comfort.",
+    "intro_text": "In the heart of the Cuneo hills, <strong>Casia Vacanze</strong> is a peaceful retreat where time slows down. A historic farmhouse carefully restored, blending the charm of traditional Piedmontese architecture with contemporary comfort.",
     "section_label_alloggi": "Our accommodations",
     "section_title_casa": "The House",
     "appartamenti_intro": "Two independent apartments, each with its own character and story. Both with private entrance, garden and pool access.",
@@ -161,7 +161,7 @@
     "service_bbq_desc": "Fully equipped BBQ area in the garden",
     "section_label_dintorni": "Surroundings",
     "section_title_territorio": "The Territory",
-    "territorio_intro": "Casia Country House is the ideal starting point for exploring the wonders of southern Piedmont, from historic villages and prestigious vineyards to enchanting landscapes.",
+    "territorio_intro": "Casia Vacanze is the ideal starting point for exploring the wonders of southern Piedmont, from historic villages and prestigious vineyards to enchanting landscapes.",
     "luogo_bene_title": "Bene Vagienna",
     "luogo_bene_desc": "A Roman-era village with the archaeological remains of <em>Augusta Bagiennorum</em>, including the theatre and baths of the ancient city",
     "luogo_langhe_title": "Langhe and Roero",
@@ -201,8 +201,8 @@
     "footer_link_prenota": "Book"
   },
   "amici": {
-    "meta_description": "Casia Country House - A real farmhouse in Piedmont where you can actually switch off. No frills, just peace.",
-    "og_title": "Casia Country House - Come visit us",
+    "meta_description": "Casia Vacanze - A real farmhouse in Piedmont where you can actually switch off. No frills, just peace.",
+    "og_title": "Casia Vacanze - Come visit us",
     "og_description": "A real farmhouse in Piedmont where you can actually switch off.",
     "nav_casa": "Where you'll sleep",
     "nav_servizi": "What's here",
@@ -317,6 +317,6 @@
     "footer_link_servizi": "What's here",
     "footer_link_territorio": "The area",
     "footer_link_prenota": "Come over",
-    "footer_copyright": "© 2025 Casia Country House"
+    "footer_copyright": "© 2025 Casia Vacanze"
   }
 }

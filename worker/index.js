@@ -1,4 +1,4 @@
-// CASIA Country House - Cloudflare Worker Entry Point
+// Casia Vacanze - Cloudflare Worker Entry Point
 // Gestisce API di prenotazione + serve file statici
 
 import { handleAvailability, handleCalculatePrice } from './handlers/availability.js';
@@ -193,7 +193,7 @@ function comingSoonPage() {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CASIA Country House — Coming Soon</title>
+  <title>Casia Vacanze — Coming Soon</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
@@ -262,7 +262,7 @@ function comingSoonPage() {
 <body>
   <div class="container">
     <div class="logo">CASIA</div>
-    <div class="sub">Country House</div>
+    <div class="sub">Casa Vacanze</div>
     <div class="divider"></div>
     <h1>Stiamo preparando qualcosa di speciale</h1>
     <p>Il nostro sito web sarà presto online.<br>Nel frattempo, non esitate a contattarci per informazioni e prenotazioni.</p>

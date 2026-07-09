@@ -71,7 +71,7 @@
     "banner_cancelled": "Paiement annulé. Vous pouvez réessayer quand vous le souhaitez.",
     "url_payment_error": "URL de paiement non disponible",
     "print_title": "Confirmation de Réservation",
-    "print_header": "CASIA Country House",
+    "print_header": "Casia Vacanze",
     "print_location": "Santo Stefano · Bene Vagienna · Cuneo",
     "print_badge": "Réservation confirmée",
     "print_details_title": "Détails de la réservation",
@@ -86,7 +86,7 @@
     "print_thanks": "Nous vous attendons à CASIA !",
     "print_address": "Loc. Santo Stefano, Bene Vagienna (CN)",
     "footer_contacts": "Contacts",
-    "footer_copyright": "© 2025 Casia Country House. Tous droits réservés.",
+    "footer_copyright": "© 2025 Casia Vacanze. Tous droits réservés.",
     "footer_address": "Santo Stefano, Bene Vagienna (CN)<br>Piémont, Italie",
     "modal_close": "Fermer",
     "modal_prev": "Précédent",
@@ -95,8 +95,8 @@
     "venica_name": "Venica"
   },
   "index": {
-    "meta_description": "Casia Country House - Repos authentique dans la campagne piémontaise. Maison de vacances à Santo Stefano, Bene Vagienna (Cuneo).",
-    "og_title": "Casia Country House - Campagne Piémontaise",
+    "meta_description": "Casia Vacanze - Repos authentique dans la campagne piémontaise. Maison de vacances à Santo Stefano, Bene Vagienna (Cuneo).",
+    "og_title": "Casia Vacanze - Campagne Piémontaise",
     "og_description": "Repos authentique dans la campagne piémontaise. Une ferme historique restaurée avec soin.",
     "nav_casa": "La Maison",
     "nav_servizi": "Services",
@@ -107,7 +107,7 @@
     "hero_subtitle": "Santo Stefano, Bene Vagienna",
     "hero_cta_discover": "Découvrir la maison",
     "hero_cta_book": "Réserver maintenant",
-    "intro_text": "Au cœur des collines du Cuneese, <strong>Casia Country House</strong> est un havre de paix où le temps suspend son cours. Une ferme historique restaurée avec soin, alliant le charme de l'architecture piémontaise traditionnelle au confort contemporain.",
+    "intro_text": "Au cœur des collines du Cuneese, <strong>Casia Vacanze</strong> est un havre de paix où le temps suspend son cours. Une ferme historique restaurée avec soin, alliant le charme de l'architecture piémontaise traditionnelle au confort contemporain.",
     "section_label_alloggi": "Nos hébergements",
     "section_title_casa": "La Maison",
     "appartamenti_intro": "Deux appartements indépendants, chacun avec son caractère et sa propre histoire. Tous deux disposent d'une entrée privée, d'un jardin et d'un accès à la piscine.",
@@ -161,7 +161,7 @@
     "service_bbq_desc": "Espace barbecue équipé dans le jardin",
     "section_label_dintorni": "Alentours",
     "section_title_territorio": "Le Territoire",
-    "territorio_intro": "Casia Country House est le point de départ idéal pour explorer les merveilles du Piémont méridional, entre bourgs historiques, vignobles prestigieux et paysages enchanteurs.",
+    "territorio_intro": "Casia Vacanze est le point de départ idéal pour explorer les merveilles du Piémont méridional, entre bourgs historiques, vignobles prestigieux et paysages enchanteurs.",
     "luogo_bene_title": "Bene Vagienna",
     "luogo_bene_desc": "Bourg romain avec les vestiges archéologiques d'<em>Augusta Bagiennorum</em>, théâtre et thermes de la cité antique",
     "luogo_langhe_title": "Langhe et Roero",
@@ -201,8 +201,8 @@
     "footer_link_prenota": "Réserver"
   },
   "amici": {
-    "meta_description": "Casia Country House - Une vraie ferme piémontaise pour décrocher vraiment. Pas de chichis, juste la paix.",
-    "og_title": "Casia Country House - Viens nous voir",
+    "meta_description": "Casia Vacanze - Une vraie ferme piémontaise pour décrocher vraiment. Pas de chichis, juste la paix.",
+    "og_title": "Casia Vacanze - Viens nous voir",
     "og_description": "Une vraie ferme piémontaise pour décrocher vraiment.",
     "nav_casa": "Où tu dors",
     "nav_servizi": "Ce qu'il y a",
@@ -317,6 +317,6 @@
     "footer_link_servizi": "Ce qu'il y a",
     "footer_link_territorio": "Le coin",
     "footer_link_prenota": "Viens",
-    "footer_copyright": "© 2025 Casia Country House"
+    "footer_copyright": "© 2025 Casia Vacanze"
   }
 }

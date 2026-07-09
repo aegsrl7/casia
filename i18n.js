@@ -1,5 +1,5 @@
 /**
- * CASIA Country House - i18n Module
+ * Casia Vacanze - i18n Module
  * Multilingual support: IT, EN, FR, DE
  */
 (function() {

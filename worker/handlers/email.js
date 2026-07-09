@@ -16,7 +16,7 @@ async function sendEmail(env, { to, subject, html }) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'CASIA Country House <noreply@casiavacanze.com>',
+      from: 'Casia Vacanze <noreply@casiavacanze.com>',
       to: [to],
       subject,
       html,
@@ -80,7 +80,7 @@ export async function sendGuestConfirmation(env, reservation) {
 <body>
   <div class="container">
     <div class="header">
-      <h1>CASIA COUNTRY HOUSE</h1>
+      <h1>CASIA VACANZE</h1>
     </div>
     <div class="body">
       <h2>${t.title}</h2>
@@ -124,7 +124,7 @@ export async function sendGuestConfirmation(env, reservation) {
         <a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a> |
         <a href="tel:+393514321088">+39 351 432 1088</a>
       </p>
-      <p>&copy; CASIA Country House</p>
+      <p>&copy; Casia Vacanze</p>
     </div>
   </div>
 </body>
@@ -247,7 +247,7 @@ export async function sendCheckinEmail(env, reservation) {
 <body>
   <div class="container">
     <div class="header">
-      <h1>CASIA COUNTRY HOUSE</h1>
+      <h1>CASIA VACANZE</h1>
     </div>
     <div class="body">
       <h2>${t.title}</h2>
@@ -265,7 +265,7 @@ export async function sendCheckinEmail(env, reservation) {
         <a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a> |
         <a href="tel:+393514321088">+39 351 432 1088</a>
       </p>
-      <p>&copy; CASIA Country House</p>
+      <p>&copy; Casia Vacanze</p>
     </div>
   </div>
 </body>
@@ -305,7 +305,7 @@ export async function sendAccessEmail(env, reservation, instructions) {
 <body>
   <div class="container">
     <div class="header">
-      <h1>CASIA COUNTRY HOUSE</h1>
+      <h1>CASIA VACANZE</h1>
     </div>
     <div class="body">
       <h2>${t.title}</h2>
@@ -319,7 +319,7 @@ export async function sendAccessEmail(env, reservation, instructions) {
         <a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a> |
         <a href="tel:+393514321088">+39 351 432 1088</a>
       </p>
-      <p>&copy; CASIA Country House</p>
+      <p>&copy; Casia Vacanze</p>
     </div>
   </div>
 </body>
@@ -364,7 +364,7 @@ export async function sendTouristTaxEmail(env, reservation, paymentUrl, amountCe
 <body>
   <div class="container">
     <div class="header">
-      <h1>CASIA COUNTRY HOUSE</h1>
+      <h1>CASIA VACANZE</h1>
     </div>
     <div class="body">
       <h2>${t.title}</h2>
@@ -396,7 +396,7 @@ export async function sendTouristTaxEmail(env, reservation, paymentUrl, amountCe
         <a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a> |
         <a href="tel:+393514321088">+39 351 432 1088</a>
       </p>
-      <p>&copy; CASIA Country House</p>
+      <p>&copy; Casia Vacanze</p>
     </div>
   </div>
 </body>
@@ -431,7 +431,7 @@ export function buildMarketingEmail(subject, bodyHtml) {
 <body>
   <div class="container">
     <div class="header">
-      <h1>CASIA COUNTRY HOUSE</h1>
+      <h1>CASIA VACANZE</h1>
     </div>
     <div class="body">
       ${bodyHtml}
@@ -441,7 +441,7 @@ export function buildMarketingEmail(subject, bodyHtml) {
         <a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a> |
         <a href="tel:+393514321088">+39 351 432 1088</a>
       </p>
-      <p>&copy; CASIA Country House</p>
+      <p>&copy; Casia Vacanze</p>
       <p style="font-size:11px;margin-top:12px;">Ricevi questa email perché hai acconsentito alle comunicazioni commerciali.<br>Per disiscriverti, rispondi a questa email.</p>
     </div>
   </div>

@@ -525,7 +525,7 @@ async function sendCampaign(campaignId, env) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'CASIA Country House <onboarding@resend.dev>',
+          from: 'Casia Vacanze <onboarding@resend.dev>',
           to: [recipient.email],
           subject: campaign.subject,
           html: htmlTemplate,

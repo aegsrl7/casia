@@ -66,7 +66,7 @@ export async function handleIcalExport(request, env, apartment, pathKey) {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//CASIA Country House//Calendar Export//IT',
+    'PRODID:-//Casia Vacanze//Calendar Export//IT',
     'CALSCALE:GREGORIAN',
   ];
 

@@ -1,5 +1,5 @@
 /**
- * CASIA Country House - JavaScript
+ * Casia Vacanze - JavaScript
  * Animazioni e interattività
  */
 
@@ -866,7 +866,7 @@
 <html lang="${lang}">
 <head>
 <meta charset="UTF-8">
-<title>${tt('print_title') || 'Conferma Prenotazione'} #${data.id} - CASIA Country House</title>
+<title>${tt('print_title') || 'Conferma Prenotazione'} #${data.id} - Casia Vacanze</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -892,7 +892,7 @@
 </head>
 <body>
   <div class="header">
-    <h1>${tt('print_header') || 'CASIA Country House'}</h1>
+    <h1>${tt('print_header') || 'Casia Vacanze'}</h1>
     <p>${tt('print_location') || 'Santo Stefano &middot; Bene Vagienna &middot; Cuneo'}</p>
     <div class="badge">${tt('print_badge') || 'Prenotazione confermata'}</div>
   </div>

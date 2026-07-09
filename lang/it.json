@@ -71,7 +71,7 @@
     "banner_cancelled": "Pagamento annullato. Puoi riprovare quando vuoi.",
     "url_payment_error": "URL pagamento non disponibile",
     "print_title": "Conferma Prenotazione",
-    "print_header": "CASIA Country House",
+    "print_header": "Casia Vacanze",
     "print_location": "Santo Stefano · Bene Vagienna · Cuneo",
     "print_badge": "Prenotazione confermata",
     "print_details_title": "Dettagli prenotazione",
@@ -86,7 +86,7 @@
     "print_thanks": "Vi aspettiamo a CASIA!",
     "print_address": "Loc. Santo Stefano, Bene Vagienna (CN)",
     "footer_contacts": "Contatti",
-    "footer_copyright": "© 2025 Casia Country House. Tutti i diritti riservati.",
+    "footer_copyright": "© 2025 Casia Vacanze. Tutti i diritti riservati.",
     "footer_address": "Santo Stefano, Bene Vagienna (CN)<br>Piemonte, Italia",
     "modal_close": "Chiudi",
     "modal_prev": "Precedente",
@@ -95,8 +95,8 @@
     "venica_name": "Venica"
   },
   "index": {
-    "meta_description": "Casia Country House - Riposo autentico nella campagna piemontese. Casa vacanze a Santo Stefano, Bene Vagienna (Cuneo).",
-    "og_title": "Casia Country House - Campagna Piemontese",
+    "meta_description": "Casia Vacanze - Riposo autentico nella campagna piemontese. Casa vacanze a Santo Stefano, Bene Vagienna (Cuneo).",
+    "og_title": "Casia Vacanze - Campagna Piemontese",
     "og_description": "Riposo autentico nella campagna piemontese. Una cascina storica restaurata con cura.",
     "nav_casa": "La Casa",
     "nav_servizi": "Servizi",
@@ -107,7 +107,7 @@
     "hero_subtitle": "Santo Stefano, Bene Vagienna",
     "hero_cta_discover": "Scopri la casa",
     "hero_cta_book": "Prenota ora",
-    "intro_text": "Nel cuore delle colline del Cuneese, <strong>Casia Country House</strong> è un rifugio di pace dove il tempo rallenta. Una cascina storica restaurata con cura, che unisce il fascino dell'architettura piemontese tradizionale al comfort contemporaneo.",
+    "intro_text": "Nel cuore delle colline del Cuneese, <strong>Casia Vacanze</strong> è un rifugio di pace dove il tempo rallenta. Una cascina storica restaurata con cura, che unisce il fascino dell'architettura piemontese tradizionale al comfort contemporaneo.",
     "section_label_alloggi": "I nostri alloggi",
     "section_title_casa": "La Casa",
     "appartamenti_intro": "Due appartamenti indipendenti, ciascuno con il proprio carattere e la propria storia. Entrambi con ingresso privato, giardino e accesso alla piscina.",
@@ -161,7 +161,7 @@
     "service_bbq_desc": "Area BBQ attrezzata nel giardino",
     "section_label_dintorni": "Dintorni",
     "section_title_territorio": "Il Territorio",
-    "territorio_intro": "Casia Country House è il punto di partenza ideale per esplorare le meraviglie del Piemonte meridionale, tra borghi storici, vigneti pregiati e paesaggi incantati.",
+    "territorio_intro": "Casia Vacanze è il punto di partenza ideale per esplorare le meraviglie del Piemonte meridionale, tra borghi storici, vigneti pregiati e paesaggi incantati.",
     "luogo_bene_title": "Bene Vagienna",
     "luogo_bene_desc": "Borgo romano con i resti archeologici di <em>Augusta Bagiennorum</em>, teatro e terme dell'antica città",
     "luogo_langhe_title": "Langhe e Roero",
@@ -201,8 +201,8 @@
     "footer_link_prenota": "Prenota"
   },
   "amici": {
-    "meta_description": "Casia Country House - Una cascina vera in Piemonte dove staccare davvero. Niente fronzoli, solo pace.",
-    "og_title": "Casia Country House - Vieni a trovarci",
+    "meta_description": "Casia Vacanze - Una cascina vera in Piemonte dove staccare davvero. Niente fronzoli, solo pace.",
+    "og_title": "Casia Vacanze - Vieni a trovarci",
     "og_description": "Una cascina vera in Piemonte dove staccare davvero.",
     "nav_casa": "Dove dormi",
     "nav_servizi": "Cosa c'è",
@@ -317,6 +317,6 @@
     "footer_link_servizi": "Cosa c'è",
     "footer_link_territorio": "Zona",
     "footer_link_prenota": "Vieni",
-    "footer_copyright": "© 2025 Casia Country House"
+    "footer_copyright": "© 2025 Casia Vacanze"
   }
 }

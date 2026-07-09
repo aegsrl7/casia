@@ -71,7 +71,7 @@
     "banner_cancelled": "Zahlung abgebrochen. Sie können es jederzeit erneut versuchen.",
     "url_payment_error": "Zahlungs-URL nicht verfügbar",
     "print_title": "Buchungsbestätigung",
-    "print_header": "CASIA Country House",
+    "print_header": "Casia Vacanze",
     "print_location": "Santo Stefano · Bene Vagienna · Cuneo",
     "print_badge": "Buchung bestätigt",
     "print_details_title": "Buchungsdetails",
@@ -86,7 +86,7 @@
     "print_thanks": "Wir freuen uns auf Sie bei CASIA!",
     "print_address": "Loc. Santo Stefano, Bene Vagienna (CN)",
     "footer_contacts": "Kontakt",
-    "footer_copyright": "© 2025 Casia Country House. Alle Rechte vorbehalten.",
+    "footer_copyright": "© 2025 Casia Vacanze. Alle Rechte vorbehalten.",
     "footer_address": "Santo Stefano, Bene Vagienna (CN)<br>Piemont, Italien",
     "modal_close": "Schließen",
     "modal_prev": "Zurück",
@@ -95,8 +95,8 @@
     "venica_name": "Venica"
   },
   "index": {
-    "meta_description": "Casia Country House - Erholsame Auszeit in der piemontesischen Landschaft. Ferienhaus in Santo Stefano, Bene Vagienna (Cuneo).",
-    "og_title": "Casia Country House - Piemontesische Landschaft",
+    "meta_description": "Casia Vacanze - Erholsame Auszeit in der piemontesischen Landschaft. Ferienhaus in Santo Stefano, Bene Vagienna (Cuneo).",
+    "og_title": "Casia Vacanze - Piemontesische Landschaft",
     "og_description": "Erholsame Auszeit in der piemontesischen Landschaft. Ein historisches Bauernhaus mit Liebe zum Detail restauriert.",
     "nav_casa": "Das Haus",
     "nav_servizi": "Ausstattung",
@@ -107,7 +107,7 @@
     "hero_subtitle": "Santo Stefano, Bene Vagienna",
     "hero_cta_discover": "Das Haus entdecken",
     "hero_cta_book": "Jetzt buchen",
-    "intro_text": "Im Herzen der Hügel des Cuneese empfängt Sie <strong>Casia Country House</strong> als ein Ort der Ruhe, an dem die Zeit langsamer vergeht. Ein historisches Bauernhaus, mit Sorgfalt restauriert, das den Charme der traditionellen piemontesischen Architektur mit zeitgemäßem Komfort verbindet.",
+    "intro_text": "Im Herzen der Hügel des Cuneese empfängt Sie <strong>Casia Vacanze</strong> als ein Ort der Ruhe, an dem die Zeit langsamer vergeht. Ein historisches Bauernhaus, mit Sorgfalt restauriert, das den Charme der traditionellen piemontesischen Architektur mit zeitgemäßem Komfort verbindet.",
     "section_label_alloggi": "Unsere Unterkünfte",
     "section_title_casa": "Das Haus",
     "appartamenti_intro": "Zwei unabhängige Apartments, jedes mit eigenem Charakter und eigener Geschichte. Beide mit privatem Eingang, Garten und Zugang zum Pool.",
@@ -161,7 +161,7 @@
     "service_bbq_desc": "Ausgestatteter Grillbereich im Garten",
     "section_label_dintorni": "Umgebung",
     "section_title_territorio": "Die Region",
-    "territorio_intro": "Casia Country House ist der ideale Ausgangspunkt, um die Schätze des südlichen Piemont zu entdecken — zwischen historischen Dörfern, edlen Weinbergen und bezaubernden Landschaften.",
+    "territorio_intro": "Casia Vacanze ist der ideale Ausgangspunkt, um die Schätze des südlichen Piemont zu entdecken — zwischen historischen Dörfern, edlen Weinbergen und bezaubernden Landschaften.",
     "luogo_bene_title": "Bene Vagienna",
     "luogo_bene_desc": "Römischer Ort mit den archäologischen Überresten von <em>Augusta Bagiennorum</em>, Theater und Thermen der antiken Stadt",
     "luogo_langhe_title": "Langhe und Roero",
@@ -201,8 +201,8 @@
     "footer_link_prenota": "Buchen"
   },
   "amici": {
-    "meta_description": "Casia Country House - Ein echtes Bauernhaus in Piemont, wo du wirklich abschalten kannst. Kein Schnickschnack, nur Ruhe.",
-    "og_title": "Casia Country House - Komm vorbei",
+    "meta_description": "Casia Vacanze - Ein echtes Bauernhaus in Piemont, wo du wirklich abschalten kannst. Kein Schnickschnack, nur Ruhe.",
+    "og_title": "Casia Vacanze - Komm vorbei",
     "og_description": "Ein echtes Bauernhaus in Piemont, wo du wirklich abschalten kannst.",
     "nav_casa": "Wo du schläfst",
     "nav_servizi": "Was es gibt",
@@ -317,6 +317,6 @@
     "footer_link_servizi": "Was es gibt",
     "footer_link_territorio": "Die Gegend",
     "footer_link_prenota": "Komm",
-    "footer_copyright": "© 2025 Casia Country House"
+    "footer_copyright": "© 2025 Casia Vacanze"
   }
 }
