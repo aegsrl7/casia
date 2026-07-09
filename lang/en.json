@@ -92,7 +92,9 @@
     "modal_prev": "Previous",
     "modal_next": "Next",
     "oliva_name": "Oliva",
-    "venica_name": "Venica"
+    "venica_name": "Venica",
+    "booking_min_nights_error": "Minimum stay of {n} nights for these dates",
+    "booking_no_price_error": "Prices not yet available for these dates: contact us"
   },
   "index": {
     "meta_description": "Casia Vacanze - Authentic rest in the Piedmontese countryside. Holiday home in Santo Stefano, Bene Vagienna (Cuneo).",

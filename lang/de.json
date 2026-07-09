@@ -92,7 +92,9 @@
     "modal_prev": "Zurück",
     "modal_next": "Weiter",
     "oliva_name": "Oliva",
-    "venica_name": "Venica"
+    "venica_name": "Venica",
+    "booking_min_nights_error": "Mindestaufenthalt von {n} Nächten für diese Daten",
+    "booking_no_price_error": "Preise für diese Daten noch nicht verfügbar: kontaktieren Sie uns"
   },
   "index": {
     "meta_description": "Casia Vacanze - Erholsame Auszeit in der piemontesischen Landschaft. Ferienhaus in Santo Stefano, Bene Vagienna (Cuneo).",

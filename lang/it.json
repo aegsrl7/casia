@@ -92,7 +92,9 @@
     "modal_prev": "Precedente",
     "modal_next": "Successivo",
     "oliva_name": "Oliva",
-    "venica_name": "Venica"
+    "venica_name": "Venica",
+    "booking_min_nights_error": "Soggiorno minimo di {n} notti per queste date",
+    "booking_no_price_error": "Prezzi non ancora disponibili per queste date: contattaci"
   },
   "index": {
     "meta_description": "Casia Vacanze - Riposo autentico nella campagna piemontese. Casa vacanze a Santo Stefano, Bene Vagienna (Cuneo).",

@@ -408,7 +408,15 @@
                 const data = await res.json();
 
                 if (!res.ok) {
-                    showPriceError(tt('booking_price_error') || 'Errore nel calcolo prezzo');
+                    let msg;
+                    if (data && data.min_nights) {
+                        msg = (tt('booking_min_nights_error') || 'Soggiorno minimo di {n} notti per queste date').replace('{n}', data.min_nights);
+                    } else if (data && data.error && data.error.indexOf('prezzo configurato') !== -1) {
+                        msg = tt('booking_no_price_error') || 'Prezzi non ancora disponibili per queste date: contattaci';
+                    } else {
+                        msg = (data && data.error) || tt('booking_price_error') || 'Errore nel calcolo prezzo';
+                    }
+                    showPriceError(msg);
                     disableNextBtn();
                     return;
                 }

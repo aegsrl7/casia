@@ -92,7 +92,9 @@
     "modal_prev": "Précédent",
     "modal_next": "Suivant",
     "oliva_name": "Oliva",
-    "venica_name": "Venica"
+    "venica_name": "Venica",
+    "booking_min_nights_error": "Séjour minimum de {n} nuits pour ces dates",
+    "booking_no_price_error": "Prix pas encore disponibles pour ces dates : contactez-nous"
   },
   "index": {
     "meta_description": "Casia Vacanze - Repos authentique dans la campagne piémontaise. Maison de vacances à Santo Stefano, Bene Vagienna (Cuneo).",
