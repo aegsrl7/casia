@@ -1710,83 +1710,137 @@
 
     document.getElementById('btn-filter').addEventListener('click', loadReservations);
 
-    // ----- Stampa PDF prenotazioni del mese -----
+    // ----- Stampa prenotazioni del mese: calendario + riepilogo -----
     document.getElementById('print-month').value = new Date().toISOString().slice(0, 7);
     document.getElementById('btn-print-month').addEventListener('click', printMonthReservations);
+
+    // Costruisce il documento di stampa (funzione pura, testabile)
+    function buildPrintDoc(monthVal, reservations, blockedList) {
+        const [year, month] = monthVal.split('-').map(Number);
+        const monthNames = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+        const title = monthNames[month - 1] + ' ' + year;
+        const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+        const startCol = (new Date(Date.UTC(year, month - 1, 1)).getUTCDay() + 6) % 7; // lunedi' = 0
+
+        const rows = reservations.filter(r => r.status === 'confirmed').sort((a, b) => a.checkin.localeCompare(b.checkin));
+        const blocked = {};
+        blockedList.forEach(b => { (blocked[b.apartment] = blocked[b.apartment] || {})[b.date] = true; });
+
+        const fmtD = d => { const p = d.split('-'); return p[2] + '/' + p[1]; };
+        const srcLabel = { direct: 'Diretta', booking: 'Booking', airbnb: 'Airbnb' };
+
+        // Celle del calendario
+        let cells = [];
+        for (let i = 0; i < startCol; i++) cells.push('<td class="empty"></td>');
+        for (let day = 1; day <= daysInMonth; day++) {
+            const ds = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+            const col = (startCol + day - 1) % 7;
+            const weekend = col >= 5 ? ' weekend' : '';
+            let lanes = '';
+            ['oliva', 'venica'].forEach(apt => {
+                const cls = apt === 'oliva' ? 'o' : 'v';
+                const res = rows.find(r => r.apartment === apt && r.checkin <= ds && ds < r.checkout);
+                if (res) {
+                    if (res.checkin === ds) {
+                        const who = res.source === 'booking' && /^Booking/i.test(res.guest_name || '')
+                            ? 'Booking' : esc((res.guest_name || '').split(' ').pop());
+                        lanes += '<div class="lane ' + cls + ' in">&#9654; ' + who + '</div>';
+                    } else {
+                        lanes += '<div class="lane ' + cls + ' cont"></div>';
+                    }
+                } else if (blocked[apt] && blocked[apt][ds]) {
+                    lanes += '<div class="lane blk"></div>';
+                }
+            });
+            cells.push('<td class="day' + weekend + '"><span class="dn">' + day + '</span>' + lanes + '<div class="write"></div></td>');
+        }
+        while (cells.length % 7 !== 0) cells.push('<td class="empty"></td>');
+        let calRows = '';
+        for (let i = 0; i < cells.length; i += 7) calRows += '<tr>' + cells.slice(i, i + 7).join('') + '</tr>';
+        const weeks = cells.length / 7;
+
+        // Riepilogo con spazio note
+        const trs = rows.map(r => {
+            const guest = r.source === 'booking' && /^Booking/i.test(r.guest_name || '')
+                ? '<em>da scrivere</em>' : '<strong>' + esc(r.guest_name) + '</strong>';
+            const ref = r.external_ref ? esc(r.external_ref.replace('ical:', '').slice(0, 12)) + '&hellip;' : '';
+            return '<tr>' +
+                '<td>' + (r.apartment === 'oliva' ? 'Oliva' : 'Venica') + '</td>' +
+                '<td>' + guest + '</td>' +
+                '<td>' + fmtD(r.checkin) + ' &rarr; ' + fmtD(r.checkout) + '</td>' +
+                '<td class="c">' + r.nights + '</td>' +
+                '<td>' + (srcLabel[r.source || 'direct'] || esc(r.source)) + '</td>' +
+                '<td class="c">' + (r.total_cents ? formatEuro(r.total_cents) : '') + '</td>' +
+                '<td class="notes"><span class="rif">' + ref + '</span></td>' +
+                '</tr>';
+        }).join('');
+
+        return '<!DOCTYPE html><html lang="it"><head><meta charset="utf-8">' +
+'<title>Prenotazioni ' + title + '</title>' +
+'<style>' +
+'@page { size: A4 landscape; margin: 9mm; }' +
+'* { margin:0; padding:0; box-sizing:border-box; }' +
+'body { font-family: \'Helvetica Neue\', Arial, sans-serif; color:#2D2926; }' +
+'header { display:flex; justify-content:space-between; align-items:baseline; border-bottom:2px solid #B8956B; padding-bottom:4px; margin-bottom:6px; }' +
+'h1 { font-family: Georgia, serif; font-size:14pt; font-weight:600; letter-spacing:2px; color:#B8956B; }' +
+'h1 small { color:#2D2926; font-weight:normal; letter-spacing:0; }' +
+'.legend { font-size:7.5pt; color:#5a5248; }' +
+'.legend span { display:inline-block; margin-left:10px; }' +
+'.dot { display:inline-block; width:8px; height:8px; border-radius:2px; vertical-align:middle; margin-right:3px; }' +
+'.dot.o { background:#e8d5bc; border:1px solid #B8956B; }' +
+'.dot.v { background:#fff; border:1.5px solid #2D2926; }' +
+'.dot.b { background:#e2e2e2; border:1px solid #aaa; }' +
+'table.cal { width:100%; border-collapse:collapse; table-layout:fixed; }' +
+'table.cal th { font-size:7.5pt; text-transform:uppercase; letter-spacing:1px; color:#8a8078; border:1px solid #d8d0c4; padding:2px; background:#faf7f2; }' +
+'table.cal td { border:1px solid #d8d0c4; vertical-align:top; height:' + (168 / weeks).toFixed(1) + 'mm; padding:1.5mm; position:relative; }' +
+'td.weekend { background:#faf7f2; }' +
+'td.empty { background:#f1ede6; }' +
+'.dn { font-size:8.5pt; font-weight:600; color:#8a8078; }' +
+'.lane { font-size:7pt; border-radius:2px; padding:0.6mm 1mm; margin-top:0.8mm; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }' +
+'.lane.o { background:#e8d5bc; border:1px solid #B8956B; }' +
+'.lane.v { background:#fff; border:1.5px solid #2D2926; }' +
+'.lane.cont { height:2.2mm; padding:0; }' +
+'.lane.blk { background:#e2e2e2; border:1px solid #aaa; height:2.2mm; padding:0; }' +
+'.write { position:absolute; left:1.5mm; right:1.5mm; bottom:1mm; height:9mm; ' +
+'background-image: repeating-linear-gradient(to bottom, transparent, transparent 4mm, #d8d0c4 4mm, #d8d0c4 4.2mm); }' +
+'.pagina2 { page-break-before: always; }' +
+'table.list { width:100%; border-collapse:collapse; margin-top:4mm; }' +
+'table.list th { text-align:left; font-size:8pt; text-transform:uppercase; letter-spacing:0.5px; color:#8a8078; border-bottom:1.5px solid #2D2926; padding:3px 5px; }' +
+'table.list td { padding:4px 5px; border-bottom:1px solid #e5ded4; font-size:9pt; vertical-align:top; }' +
+'.c { text-align:center; } .notes { width:38%; } .rif { font-size:7pt; color:#a09888; }' +
+'td.notes { height:11mm; background-image: repeating-linear-gradient(to bottom, transparent, transparent 4.5mm, #e5ded4 4.5mm, #e5ded4 4.7mm); }' +
+'em { color:#a09888; font-size:8pt; }' +
+'footer { margin-top:4mm; font-size:7.5pt; color:#8a8078; display:flex; justify-content:space-between; }' +
+'</style></head><body>' +
+'<header><h1>CASIA <small>&middot; ' + title + '</small></h1>' +
+'<span class="legend"><span><span class="dot o"></span>Oliva</span><span><span class="dot v"></span>Venica</span><span><span class="dot b"></span>Bloccato</span><span>&#9654; = arrivo</span></span></header>' +
+'<table class="cal"><thead><tr><th>Lunedi\'</th><th>Martedi\'</th><th>Mercoledi\'</th><th>Giovedi\'</th><th>Venerdi\'</th><th>Sabato</th><th>Domenica</th></tr></thead>' +
+'<tbody>' + calRows + '</tbody></table>' +
+'<div class="pagina2">' +
+'<header><h1>CASIA <small>&middot; Dettaglio prenotazioni ' + title + '</small></h1><span class="legend">' + rows.length + ' prenotazioni</span></header>' +
+(rows.length ? '<table class="list"><thead><tr><th>App.</th><th>Ospite</th><th>Date</th><th>Notti</th><th>Fonte</th><th>Totale</th><th>Note (telefono, ospiti, richieste&hellip;)</th></tr></thead><tbody>' + trs + '</tbody></table>'
+             : '<p style="margin-top:6mm;color:#8a8078;">Nessuna prenotazione confermata nel mese.</p>') +
+'<footer><span>Casia Vacanze &middot; Santo Stefano, Bene Vagienna (CN)</span><span>Generato il ' + new Date().toLocaleDateString('it-IT') + '</span></footer>' +
+'</div>' +
+'<scr' + 'ipt>window.onload = function(){ window.print(); };</scr' + 'ipt>' +
+'</body></html>';
+    }
 
     async function printMonthReservations() {
         const monthVal = document.getElementById('print-month').value || new Date().toISOString().slice(0, 7);
         const [year, month] = monthVal.split('-').map(Number);
-        const first = `${monthVal}-01`;
-        const lastDay = `${monthVal}-${String(new Date(year, month, 0).getDate()).padStart(2, '0')}`;
+        const first = monthVal + '-01';
+        const lastDay = monthVal + '-' + String(new Date(year, month, 0).getDate()).padStart(2, '0');
 
-        const res = await apiFetch(`/reservations?from=${first}&to=${lastDay}`);
+        const res = await apiFetch('/reservations?from=' + first + '&to=' + lastDay);
         if (!res) return;
         const data = await res.json();
-        const monthNames = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
-        const title = `${monthNames[month - 1]} ${year}`;
 
-        const rows = (data.reservations || [])
-            .filter(r => r.status === 'confirmed')
-            .sort((a, b) => a.checkin.localeCompare(b.checkin));
+        const resB = await apiFetch('/blocked-dates');
+        const blockedAll = resB ? ((await resB.json()).blocked_dates || []) : [];
+        const blockedMonth = blockedAll.filter(b => b.date >= first && b.date <= lastDay);
 
-        if (rows.length === 0) {
-            toast('Nessuna prenotazione confermata per ' + title, 'error');
-            return;
-        }
-
-        const fmtD = d => { const p = d.split('-'); return `${p[2]}/${p[1]}/${p[0].slice(2)}`; };
-        const srcLabel = { direct: 'Diretta', booking: 'Booking', airbnb: 'Airbnb' };
-        let totNights = 0, totCents = 0;
-        const trs = rows.map(r => {
-            totNights += r.nights;
-            totCents += r.total_cents || 0;
-            const guests = (r.adults || 0) + (r.children || 0) > 0 ? `${r.adults}${r.children ? '+' + r.children : ''}` : '';
-            return `<tr>
-                <td>${r.apartment === 'oliva' ? 'Oliva' : 'Venica'}</td>
-                <td><strong>${esc(r.guest_name)}</strong>${r.external_ref ? `<br><span class="sub">rif. ${esc(r.external_ref)}</span>` : ''}</td>
-                <td>${esc(r.guest_phone || '')}</td>
-                <td>${fmtD(r.checkin)}</td>
-                <td>${fmtD(r.checkout)}</td>
-                <td class="c">${r.nights}</td>
-                <td class="c">${guests}</td>
-                <td>${srcLabel[r.source || 'direct'] || esc(r.source)}</td>
-                <td class="r">${r.total_cents ? formatEuro(r.total_cents) : ''}</td>
-                <td>${esc(r.admin_notes || '')}</td>
-            </tr>`;
-        }).join('');
-
-        const doc = `<!DOCTYPE html><html lang="it"><head><meta charset="utf-8">
-<title>Prenotazioni ${title}</title>
-<style>
-@page { size: A4 landscape; margin: 12mm; }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'Helvetica Neue', Arial, sans-serif; color:#2D2926; font-size:10pt; padding:8px; }
-header { display:flex; justify-content:space-between; align-items:baseline; border-bottom:2px solid #B8956B; padding-bottom:8px; margin-bottom:14px; }
-h1 { font-family: Georgia, serif; font-size:15pt; font-weight:600; letter-spacing:2px; color:#B8956B; }
-h1 small { color:#2D2926; font-weight:normal; letter-spacing:0; }
-.meta { font-size:8.5pt; color:#8a8078; }
-table { width:100%; border-collapse:collapse; }
-th { text-align:left; font-size:8.5pt; text-transform:uppercase; letter-spacing:0.5px; color:#8a8078; border-bottom:1.5px solid #2D2926; padding:4px 6px; }
-td { padding:5px 6px; border-bottom:1px solid #e5ded4; vertical-align:top; }
-tr:nth-child(even) td { background:#faf7f2; }
-.c { text-align:center; } .r { text-align:right; }
-.sub { font-size:8pt; color:#8a8078; }
-tfoot td { border-top:2px solid #2D2926; border-bottom:none; font-weight:600; background:none !important; }
-footer { margin-top:14px; font-size:8pt; color:#8a8078; display:flex; justify-content:space-between; }
-</style></head><body>
-<header>
-    <h1>CASIA <small>&middot; Prenotazioni ${title}</small></h1>
-    <span class="meta">${rows.length} prenotazioni &middot; ${totNights} notti &middot; ${formatEuro(totCents)}</span>
-</header>
-<table>
-<thead><tr><th>App.</th><th>Ospite</th><th>Telefono</th><th>Arrivo</th><th>Partenza</th><th>Notti</th><th>Ospiti</th><th>Fonte</th><th>Totale</th><th>Note</th></tr></thead>
-<tbody>${trs}</tbody>
-<tfoot><tr><td colspan="5">Totale</td><td class="c">${totNights}</td><td></td><td></td><td class="r">${formatEuro(totCents)}</td><td></td></tr></tfoot>
-</table>
-<footer><span>Casia Vacanze &middot; Santo Stefano, Bene Vagienna (CN)</span><span>Generato il ${new Date().toLocaleDateString('it-IT')}</span></footer>
-<script>window.onload = function(){ window.print(); };<\/script>
-</body></html>`;
+        const doc = buildPrintDoc(monthVal, data.reservations || [], blockedMonth);
 
         const w = window.open('', '_blank');
         if (!w) { toast('Sblocca i popup del browser per stampare', 'error'); return; }
