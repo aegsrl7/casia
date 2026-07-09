@@ -168,11 +168,20 @@ export async function handleCalculatePrice(request, env) {
     current.setUTCDate(current.getUTCDate() + 1);
   }
 
-  // Verifica soggiorno minimo
+  // Verifica soggiorno minimo, con regola "riempi-buco": se le date stanno
+  // in un varco tra due occupazioni piu' corto del minimo, il minimo si
+  // riduce alla lunghezza del varco (cosi' i buchi orfani restano vendibili).
+  let effectiveMin = maxMinNights;
   if (nights < maxMinNights) {
+    const gap = await gapLength(env, apartment, checkin, checkout, nights);
+    if (gap !== null && gap < maxMinNights) {
+      effectiveMin = gap;
+    }
+  }
+  if (nights < effectiveMin) {
     return Response.json({
-      error: `Soggiorno minimo di ${maxMinNights} notti per le date selezionate`,
-      min_nights: maxMinNights,
+      error: `Soggiorno minimo di ${effectiveMin} notti per le date selezionate`,
+      min_nights: effectiveMin,
     }, { status: 400 });
   }
 
@@ -186,4 +195,49 @@ export async function handleCalculatePrice(request, env) {
     total_formatted: (totalCents / 100).toFixed(2),
     min_nights: maxMinNights,
   });
+}
+
+/**
+ * Lunghezza del varco libero contiguo che contiene il soggiorno richiesto.
+ * Ritorna null se il varco e' aperto (non delimitato da occupazioni entro 30 giorni).
+ */
+async function gapLength(env, apartment, checkin, checkout, nights) {
+  const from = shiftDate(checkin, -30);
+  const to = shiftDate(checkout, 30);
+
+  const res = await env.DB.prepare(
+    `SELECT checkin, checkout FROM reservations
+     WHERE apartment = ? AND status = 'confirmed' AND checkout >= ? AND checkin <= ?`
+  ).bind(apartment, from, to).all();
+  const blk = await env.DB.prepare(
+    'SELECT date FROM blocked_dates WHERE apartment = ? AND date >= ? AND date <= ?'
+  ).bind(apartment, from, to).all();
+
+  const occupied = new Set(blk.results.map(b => b.date));
+  for (const r of res.results) {
+    let d = r.checkin;
+    while (d < r.checkout) { occupied.add(d); d = shiftDate(d, 1); }
+  }
+
+  // Notti libere prima del check-in
+  let before = 0, d = shiftDate(checkin, -1), boundedLeft = false;
+  for (let i = 0; i < 30; i++) {
+    if (occupied.has(d)) { boundedLeft = true; break; }
+    before++; d = shiftDate(d, -1);
+  }
+  // Notti libere dopo il check-out
+  let after = 0, e = checkout, boundedRight = false;
+  for (let i = 0; i < 30; i++) {
+    if (occupied.has(e)) { boundedRight = true; break; }
+    after++; e = shiftDate(e, 1);
+  }
+
+  if (!boundedLeft || !boundedRight) return null;
+  return before + nights + after;
+}
+
+function shiftDate(ds, days) {
+  const d = new Date(ds + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().split('T')[0];
 }
