@@ -3,3 +3,7 @@
 
 /videos/*
   Cache-Control: public, max-age=2592000
+
+/images/gbp/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=604800
