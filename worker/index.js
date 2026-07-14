@@ -8,6 +8,7 @@ import { handleAdmin } from './handlers/admin.js';
 import { handleGetCheckin, handleSaveTravelers, handleDocUpload } from './handlers/checkin.js';
 import { syncIcal } from './handlers/ical.js';
 import { handleIcalExport } from './handlers/ical-export.js';
+import { serveItalianPage } from './handlers/render-it.js';
 
 // Header CORS per le API
 const corsHeaders = {
@@ -114,6 +115,13 @@ export default {
     }
 
     // --- Static Assets ---
+    // Pagine italiane: riscritte al volo coi testi del pannello (fallback: asset originale)
+    try {
+      const rendered = await serveItalianPage(request, env, path);
+      if (rendered) return rendered;
+    } catch (err) {
+      console.error('render-it: errore, servo asset originale:', err.message);
+    }
     // Serve i file statici dalla directory del sito
     return env.ASSETS.fetch(request);
   },

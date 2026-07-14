@@ -234,6 +234,12 @@
             updateMeta();
             document.documentElement.classList.remove('i18n-loading');
             window.dispatchEvent(new CustomEvent('langchange', { detail: { lang: currentLang } }));
+        } else {
+            // Anche in italiano serve il dizionario per i messaggi dinamici
+            // (errori prenotazione, hint calendario): il DOM resta quello del server.
+            loadTranslations(currentLang).then(function() {
+                window.dispatchEvent(new CustomEvent('langchange', { detail: { lang: currentLang } }));
+            });
         }
     }
 

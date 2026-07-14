@@ -3,6 +3,7 @@ import { handleSyncIcal } from './ical.js';
 
 import { handleAdminGetCheckin, handleAdminVerify, handleAdminSendAccess, handleAlloggiatiExport } from './checkin.js';
 import { handleGetSettings, handleUpdateSettings, handleCreateTouristTax, handleSendTaxLink } from './settings.js';
+import { purgeItalianPages } from './render-it.js';
 
 /**
  * Verifica autenticazione Basic Auth
@@ -353,6 +354,11 @@ async function updateTranslations(request, env) {
     if (result.meta.changes > 0) {
       if (result.meta.last_row_id > 0) inserted++; else updated++;
     }
+  }
+
+  // I salvataggi in italiano vanno online subito: svuota la cache delle pagine riscritte
+  if (updates.some(u => u.lang === 'it')) {
+    await purgeItalianPages(request);
   }
 
   return Response.json({ success: true, updated, inserted, total: updates.length });
