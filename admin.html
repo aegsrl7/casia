@@ -949,10 +949,10 @@
     <!-- Reservations Panel -->
     <div class="admin-panel active" id="panel-reservations">
         <div class="admin-stats" id="admin-stats">
-            <div class="stat-card"><div class="stat-value" id="stat-confirmed">—</div><div class="stat-label">Confermate</div></div>
-            <div class="stat-card"><div class="stat-value" id="stat-pending">—</div><div class="stat-label">In attesa</div></div>
-            <div class="stat-card"><div class="stat-value" id="stat-revenue">—</div><div class="stat-label">Ricavo totale</div></div>
-            <div class="stat-card"><div class="stat-value" id="stat-upcoming">—</div><div class="stat-label">Prossime</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-confirmed">·</div><div class="stat-label">Confermate</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-pending">·</div><div class="stat-label">In attesa</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-revenue">·</div><div class="stat-label">Ricavo totale</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-upcoming">·</div><div class="stat-label">Prossime</div></div>
         </div>
 
         <!-- Mini Calendario Prenotazioni -->
@@ -1480,7 +1480,7 @@
                     <div class="res-card-dates">
                         <span>${formatDateShort(r.checkin)} → ${formatDateShort(r.checkout)}</span>
                         <span>${r.nights}n</span>
-                        <span style="font-weight:600;color:var(--rame);">${r.total_cents ? formatEuro(r.total_cents) : '—'}</span>
+                        <span style="font-weight:600;color:var(--rame);">${r.total_cents ? formatEuro(r.total_cents) : '·'}</span>
                     </div>
                 </div>`;
             });
@@ -1498,11 +1498,11 @@
                     <td>${srcBadge}</td>
                     <td><strong>${esc(r.guest_name)}</strong>${r.guest_email ? `<br><small style="color:var(--text-light);">${esc(r.guest_email)}</small>` : ''}</td>
                     <td>${apt}</td>
-                    <td>${formatDate(r.checkin)} — ${formatDate(r.checkout)}</td>
+                    <td>${formatDate(r.checkin)} · ${formatDate(r.checkout)}</td>
                     <td>${r.nights}</td>
-                    <td>${r.total_cents ? formatEuro(r.total_cents) : '—'}</td>
+                    <td>${r.total_cents ? formatEuro(r.total_cents) : '·'}</td>
                     <td>${statusHtml}</td>
-                    <td>${ciHtml || '<span style="color:var(--text-light);">—</span>'}</td>
+                    <td>${ciHtml || '<span style="color:var(--text-light);">·</span>'}</td>
                 </tr>`;
             });
             html += '</tbody></table>';
@@ -1989,7 +1989,7 @@
             const rl = (reason || '').toLowerCase();
             if (rl.includes('booking')) return makeSourceBadge('booking');
             if (rl.includes('airbnb')) return makeSourceBadge('airbnb');
-            return `<span style="background:#e8e4de;color:var(--text-light);padding:2px 8px;border-radius:10px;font-size:0.75rem;">${esc(reason || '—')}</span>`;
+            return `<span style="background:#e8e4de;color:var(--text-light);padding:2px 8px;border-radius:10px;font-size:0.75rem;">${esc(reason || '·')}</span>`;
         }
 
         const isMobile = window.innerWidth <= 768;
@@ -2047,7 +2047,7 @@
                     <td>${apt}</td>
                     <td>${formatDate(r.checkin)} → ${formatDate(r.checkout)}</td>
                     <td>${makeSourceBadge(r.source)}</td>
-                    <td>${details.length ? details.join(' · ') : '—'}</td>
+                    <td>${details.length ? details.join(' · ') : '·'}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="cancelRes(${r.id})">Elimina</button></td>
                 </tr>`;
             });
@@ -2223,7 +2223,7 @@
                     <td>${formatDate(p.date_from)}</td>
                     <td>${formatDate(p.date_to)}</td>
                     <td>${formatEuro(p.price_night)}</td>
-                    <td>${p.price_night_2 ? formatEuro(p.price_night_2) : '—'}</td>
+                    <td>${p.price_night_2 ? formatEuro(p.price_night_2) : '·'}</td>
                     <td>${p.min_nights}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="deletePrice(${p.id})">Elimina</button></td>
                 </tr>`;
@@ -2327,12 +2327,12 @@
 
     // ----- Helpers -----
     function formatDate(d) {
-        if (!d) return '—';
+        if (!d) return '·';
         const [y, m, dd] = d.split('-');
         return `${dd}/${m}/${y}`;
     }
     function formatDateShort(d) {
-        if (!d) return '—';
+        if (!d) return '·';
         const [y, m, dd] = d.split('-');
         return `${dd}/${m}`;
     }
@@ -2705,7 +2705,7 @@
             </div>
             <div>
                 <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Telefono</div>
-                ${r.guest_phone ? `<a href="tel:${esc(r.guest_phone)}">${esc(r.guest_phone)}</a>` : '—'}
+                ${r.guest_phone ? `<a href="tel:${esc(r.guest_phone)}">${esc(r.guest_phone)}</a>` : '·'}
             </div>
             <div>
                 <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Lingua</div>
@@ -2721,11 +2721,11 @@
             </div>
             <div>
                 <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Totale</div>
-                <strong style="color:var(--rame);font-size:1.1rem;">${r.total_cents ? formatEuro(r.total_cents) : '—'}</strong>
+                <strong style="color:var(--rame);font-size:1.1rem;">${r.total_cents ? formatEuro(r.total_cents) : '·'}</strong>
             </div>
             <div>
                 <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:2px;">Creata il</div>
-                ${r.created_at ? formatDate(r.created_at.split('T')[0] || r.created_at.split(' ')[0]) : '—'}
+                ${r.created_at ? formatDate(r.created_at.split('T')[0] || r.created_at.split(' ')[0]) : '·'}
             </div>
         </div>`;
 
@@ -2774,11 +2774,11 @@
                             ${t.gender ? `<span style="background:#f0ece6;padding:2px 8px;border-radius:10px;font-size:0.72rem;">${t.gender}</span>` : ''}
                         </div>
                         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 16px;font-size:0.84rem;">
-                            <div><span style="color:var(--text-light);">Data nascita:</span> ${t.birth_date ? formatDate(t.birth_date) : '—'}</div>
-                            <div><span style="color:var(--text-light);">Luogo:</span> ${esc(t.birth_place || '—')}${t.birth_province ? ' (' + esc(t.birth_province) + ')' : ''}</div>
-                            <div><span style="color:var(--text-light);">Stato:</span> ${esc(t.birth_country || '—')}</div>
-                            <div><span style="color:var(--text-light);">Cittadinanza:</span> ${esc(t.citizenship || '—')}</div>
-                            <div style="grid-column:span 2;"><span style="color:var(--text-light);">Documento:</span> ${docTypeNames[t.doc_type] || t.doc_type || '—'} <strong>${esc(t.doc_number || '—')}</strong></div>
+                            <div><span style="color:var(--text-light);">Data nascita:</span> ${t.birth_date ? formatDate(t.birth_date) : '·'}</div>
+                            <div><span style="color:var(--text-light);">Luogo:</span> ${esc(t.birth_place || '·')}${t.birth_province ? ' (' + esc(t.birth_province) + ')' : ''}</div>
+                            <div><span style="color:var(--text-light);">Stato:</span> ${esc(t.birth_country || '·')}</div>
+                            <div><span style="color:var(--text-light);">Cittadinanza:</span> ${esc(t.citizenship || '·')}</div>
+                            <div style="grid-column:span 2;"><span style="color:var(--text-light);">Documento:</span> ${docTypeNames[t.doc_type] || t.doc_type || '·'} <strong>${esc(t.doc_number || '·')}</strong></div>
                         </div>`;
                     if (t.doc_front_data || t.doc_back_data) {
                         html += `<div style="display:flex;gap:10px;margin-top:10px;">
@@ -2966,7 +2966,7 @@
                 html += `<tr style="cursor:pointer;" onclick="toggleCustomerBookings(this, '${esc(c.email)}')">
                     <td>${esc(c.name)}</td>
                     <td><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></td>
-                    <td>${c.phone ? `<a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : '—'}</td>
+                    <td>${c.phone ? `<a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : '·'}</td>
                     <td>${c.booking_count}</td>
                     <td>${formatEuro(c.total_spent)}</td>
                     <td>${formatDate(c.last_visit)}</td>
@@ -3010,9 +3010,9 @@
             html += `<tr>
                 <td>#${b.id}</td>
                 <td>${b.apartment === 'oliva' ? 'Oliva' : 'Venica'}</td>
-                <td>${formatDate(b.checkin)} — ${formatDate(b.checkout)}</td>
+                <td>${formatDate(b.checkin)} · ${formatDate(b.checkout)}</td>
                 <td>${b.nights}</td>
-                <td>${b.total_cents ? formatEuro(b.total_cents) : '—'}</td>
+                <td>${b.total_cents ? formatEuro(b.total_cents) : '·'}</td>
                 <td><span class="badge badge--${b.status}">${b.status}</span></td>
             </tr>`;
         });
@@ -3167,7 +3167,7 @@
                     <div class="res-card-dates">
                         <span>#${c.id}</span>
                         <span>${c.recipients_count} destinatari</span>
-                        <span>${c.sent_at ? formatDate(c.sent_at.split('T')[0] || c.sent_at.split(' ')[0]) : '—'}</span>
+                        <span>${c.sent_at ? formatDate(c.sent_at.split('T')[0] || c.sent_at.split(' ')[0]) : '·'}</span>
                     </div>
                 </div>`;
             });
@@ -3181,7 +3181,7 @@
                     <td>${esc(c.subject)}</td>
                     <td><span class="badge badge--${c.status === 'sent' ? 'success' : 'pending'}">${c.status}</span></td>
                     <td>${c.recipients_count}</td>
-                    <td>${c.sent_at ? formatDate(c.sent_at.split('T')[0] || c.sent_at.split(' ')[0]) : '—'}</td>
+                    <td>${c.sent_at ? formatDate(c.sent_at.split('T')[0] || c.sent_at.split(' ')[0]) : '·'}</td>
                 </tr>`;
             });
             html += '</tbody></table>';

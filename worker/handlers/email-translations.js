@@ -86,7 +86,7 @@ export function getEmailTexts(lang) {
 // ===== Email Pre-Check-in =====
 const checkinEmailTexts = {
   it: {
-    subject: 'CASIA — Completa il check-in online',
+    subject: 'CASIA · Completa il check-in online',
     title: 'Check-in Online',
     greeting: (name) => `Gentile ${name},`,
     intro: 'Per rendere il suo arrivo più rapido e piacevole, la invitiamo a completare il check-in online compilando i dati di tutti i viaggiatori.',
@@ -96,7 +96,7 @@ const checkinEmailTexts = {
     note: 'Se ha domande, non esiti a contattarci. Il link è personale: non lo condivida con altri.',
   },
   en: {
-    subject: 'CASIA — Complete your online check-in',
+    subject: 'CASIA · Complete your online check-in',
     title: 'Online Check-in',
     greeting: (name) => `Dear ${name},`,
     intro: 'To make your arrival smoother and more pleasant, we invite you to complete the online check-in by filling in the details of all travelers.',
@@ -106,7 +106,7 @@ const checkinEmailTexts = {
     note: 'If you have any questions, please don\'t hesitate to contact us. This link is personal: please do not share it.',
   },
   fr: {
-    subject: 'CASIA — Complétez votre check-in en ligne',
+    subject: 'CASIA · Complétez votre check-in en ligne',
     title: 'Check-in en ligne',
     greeting: (name) => `Cher/Chère ${name},`,
     intro: 'Pour rendre votre arrivée plus rapide et agréable, nous vous invitons à compléter le check-in en ligne en remplissant les informations de tous les voyageurs.',
@@ -116,7 +116,7 @@ const checkinEmailTexts = {
     note: 'Pour toute question, n\'hésitez pas à nous contacter. Ce lien est personnel : ne le partagez pas.',
   },
   de: {
-    subject: 'CASIA — Online-Check-in abschließen',
+    subject: 'CASIA · Online-Check-in abschließen',
     title: 'Online-Check-in',
     greeting: (name) => `Liebe/r ${name},`,
     intro: 'Um Ihre Ankunft angenehmer zu gestalten, laden wir Sie ein, den Online-Check-in auszufüllen und die Daten aller Reisenden anzugeben.',
@@ -134,28 +134,28 @@ export function getCheckinEmailTexts(lang) {
 // ===== Email Istruzioni Accesso =====
 const accessEmailTexts = {
   it: {
-    subject: (checkin) => `CASIA — Istruzioni di accesso per il ${checkin}`,
+    subject: (checkin) => `CASIA · Istruzioni di accesso per il ${checkin}`,
     title: 'Istruzioni di Accesso',
     greeting: (name) => `Gentile ${name},`,
     intro: (checkin, checkout) => `Ecco le istruzioni per accedere all'appartamento per il suo soggiorno dal <strong>${checkin}</strong> al <strong>${checkout}</strong>:`,
     contact: 'Per qualsiasi necessità, non esiti a contattarci. Buon soggiorno!',
   },
   en: {
-    subject: (checkin) => `CASIA — Access instructions for ${checkin}`,
+    subject: (checkin) => `CASIA · Access instructions for ${checkin}`,
     title: 'Access Instructions',
     greeting: (name) => `Dear ${name},`,
     intro: (checkin, checkout) => `Here are the instructions to access the apartment for your stay from <strong>${checkin}</strong> to <strong>${checkout}</strong>:`,
     contact: 'For any needs, please don\'t hesitate to contact us. Enjoy your stay!',
   },
   fr: {
-    subject: (checkin) => `CASIA — Instructions d'accès pour le ${checkin}`,
+    subject: (checkin) => `CASIA · Instructions d'accès pour le ${checkin}`,
     title: 'Instructions d\'Accès',
     greeting: (name) => `Cher/Chère ${name},`,
     intro: (checkin, checkout) => `Voici les instructions pour accéder à l'appartement pour votre séjour du <strong>${checkin}</strong> au <strong>${checkout}</strong> :`,
     contact: 'Pour tout besoin, n\'hésitez pas à nous contacter. Bon séjour !',
   },
   de: {
-    subject: (checkin) => `CASIA — Zugangsinformationen für den ${checkin}`,
+    subject: (checkin) => `CASIA · Zugangsinformationen für den ${checkin}`,
     title: 'Zugangsinformationen',
     greeting: (name) => `Liebe/r ${name},`,
     intro: (checkin, checkout) => `Hier sind die Zugangsinformationen zur Wohnung für Ihren Aufenthalt vom <strong>${checkin}</strong> bis <strong>${checkout}</strong>:`,
@@ -170,7 +170,7 @@ export function getAccessEmailTexts(lang) {
 // ===== Email Tassa di Soggiorno =====
 const taxEmailTexts = {
   it: {
-    subject: 'CASIA — Pagamento tassa di soggiorno',
+    subject: 'CASIA · Pagamento tassa di soggiorno',
     title: 'Tassa di Soggiorno',
     greeting: (name) => `Gentile ${name},`,
     intro: 'Come previsto dalla normativa comunale, è richiesto il pagamento della tassa di soggiorno per il suo pernottamento.',
@@ -182,7 +182,7 @@ const taxEmailTexts = {
     note: 'Il pagamento è sicuro e gestito da Stripe. L\'importo è stabilito dal Comune.',
   },
   en: {
-    subject: 'CASIA — Tourist tax payment',
+    subject: 'CASIA · Tourist tax payment',
     title: 'Tourist Tax',
     greeting: (name) => `Dear ${name},`,
     intro: 'As required by local regulations, a tourist tax payment is required for your stay.',
@@ -194,7 +194,7 @@ const taxEmailTexts = {
     note: 'Payment is secure and handled by Stripe. The amount is set by the Municipality.',
   },
   fr: {
-    subject: 'CASIA — Paiement de la taxe de séjour',
+    subject: 'CASIA · Paiement de la taxe de séjour',
     title: 'Taxe de Séjour',
     greeting: (name) => `Cher/Chère ${name},`,
     intro: 'Conformément à la réglementation municipale, le paiement de la taxe de séjour est requis pour votre séjour.',
@@ -206,7 +206,7 @@ const taxEmailTexts = {
     note: 'Le paiement est sécurisé et géré par Stripe. Le montant est fixé par la Commune.',
   },
   de: {
-    subject: 'CASIA — Zahlung der Kurtaxe',
+    subject: 'CASIA · Zahlung der Kurtaxe',
     title: 'Kurtaxe',
     greeting: (name) => `Liebe/r ${name},`,
     intro: 'Gemäß den örtlichen Vorschriften ist die Zahlung der Kurtaxe für Ihren Aufenthalt erforderlich.',

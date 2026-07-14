@@ -116,7 +116,7 @@ export async function handleCreateCheckout(request, env) {
     'success_url': `${siteUrl}/?booking=success&id=${reservationId}&lang=${guestLang}`,
     'cancel_url': `${siteUrl}/?booking=cancelled&lang=${guestLang}`,
     'line_items[0][price_data][currency]': 'eur',
-    'line_items[0][price_data][product_data][name]': `${apartmentName} — ${nights} notti`,
+    'line_items[0][price_data][product_data][name]': `${apartmentName} · ${nights} notti`,
     'line_items[0][price_data][product_data][description]': `${formatDate(checkin)} → ${formatDate(checkout)} | ${adults || 2} adulti${children ? ` + ${children} bambini` : ''}`,
     'line_items[0][price_data][unit_amount]': totalCents.toString(),
     'line_items[0][quantity]': '1',

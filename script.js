@@ -808,11 +808,11 @@
                     </div>
                     <div class="confirmation-detail-row">
                         <span>${tt('confirmation_checkin') || 'Check-in'}</span>
-                        <strong>${formatDateHuman(data.checkin)} — ${CHECKIN_TIME}</strong>
+                        <strong>${formatDateHuman(data.checkin)} · ${CHECKIN_TIME}</strong>
                     </div>
                     <div class="confirmation-detail-row">
                         <span>${tt('confirmation_checkout') || 'Check-out'}</span>
-                        <strong>${formatDateHuman(data.checkout)} — ${CHECKOUT_TIME}</strong>
+                        <strong>${formatDateHuman(data.checkout)} · ${CHECKOUT_TIME}</strong>
                     </div>
                     <div class="confirmation-detail-row">
                         <span>${tt('confirmation_nights') || 'Notti'}</span>
@@ -920,8 +920,8 @@
     <tr><td>${tt('print_apartment') || 'Appartamento'}</td><td>${data.apartment_name}</td></tr>
     <tr><td>${tt('print_guest') || 'Ospite'}</td><td>${data.guest_name}</td></tr>
     <tr><td>${tt('print_email') || 'Email'}</td><td>${data.guest_email}</td></tr>
-    <tr><td>${tt('print_checkin') || 'Check-in'}</td><td>${formatDateHuman(data.checkin)} — ${CHECKIN_TIME}</td></tr>
-    <tr><td>${tt('print_checkout') || 'Check-out'}</td><td>${formatDateHuman(data.checkout)} — ${CHECKOUT_TIME}</td></tr>
+    <tr><td>${tt('print_checkin') || 'Check-in'}</td><td>${formatDateHuman(data.checkin)} · ${CHECKIN_TIME}</td></tr>
+    <tr><td>${tt('print_checkout') || 'Check-out'}</td><td>${formatDateHuman(data.checkout)} · ${CHECKOUT_TIME}</td></tr>
     <tr><td>${tt('print_nights') || 'Notti'}</td><td>${data.nights}</td></tr>
     <tr><td>${tt('print_guests') || 'Ospiti'}</td><td>${guestsText}</td></tr>
     <tr class="total-row"><td>${tt('print_total') || 'Totale pagato'}</td><td>${totalFormatted}</td></tr>
@@ -987,8 +987,8 @@
     function updateSummary() {
         const apartmentName = bookingState.apartment === 'oliva' ? 'Oliva' : 'Venica';
         setText('summary-apartment', apartmentName);
-        setText('summary-checkin', `${formatDateHuman(bookingState.checkin)} — ${CHECKIN_TIME}`);
-        setText('summary-checkout', `${formatDateHuman(bookingState.checkout)} — ${CHECKOUT_TIME}`);
+        setText('summary-checkin', `${formatDateHuman(bookingState.checkin)} · ${CHECKIN_TIME}`);
+        setText('summary-checkout', `${formatDateHuman(bookingState.checkout)} · ${CHECKOUT_TIME}`);
         setText('summary-nights', bookingState.nights);
     }
 
@@ -1057,7 +1057,7 @@
     }
 
     function formatDateHuman(dateStr) {
-        if (!dateStr) return '—';
+        if (!dateStr) return '·';
         const [y, m, d] = dateStr.split('-');
         const defaultMonths = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
         const months = tt('months_short') || defaultMonths;

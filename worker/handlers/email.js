@@ -93,11 +93,11 @@ export async function sendGuestConfirmation(env, reservation) {
       </div>
       <div class="detail">
         <span class="detail-label">${t.checkin}</span>
-        <span class="detail-value">${formatDate(checkin)} — ${t.checkin_time || ('dalle ' + CHECKIN_TIME)}</span>
+        <span class="detail-value">${formatDate(checkin)} · ${t.checkin_time || ('dalle ' + CHECKIN_TIME)}</span>
       </div>
       <div class="detail">
         <span class="detail-label">${t.checkout}</span>
-        <span class="detail-value">${formatDate(checkout)} — ${t.checkout_time || ('entro le ' + CHECKOUT_TIME)}</span>
+        <span class="detail-value">${formatDate(checkout)} · ${t.checkout_time || ('entro le ' + CHECKOUT_TIME)}</span>
       </div>
       <div class="detail">
         <span class="detail-label">${t.nights}</span>
@@ -372,7 +372,7 @@ export async function sendTouristTaxEmail(env, reservation, paymentUrl, amountCe
       <p>${t.intro}</p>
       <div class="detail">
         <span class="detail-label">${t.period}</span>
-        <span class="detail-value">${formatDate(checkin)} — ${formatDate(checkout)}</span>
+        <span class="detail-value">${formatDate(checkin)} · ${formatDate(checkout)}</span>
       </div>
       <div class="detail">
         <span class="detail-label">${t.persons}</span>
