@@ -1091,12 +1091,15 @@
     <div class="admin-panel" id="panel-translations">
         <div class="admin-card">
             <h3>Editor traduzioni</h3>
+            <div id="trans-it-banner" style="display:none;background:#f7f4ec;border-left:3px solid var(--rame);padding:10px 14px;margin-bottom:14px;font-size:0.9rem;line-height:1.5;color:var(--text);">
+                <strong>Come funziona per l'italiano:</strong> le modifiche salvate qui NON vanno online da sole. Vengono riviste, pubblicate sul sito e tradotte nelle altre lingue in un secondo passaggio. Scrivi liberamente e salva: al resto pensiamo noi. Attenzione ai pezzi tipo <code>&lt;strong&gt;</code>: servono per il grassetto, non cancellarli. La versione "semplice" del sito (naturale) non si modifica da qui.
+            </div>
             <div class="admin-filters">
                 <div class="form-group">
                     <label>Lingua</label>
                     <select id="trans-lang">
-                        <option value="it">Italiano</option>
-                        <option value="en" selected>English</option>
+                        <option value="it" selected>Italiano</option>
+                        <option value="en">English</option>
                         <option value="fr">Français</option>
                         <option value="de">Deutsch</option>
                     </select>
@@ -2429,6 +2432,8 @@
 
     async function loadTranslations() {
         const lang = document.getElementById('trans-lang').value;
+        const banner = document.getElementById('trans-it-banner');
+        if (banner) banner.style.display = lang === 'it' ? 'block' : 'none';
         const wrap = document.getElementById('translations-table-wrap');
         wrap.innerHTML = '<div class="loading">Caricamento...</div>';
         transChanges = {};
@@ -2585,6 +2590,20 @@
     document.getElementById('btn-load-trans').addEventListener('click', loadTranslations);
     document.getElementById('trans-search').addEventListener('input', renderTranslations);
 
+    // Avvisa se si lascia la pagina con modifiche non salvate
+    window.addEventListener('beforeunload', function(e) {
+        if (Object.keys(transChanges).length > 0) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+
+    // I tag HTML (<strong> ecc.) devono restare in pari col testo originale
+    function tagMismatch(original, nuovo) {
+        const conta = s => (s.match(/<[^>]+>/g) || []).length;
+        return conta(original) !== conta(nuovo);
+    }
+
     document.getElementById('btn-save-trans').addEventListener('click', async function() {
         const lang = document.getElementById('trans-lang').value;
         const updates = Object.entries(transChanges).map(([compositeKey, value]) => {
@@ -2593,6 +2612,21 @@
         });
 
         if (updates.length === 0) return;
+
+        // Controllo soft sui tag HTML rovinati
+        const sospette = [];
+        document.querySelectorAll('.trans-edit textarea.changed').forEach(ta => {
+            if (tagMismatch(ta.dataset.original || '', ta.value)) sospette.push(ta.dataset.key);
+        });
+        if (sospette.length > 0) {
+            const ok = await confirmModal(
+                'Controlla i tag',
+                'In ' + sospette.length + ' test' + (sospette.length === 1 ? 'o' : 'i') + ' sembra mancare o essere cambiato un tag tipo &lt;strong&gt; (' + sospette.slice(0, 3).join(', ') + '). Salvare lo stesso?',
+                'Salva comunque',
+                false
+            );
+            if (!ok) return;
+        }
 
         const res = await apiFetch('/translations', {
             method: 'PUT',
