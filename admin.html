@@ -1160,6 +1160,10 @@
                     <input type="number" id="price-night" step="1" placeholder="120">
                 </div>
                 <div class="form-group">
+                    <label>Prezzo/notte 2 ospiti (EUR)</label>
+                    <input type="number" id="price-night-2" step="1" min="1" placeholder="vuoto = pieno">
+                </div>
+                <div class="form-group">
                     <label>Notti minime</label>
                     <input type="number" id="price-min-nights" value="2" min="1">
                 </div>
@@ -2199,7 +2203,7 @@
                 html += `<div class="res-card">
                     <div class="res-card-header">
                         <span class="res-card-guest">${apt} · ${seasonNames[p.season] || p.season}</span>
-                        <span style="font-weight:600;color:var(--rame);">${formatEuro(p.price_night)}/n</span>
+                        <span style="font-weight:600;color:var(--rame);">${formatEuro(p.price_night)}/n${p.price_night_2 ? ' · 2 osp. ' + formatEuro(p.price_night_2) : ''}</span>
                     </div>
                     <div class="res-card-dates">
                         <span>${formatDateShort(p.date_from)} → ${formatDateShort(p.date_to)}</span>
@@ -2211,7 +2215,7 @@
             html += '</div>';
         } else {
             html = `<table class="admin-table">
-                <thead><tr><th>Appartamento</th><th>Stagione</th><th>Dal</th><th>Al</th><th>Prezzo/notte</th><th>Min notti</th><th>Azioni</th></tr></thead><tbody>`;
+                <thead><tr><th>Appartamento</th><th>Stagione</th><th>Dal</th><th>Al</th><th>Prezzo/notte</th><th>2 ospiti</th><th>Min notti</th><th>Azioni</th></tr></thead><tbody>`;
             data.pricing.forEach(p => {
                 html += `<tr>
                     <td>${p.apartment === 'oliva' ? 'Oliva' : 'Venica'}</td>
@@ -2219,6 +2223,7 @@
                     <td>${formatDate(p.date_from)}</td>
                     <td>${formatDate(p.date_to)}</td>
                     <td>${formatEuro(p.price_night)}</td>
+                    <td>${p.price_night_2 ? formatEuro(p.price_night_2) : '—'}</td>
                     <td>${p.min_nights}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="deletePrice(${p.id})">Elimina</button></td>
                 </tr>`;
@@ -2234,10 +2239,15 @@
         const date_from = document.getElementById('price-from').value;
         const date_to = document.getElementById('price-to').value;
         const priceEur = parseFloat(document.getElementById('price-night').value);
+        const price2Eur = parseFloat(document.getElementById('price-night-2').value);
         const min_nights = parseInt(document.getElementById('price-min-nights').value) || 1;
 
         if (!date_from || !date_to || isNaN(priceEur)) {
             toast('Compila tutti i campi', 'error');
+            return;
+        }
+        if (!isNaN(price2Eur) && (price2Eur <= 0 || price2Eur > priceEur)) {
+            toast('Il prezzo per 2 ospiti deve essere maggiore di zero e non superiore al prezzo pieno', 'error');
             return;
         }
 
@@ -2246,6 +2256,7 @@
             body: JSON.stringify({
                 apartment, season, date_from, date_to,
                 price_night: Math.round(priceEur * 100),
+                price_night_2: isNaN(price2Eur) ? null : Math.round(price2Eur * 100),
                 min_nights,
             }),
         });

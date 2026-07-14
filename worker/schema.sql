@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS pricing (
     date_from   TEXT NOT NULL,  -- YYYY-MM-DD
     date_to     TEXT NOT NULL,  -- YYYY-MM-DD
     price_night INTEGER NOT NULL,  -- centesimi (es. 12000 = 120€)
+    price_night_2 INTEGER,          -- centesimi, prezzo fino a 2 ospiti (NULL = vale il prezzo pieno)
     min_nights  INTEGER NOT NULL DEFAULT 1
 );
 

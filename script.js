@@ -255,6 +255,7 @@
 
     let flatpickrInstance = null;
     let priceDebounce = null;
+    let priceRequestSeq = 0;
 
     function init() {
         const widget = document.getElementById('booking-widget');
@@ -393,6 +394,7 @@
         showPriceLoading();
 
         clearTimeout(priceDebounce);
+        const seq = ++priceRequestSeq;
         priceDebounce = setTimeout(async () => {
             try {
                 const res = await fetch(`${API_BASE}/calculate-price`, {
@@ -402,10 +404,14 @@
                         apartment: bookingState.apartment,
                         checkin: bookingState.checkin,
                         checkout: bookingState.checkout,
+                        guests: bookingState.adults + bookingState.children,
                     }),
                 });
 
                 const data = await res.json();
+
+                // Risposta superata da una richiesta più recente: ignora
+                if (seq !== priceRequestSeq) return;
 
                 if (!res.ok) {
                     let msg;
@@ -428,6 +434,7 @@
                 showPrice();
                 enableNextBtn();
             } catch (err) {
+                if (seq !== priceRequestSeq) return;
                 showPriceError(tt('booking_connection_error') || 'Errore di connessione');
                 disableNextBtn();
             }
@@ -478,6 +485,9 @@
                 if (targetId === 'booking-children') bookingState.children = val;
 
                 updateCounterLimits();
+
+                // Il numero di ospiti incide sul prezzo: ricalcola il preventivo
+                if (bookingState.checkin && bookingState.checkout) calculatePrice();
             });
         });
 
@@ -989,6 +999,8 @@
         if (loading) loading.style.display = 'block';
         if (priceRow) priceRow.style.display = 'none';
         if (errorEl) errorEl.style.display = 'none';
+        // Mentre il totale è in ricalcolo non si può avanzare col prezzo vecchio
+        disableNextBtn();
     }
 
     function showPrice() {
@@ -999,6 +1011,8 @@
         if (priceRow) priceRow.style.display = 'flex';
         if (errorEl) errorEl.style.display = 'none';
         setText('summary-price', bookingState.totalFormatted);
+        // Se il riepilogo finale è già visibile, aggiorna anche quello
+        setText('final-price', bookingState.totalFormatted);
     }
 
     function showPriceError(msg) {

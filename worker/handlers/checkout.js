@@ -1,4 +1,5 @@
 // Handler per creazione sessione Stripe Checkout
+import { computeStayPrice, guestsForPricing, gapLength } from './availability.js';
 
 /**
  * POST /api/create-checkout
@@ -51,45 +52,26 @@ export async function handleCreateCheckout(request, env) {
     return Response.json({ error: 'Alcune date selezionate sono bloccate' }, { status: 409 });
   }
 
-  // Calcola prezzo
+  // Calcola prezzo (stessa logica del preventivo, ospiti inclusi)
   const pricing = await env.DB.prepare(`
-    SELECT season, date_from, date_to, price_night, min_nights FROM pricing
+    SELECT season, date_from, date_to, price_night, price_night_2, min_nights FROM pricing
     WHERE apartment = ? AND date_from <= ? AND date_to >= ?
     ORDER BY date_from
   `).bind(apartment, checkout, checkin).all();
 
-  let totalCents = 0;
-  let maxMinNights = 1;
-  const seasonPriority = { peak: 4, high: 3, mid: 2, low: 1 };
+  const guestCount = guestsForPricing(adults, children);
+  const { totalCents, maxMinNights } = computeStayPrice(pricing.results, checkinDate, nights, guestCount);
 
-  let current = new Date(checkinDate);
-  for (let i = 0; i < nights; i++) {
-    const dateStr = current.toISOString().split('T')[0];
-    let bestPrice = null;
-    let bestPriority = 0;
-
-    for (const p of pricing.results) {
-      if (dateStr >= p.date_from && dateStr <= p.date_to) {
-        const priority = seasonPriority[p.season] || 0;
-        if (priority > bestPriority) {
-          bestPrice = p;
-          bestPriority = priority;
-        }
-      }
-    }
-
-    if (bestPrice) {
-      totalCents += bestPrice.price_night;
-      if (bestPrice.min_nights > maxMinNights) maxMinNights = bestPrice.min_nights;
-    } else if (pricing.results.length) {
-      totalCents += pricing.results[0].price_night;
-    }
-
-    current.setUTCDate(current.getUTCDate() + 1);
-  }
-
+  // Soggiorno minimo con regola riempi-buco, come nel preventivo
+  let effectiveMin = maxMinNights;
   if (nights < maxMinNights) {
-    return Response.json({ error: `Soggiorno minimo di ${maxMinNights} notti` }, { status: 400 });
+    const gap = await gapLength(env, apartment, checkin, checkout, nights);
+    if (gap !== null && gap < maxMinNights) {
+      effectiveMin = gap;
+    }
+  }
+  if (nights < effectiveMin) {
+    return Response.json({ error: `Soggiorno minimo di ${effectiveMin} notti` }, { status: 400 });
   }
 
   if (totalCents <= 0) {

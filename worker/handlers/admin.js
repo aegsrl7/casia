@@ -243,7 +243,7 @@ async function getPricing(request, env) {
 
 /**
  * POST /api/admin/pricing
- * Body: { apartment, season, date_from, date_to, price_night, min_nights }
+ * Body: { apartment, season, date_from, date_to, price_night, price_night_2, min_nights }
  */
 async function upsertPricing(request, env) {
   let body;
@@ -253,24 +253,33 @@ async function upsertPricing(request, env) {
     return Response.json({ error: 'Body JSON non valido' }, { status: 400 });
   }
 
-  const { id, apartment, season, date_from, date_to, price_night, min_nights } = body;
+  const { id, apartment, season, date_from, date_to, price_night, price_night_2, min_nights } = body;
 
   if (!apartment || !season || !date_from || !date_to || !price_night) {
     return Response.json({ error: 'Campi obbligatori mancanti' }, { status: 400 });
   }
 
+  // Prezzo per 2 ospiti opzionale: null = vale il prezzo pieno
+  let price2 = null;
+  if (price_night_2 !== undefined && price_night_2 !== null && price_night_2 !== '') {
+    price2 = parseInt(price_night_2);
+    if (!Number.isFinite(price2) || price2 <= 0 || price2 > parseInt(price_night)) {
+      return Response.json({ error: 'Prezzo per 2 ospiti non valido: deve essere maggiore di zero e non superiore al prezzo pieno' }, { status: 400 });
+    }
+  }
+
   if (id) {
     // Aggiorna
     await env.DB.prepare(`
-      UPDATE pricing SET apartment=?, season=?, date_from=?, date_to=?, price_night=?, min_nights=?
+      UPDATE pricing SET apartment=?, season=?, date_from=?, date_to=?, price_night=?, price_night_2=?, min_nights=?
       WHERE id=?
-    `).bind(apartment, season, date_from, date_to, price_night, min_nights || 1, parseInt(id)).run();
+    `).bind(apartment, season, date_from, date_to, price_night, price2, min_nights || 1, parseInt(id)).run();
   } else {
     // Inserisci
     await env.DB.prepare(`
-      INSERT INTO pricing (apartment, season, date_from, date_to, price_night, min_nights)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `).bind(apartment, season, date_from, date_to, price_night, min_nights || 1).run();
+      INSERT INTO pricing (apartment, season, date_from, date_to, price_night, price_night_2, min_nights)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).bind(apartment, season, date_from, date_to, price_night, price2, min_nights || 1).run();
   }
 
   return Response.json({ success: true });

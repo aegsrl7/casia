@@ -78,8 +78,66 @@ export async function handleAvailability(request, env) {
 }
 
 /**
+ * Calcolo del soggiorno condiviso tra preventivo e checkout.
+ * Per ogni notte vince la stagione a priorità più alta (peak > high > mid > low);
+ * fino a 2 ospiti vale price_night_2 dove configurato, altrimenti il prezzo pieno.
+ */
+export function computeStayPrice(pricingRows, checkinDate, nights, guests) {
+  const seasonPriority = { peak: 4, high: 3, mid: 2, low: 1 };
+  const rateFor = (p) => (guests <= 2 && p.price_night_2 ? p.price_night_2 : p.price_night);
+
+  const nightDetails = [];
+  let totalCents = 0;
+  let maxMinNights = 1;
+
+  let current = new Date(checkinDate);
+  for (let i = 0; i < nights; i++) {
+    const dateStr = current.toISOString().split('T')[0];
+
+    let bestPrice = null;
+    let bestPriority = 0;
+    for (const p of pricingRows) {
+      if (dateStr >= p.date_from && dateStr <= p.date_to) {
+        const priority = seasonPriority[p.season] || 0;
+        if (priority > bestPriority) {
+          bestPrice = p;
+          bestPriority = priority;
+        }
+      }
+    }
+
+    // Fallback: prima riga disponibile se nessuna stagione copre la data
+    const row = bestPrice || pricingRows[0];
+    if (row) {
+      nightDetails.push({
+        date: dateStr,
+        season: bestPrice ? row.season : 'default',
+        price_night: rateFor(row),
+      });
+      totalCents += rateFor(row);
+      if (bestPrice && row.min_nights > maxMinNights) {
+        maxMinNights = row.min_nights;
+      }
+    }
+
+    current.setUTCDate(current.getUTCDate() + 1);
+  }
+
+  return { nightDetails, totalCents, maxMinNights };
+}
+
+/**
+ * Numero di ospiti ai fini del prezzo (adulti + bambini), default 2.
+ */
+export function guestsForPricing(adults, children) {
+  const a = parseInt(adults);
+  const c = parseInt(children);
+  return (Number.isFinite(a) && a > 0 ? a : 2) + (Number.isFinite(c) && c > 0 ? c : 0);
+}
+
+/**
  * POST /api/calculate-price
- * Body: { apartment, checkin, checkout }
+ * Body: { apartment, checkin, checkout, guests }
  * Ritorna il prezzo totale e dettagli per notte
  */
 export async function handleCalculatePrice(request, env) {
@@ -90,7 +148,7 @@ export async function handleCalculatePrice(request, env) {
     return Response.json({ error: 'Body JSON non valido' }, { status: 400 });
   }
 
-  const { apartment, checkin, checkout } = body;
+  const { apartment, checkin, checkout, guests } = body;
 
   if (!apartment || !['oliva', 'venica'].includes(apartment)) {
     return Response.json({ error: 'Appartamento non valido' }, { status: 400 });
@@ -108,10 +166,15 @@ export async function handleCalculatePrice(request, env) {
   }
 
   const nights = Math.round((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+  // Senza indicazione degli ospiti vale il prezzo pieno: i client vecchi in cache
+  // non mandano il campo e non devono vedere un preventivo scontato che il
+  // checkout (che riceve gli ospiti veri) non applicherebbe.
+  const parsedGuests = parseInt(guests);
+  const guestCount = Number.isFinite(parsedGuests) && parsedGuests > 0 ? parsedGuests : 3;
 
   // Ottieni tutti i periodi di pricing applicabili
   const pricing = await env.DB.prepare(`
-    SELECT season, date_from, date_to, price_night, min_nights FROM pricing
+    SELECT season, date_from, date_to, price_night, price_night_2, min_nights FROM pricing
     WHERE apartment = ? AND date_from <= ? AND date_to >= ?
     ORDER BY date_from
   `).bind(apartment, checkout, checkin).all();
@@ -120,53 +183,7 @@ export async function handleCalculatePrice(request, env) {
     return Response.json({ error: 'Nessun prezzo configurato per queste date' }, { status: 400 });
   }
 
-  // Calcola prezzo per ogni notte
-  const nightDetails = [];
-  let totalCents = 0;
-  let maxMinNights = 1;
-
-  let current = new Date(checkinDate);
-  for (let i = 0; i < nights; i++) {
-    const dateStr = current.toISOString().split('T')[0];
-
-    // Trova il prezzo più specifico per questa data (peak > high > mid > low)
-    const seasonPriority = { peak: 4, high: 3, mid: 2, low: 1 };
-    let bestPrice = null;
-    let bestPriority = 0;
-
-    for (const p of pricing.results) {
-      if (dateStr >= p.date_from && dateStr <= p.date_to) {
-        const priority = seasonPriority[p.season] || 0;
-        if (priority > bestPriority) {
-          bestPrice = p;
-          bestPriority = priority;
-        }
-      }
-    }
-
-    if (bestPrice) {
-      nightDetails.push({
-        date: dateStr,
-        season: bestPrice.season,
-        price_night: bestPrice.price_night,
-      });
-      totalCents += bestPrice.price_night;
-      if (bestPrice.min_nights > maxMinNights) {
-        maxMinNights = bestPrice.min_nights;
-      }
-    } else {
-      // Fallback: usa il prezzo mid più vicino
-      const fallback = pricing.results[0];
-      nightDetails.push({
-        date: dateStr,
-        season: 'default',
-        price_night: fallback.price_night,
-      });
-      totalCents += fallback.price_night;
-    }
-
-    current.setUTCDate(current.getUTCDate() + 1);
-  }
+  const { nightDetails, totalCents, maxMinNights } = computeStayPrice(pricing.results, checkinDate, nights, guestCount);
 
   // Verifica soggiorno minimo, con regola "riempi-buco": se le date stanno
   // in un varco tra due occupazioni piu' corto del minimo, il minimo si
@@ -190,6 +207,7 @@ export async function handleCalculatePrice(request, env) {
     checkin,
     checkout,
     nights,
+    guests: guestCount,
     night_details: nightDetails,
     total_cents: totalCents,
     total_formatted: (totalCents / 100).toFixed(2),
@@ -201,7 +219,7 @@ export async function handleCalculatePrice(request, env) {
  * Lunghezza del varco libero contiguo che contiene il soggiorno richiesto.
  * Ritorna null se il varco e' aperto (non delimitato da occupazioni entro 30 giorni).
  */
-async function gapLength(env, apartment, checkin, checkout, nights) {
+export async function gapLength(env, apartment, checkin, checkout, nights) {
   const from = shiftDate(checkin, -30);
   const to = shiftDate(checkout, 30);
 
