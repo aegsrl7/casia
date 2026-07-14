@@ -578,6 +578,22 @@
             border-color: var(--warning);
             background: #fffbeb;
         }
+        .btn-row-save {
+            display: none;
+            margin-top: 4px;
+            margin-left: auto;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            font-family: 'Jost', sans-serif;
+            background: var(--rame);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-row-save:disabled { opacity: 0.6; cursor: default; }
+        .btn-row-save.visible { display: block; }
+        .btn-row-save.saved { background: var(--success, #4a7c3a); }
         .trans-header {
             display: grid;
             grid-template-columns: 180px 1fr 1fr;
@@ -2553,6 +2569,7 @@
                     <div class="trans-ref">${esc(refVal)}</div>
                     <div class="trans-edit">
                         <textarea rows="${rows}" data-page="${esc(item.page)}" data-key="${esc(item.key)}" data-original="${esc(targetMap[compositeKey] || '')}" class="${isChanged ? 'changed' : ''}">${esc(targetVal)}</textarea>
+                        <button type="button" class="btn-row-save ${isChanged ? 'visible' : ''}" data-page="${esc(item.page)}" data-key="${esc(item.key)}">Salva</button>
                     </div>
                 </div>`;
             });
@@ -2567,14 +2584,58 @@
             ta.addEventListener('input', function() {
                 const compositeKey = this.dataset.page + '|' + this.dataset.key;
                 const original = this.dataset.original;
+                const rowBtn = this.parentElement.querySelector('.btn-row-save');
                 if (this.value !== original) {
                     transChanges[compositeKey] = this.value;
                     this.classList.add('changed');
+                    if (rowBtn) { rowBtn.classList.add('visible'); rowBtn.classList.remove('saved'); rowBtn.textContent = 'Salva'; }
                 } else {
                     delete transChanges[compositeKey];
                     this.classList.remove('changed');
+                    if (rowBtn) rowBtn.classList.remove('visible');
                 }
                 updateTransChangesCount();
+            });
+        });
+
+        // Salvataggio asincrono della singola riga
+        wrap.querySelectorAll('.btn-row-save').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const ta = this.parentElement.querySelector('textarea');
+                if (!ta) return;
+                const lang = document.getElementById('trans-lang').value;
+                const compositeKey = ta.dataset.page + '|' + ta.dataset.key;
+
+                if (tagMismatch(ta.dataset.original || '', ta.value)) {
+                    const ok = await confirmModal(
+                        'Controlla i tag',
+                        'In questo testo sembra mancare o essere cambiato un tag tipo &lt;strong&gt;. Salvare lo stesso?',
+                        'Salva comunque', false
+                    );
+                    if (!ok) return;
+                }
+
+                this.disabled = true;
+                this.textContent = 'Salvo...';
+                const res = await apiFetch('/translations', {
+                    method: 'PUT',
+                    body: JSON.stringify({ updates: [{ lang, page: ta.dataset.page, key: ta.dataset.key, value: ta.value }] }),
+                });
+                this.disabled = false;
+                const data = res ? await res.json() : null;
+                if (data && data.success) {
+                    ta.dataset.original = ta.value;
+                    ta.classList.remove('changed');
+                    delete transChanges[compositeKey];
+                    updateTransChangesCount();
+                    this.textContent = 'Salvato ✓';
+                    this.classList.add('saved');
+                    const self = this;
+                    setTimeout(function() { self.classList.remove('visible', 'saved'); self.textContent = 'Salva'; }, 1600);
+                } else {
+                    this.textContent = 'Errore, riprova';
+                    toast((data && data.error) || 'Errore nel salvataggio', 'error');
+                }
             });
         });
     }
