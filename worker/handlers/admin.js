@@ -254,7 +254,7 @@ async function upsertPricing(request, env) {
     return Response.json({ error: 'Body JSON non valido' }, { status: 400 });
   }
 
-  const { id, apartment, season, date_from, date_to, price_night, price_night_2, min_nights } = body;
+  const { id, apartment, season, date_from, date_to, price_night, price_night_2, price_night_booking, min_nights } = body;
 
   if (!apartment || !season || !date_from || !date_to || !price_night) {
     return Response.json({ error: 'Campi obbligatori mancanti' }, { status: 400 });
@@ -269,18 +269,27 @@ async function upsertPricing(request, env) {
     }
   }
 
+  // Prezzo Booking opzionale: serve solo alla stima ricavi nel pannello
+  let priceBooking = null;
+  if (price_night_booking !== undefined && price_night_booking !== null && price_night_booking !== '') {
+    priceBooking = parseInt(price_night_booking);
+    if (!Number.isFinite(priceBooking) || priceBooking <= 0) {
+      return Response.json({ error: 'Prezzo Booking non valido: deve essere maggiore di zero' }, { status: 400 });
+    }
+  }
+
   if (id) {
     // Aggiorna
     await env.DB.prepare(`
-      UPDATE pricing SET apartment=?, season=?, date_from=?, date_to=?, price_night=?, price_night_2=?, min_nights=?
+      UPDATE pricing SET apartment=?, season=?, date_from=?, date_to=?, price_night=?, price_night_2=?, price_night_booking=?, min_nights=?
       WHERE id=?
-    `).bind(apartment, season, date_from, date_to, price_night, price2, min_nights || 1, parseInt(id)).run();
+    `).bind(apartment, season, date_from, date_to, price_night, price2, priceBooking, min_nights || 1, parseInt(id)).run();
   } else {
     // Inserisci
     await env.DB.prepare(`
-      INSERT INTO pricing (apartment, season, date_from, date_to, price_night, price_night_2, min_nights)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `).bind(apartment, season, date_from, date_to, price_night, price2, min_nights || 1).run();
+      INSERT INTO pricing (apartment, season, date_from, date_to, price_night, price_night_2, price_night_booking, min_nights)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(apartment, season, date_from, date_to, price_night, price2, priceBooking, min_nights || 1).run();
   }
 
   return Response.json({ success: true });

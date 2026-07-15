@@ -967,7 +967,8 @@
         <div class="admin-stats" id="admin-stats">
             <div class="stat-card"><div class="stat-value" id="stat-confirmed">·</div><div class="stat-label">Confermate</div></div>
             <div class="stat-card"><div class="stat-value" id="stat-pending">·</div><div class="stat-label">In attesa</div></div>
-            <div class="stat-card"><div class="stat-value" id="stat-revenue">·</div><div class="stat-label">Ricavo totale</div></div>
+            <div class="stat-card"><div class="stat-value" id="stat-revenue">·</div><div class="stat-label">Ricavo sito (incassato)</div></div>
+            <div class="stat-card" title="STIMA: calcolata dalle tariffe Booking a listino per le notti prenotate, al lordo delle commissioni. Non è un dato reale: la sincronizzazione con Booking non trasmette gli importi."><div class="stat-value" id="stat-booking-est" style="color:var(--text-light);">·</div><div class="stat-label">Booking (stima, lordo comm.)</div></div>
             <div class="stat-card"><div class="stat-value" id="stat-upcoming">·</div><div class="stat-label">Prossime</div></div>
         </div>
 
@@ -1181,6 +1182,10 @@
                 <div class="form-group">
                     <label>Prezzo/notte 2 ospiti (EUR)</label>
                     <input type="number" id="price-night-2" step="1" min="1" placeholder="vuoto = pieno">
+                </div>
+                <div class="form-group">
+                    <label>Prezzo su Booking (EUR)</label>
+                    <input type="number" id="price-night-booking" step="1" min="1" placeholder="per la stima ricavi">
                 </div>
                 <div class="form-group">
                     <label>Notti minime</label>
@@ -1542,12 +1547,66 @@
         });
         const today = new Date().toISOString().split('T')[0];
         const upcoming = confirmed.filter(r => r.checkin >= today);
-        const revenue = confirmed.reduce((sum, r) => sum + (r.total_cents || 0), 0);
+        // Solo gli incassi veri del sito: le prenotazioni Booking non hanno importo
+        const revenue = confirmed.filter(r => r.source !== 'booking').reduce((sum, r) => sum + (r.total_cents || 0), 0);
 
         document.getElementById('stat-confirmed').textContent = confirmed.length;
         document.getElementById('stat-pending').textContent = activePending.length + (activePending.length !== pending.length ? ` (${pending.length - activePending.length} scadute)` : '');
         document.getElementById('stat-revenue').textContent = formatEuro(revenue);
         document.getElementById('stat-upcoming').textContent = upcoming.length;
+
+        updateBookingEstimate(confirmed.filter(r => r.source === 'booking'));
+    }
+
+    // ----- Stima ricavi Booking (dal listino, NON dato reale) -----
+    let statsPricingCache = null;
+
+    function bookingNightRate(rows, dateStr, apartment) {
+        const pri = { peak: 4, high: 3, mid: 2, low: 1 };
+        let best = null, bestPri = 0;
+        rows.forEach(p => {
+            if (p.apartment === apartment && dateStr >= p.date_from && dateStr <= p.date_to && (pri[p.season] || 0) > bestPri) {
+                best = p; bestPri = pri[p.season] || 0;
+            }
+        });
+        if (!best) return null;
+        if (best.price_night_booking) return best.price_night_booking;
+        // fallback: listino sito pieno + 15%
+        return Math.round(best.price_night * 1.15);
+    }
+
+    function nextDay(ds) {
+        const d = new Date(ds + 'T12:00:00Z');
+        d.setUTCDate(d.getUTCDate() + 1);
+        return d.toISOString().split('T')[0];
+    }
+
+    async function updateBookingEstimate(bookingReservations) {
+        const el = document.getElementById('stat-booking-est');
+        if (!el) return;
+        if (bookingReservations.length === 0) { el.textContent = '~ 0,00 €'; return; }
+
+        if (!statsPricingCache) {
+            const res = await apiFetch('/pricing');
+            if (!res) { el.textContent = 'n.d.'; return; }
+            statsPricingCache = (await res.json()).pricing || [];
+        }
+
+        let cents = 0;
+        let notturne = 0, senzaTariffa = 0;
+        bookingReservations.forEach(r => {
+            let d = r.checkin;
+            while (d < r.checkout) {
+                const rate = bookingNightRate(statsPricingCache, d, r.apartment);
+                if (rate !== null) { cents += rate; notturne++; } else { senzaTariffa++; }
+                d = nextDay(d);
+            }
+        });
+
+        el.textContent = '~ ' + formatEuro(cents);
+        if (senzaTariffa > 0) {
+            el.textContent += ' (' + senzaTariffa + ' notti senza tariffa)';
+        }
     }
 
     // ----- Mini Calendario -----
@@ -2234,7 +2293,7 @@
             html += '</div>';
         } else {
             html = `<table class="admin-table">
-                <thead><tr><th>Appartamento</th><th>Stagione</th><th>Dal</th><th>Al</th><th>Prezzo/notte</th><th>2 ospiti</th><th>Min notti</th><th>Azioni</th></tr></thead><tbody>`;
+                <thead><tr><th>Appartamento</th><th>Stagione</th><th>Dal</th><th>Al</th><th>Prezzo/notte</th><th>2 ospiti</th><th>Booking</th><th>Min notti</th><th>Azioni</th></tr></thead><tbody>`;
             data.pricing.forEach(p => {
                 html += `<tr>
                     <td>${p.apartment === 'oliva' ? 'Oliva' : 'Venica'}</td>
@@ -2243,6 +2302,7 @@
                     <td>${formatDate(p.date_to)}</td>
                     <td>${formatEuro(p.price_night)}</td>
                     <td>${p.price_night_2 ? formatEuro(p.price_night_2) : '·'}</td>
+                    <td>${p.price_night_booking ? formatEuro(p.price_night_booking) : '·'}</td>
                     <td>${p.min_nights}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="deletePrice(${p.id})">Elimina</button></td>
                 </tr>`;
@@ -2259,6 +2319,7 @@
         const date_to = document.getElementById('price-to').value;
         const priceEur = parseFloat(document.getElementById('price-night').value);
         const price2Eur = parseFloat(document.getElementById('price-night-2').value);
+        const priceBookingEur = parseFloat(document.getElementById('price-night-booking').value);
         const min_nights = parseInt(document.getElementById('price-min-nights').value) || 1;
 
         if (!date_from || !date_to || isNaN(priceEur)) {
@@ -2269,6 +2330,10 @@
             toast('Il prezzo per 2 ospiti deve essere maggiore di zero e non superiore al prezzo pieno', 'error');
             return;
         }
+        if (!isNaN(priceBookingEur) && priceBookingEur <= 0) {
+            toast('Il prezzo Booking deve essere maggiore di zero', 'error');
+            return;
+        }
 
         const res = await apiFetch('/pricing', {
             method: 'POST',
@@ -2276,9 +2341,11 @@
                 apartment, season, date_from, date_to,
                 price_night: Math.round(priceEur * 100),
                 price_night_2: isNaN(price2Eur) ? null : Math.round(price2Eur * 100),
+                price_night_booking: isNaN(priceBookingEur) ? null : Math.round(priceBookingEur * 100),
                 min_nights,
             }),
         });
+        statsPricingCache = null;
         if (!res) return;
         toast('Periodo salvato', 'success');
         loadPricing();
