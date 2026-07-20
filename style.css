@@ -1774,12 +1774,33 @@ html.i18n-loading [data-i18n-html] {
     font-size: 0.8rem;
 }
 
+/* Il contenitore dei giorni segue la larghezza del calendario
+   e ogni cella vale un settimo: mai più di 7 giorni per riga */
+.booking-widget .flatpickr-days,
+.booking-widget .flatpickr-rContainer {
+    width: 100% !important;
+}
+
+.booking-widget .flatpickr-calendar:not(.multiMonth) .dayContainer {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Due mesi affiancati sul desktop: metà larghezza ciascuno */
+.booking-widget .flatpickr-calendar.multiMonth .dayContainer {
+    width: 50% !important;
+    min-width: 50% !important;
+    max-width: 50% !important;
+}
+
 .booking-widget .flatpickr-day {
     border-radius: 6px;
     font-size: 0.9rem;
     line-height: 38px;
     height: 38px;
-    max-width: 38px;
+    flex-basis: calc(14.2857% - 2px);
+    max-width: calc(14.2857% - 2px);
     margin: 1px;
     color: var(--color-antracite);
     border: none;
@@ -2287,7 +2308,6 @@ html.i18n-loading [data-i18n-html] {
     .booking-widget .flatpickr-day {
         line-height: 32px;
         height: 32px;
-        max-width: 32px;
         font-size: 0.82rem;
     }
 }
