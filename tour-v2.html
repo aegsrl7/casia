@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Casia Vacanze · Tour</title>
+<title>Casia Vacanze · Tour V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -63,18 +63,45 @@
   }
   @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 45% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
 
+  /* ---------- FRAME: il video parte inquadrato e si espande scrollando ---------- */
+  .frame {
+    position: absolute; inset: 0; overflow: hidden;
+    transform: scale(0.42);
+    border-radius: 22px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    will-change: transform, border-radius;
+  }
+  .frame video { position: absolute; inset: 0; }
+  .porta-content {
+    position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; padding: 24px;
+    pointer-events: none; will-change: transform, opacity;
+  }
+  .porta-content p { max-width: 560px; }
+  .porta-cta a { pointer-events: auto; }
+  .porta-content h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 400;
+    font-size: clamp(2.4rem, 6.5vw, 4.6rem); line-height: 1.04; color: #fff;
+    text-shadow: 0 3px 30px rgba(0,0,0,0.75); margin-top: 14px;
+  }
+  .porta-content p {
+    margin-top: 16px; font-weight: 200; font-size: clamp(0.95rem, 2vw, 1.15rem);
+    color: rgba(248,245,240,0.92); text-shadow: 0 2px 16px rgba(0,0,0,0.6);
+  }
+  .porta-cta { margin-top: 34px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
   /* ---------- TOUR SCROLLYTELLING ---------- */
   .tour { position: relative; }
   .tour-viewport { position: sticky; top: 0; height: 100svh; overflow: hidden; }
-  .scene-media { opacity: 0; transition: opacity 0.9s ease; }
-  .scene-media.active { opacity: 1; }
+  .scene-media { opacity: 1; }
   .scene-shade {
     position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: linear-gradient(to top, rgba(20,16,12,0.62) 0%, rgba(20,16,12,0.12) 45%, rgba(20,16,12,0.25));
+    background: linear-gradient(to right, rgba(20,16,12,0.55) 0%, rgba(20,16,12,0.10) 55%, rgba(20,16,12,0.05));
   }
+  /* V2: le didascalie entrano dal basso e attraversano tutta l'altezza del video */
   .scene-caption {
-    position: absolute; z-index: 3; left: clamp(24px, 7vw, 110px); bottom: clamp(60px, 12vh, 130px);
-    max-width: 620px; opacity: 0; transform: translateY(60px); will-change: transform, opacity;
+    position: absolute; z-index: 3; left: clamp(24px, 7vw, 110px); top: 0;
+    max-width: 620px; visibility: hidden; will-change: transform;
     pointer-events: none;
   }
   .scene-caption h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(2.1rem, 5.5vw, 4.2rem); line-height: 1.04; color: #fff; text-shadow: 0 3px 26px rgba(0,0,0,0.7); margin-top: 12px; }
@@ -122,7 +149,7 @@
 </head>
 <body>
 
-<div class="draft-badge">Bozza di lavoro · testi provvisori</div>
+<div class="draft-badge">Bozza V2 · testi provvisori</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -136,11 +163,22 @@
   <div class="scroll-hint">Scorri per esplorare</div>
 </section>
 
-<!-- TOUR -->
+<!-- TOUR: il riquadro che si espande E' gia' il video -->
 <div class="tour" id="tour">
   <div class="tour-viewport">
-    <video class="scene-media active" id="tour-video" poster="videos/tour-poster.jpg" muted playsinline preload="none"></video>
-    <div class="scene-shade"></div>
+    <div class="frame" id="frame">
+      <video class="scene-media" id="tour-video" poster="videos/tour-poster.jpg" muted playsinline preload="none"></video>
+      <div class="scene-shade"></div>
+    </div>
+    <div class="porta-content" id="porta-content">
+      <div class="eyebrow">Il tour</div>
+      <h2>Entra a Casia</h2>
+      <p>Trenta secondi tra vigne, lavanda e silenzio. Scorri, e lasciati portare.</p>
+      <div class="porta-cta">
+        <a class="btn btn-solid" href="/#prenota">Prenota ora</a>
+      </div>
+      <span class="placeholder-note">Testo indicativo, in attesa della copy</span>
+    </div>
 
     <div class="scene-caption" data-scene="0">
       <div class="eyebrow">Dall'alto</div>
@@ -195,9 +233,16 @@
 (function () {
   var SCENES = 5;
   var VH_PER_SCENE = 220;
-  var tour = document.getElementById('tour');
-  tour.style.height = (SCENES * VH_PER_SCENE) + 'vh';
+  var PHASE_VH = 170;        // corsa di scroll dell'espansione del riquadro
+  var T_INTRO = 2.0;         // secondi di video consumati durante l'espansione
+  var FALLBACK_DUR = 25.2;
 
+  var tour = document.getElementById('tour');
+  tour.style.height = (PHASE_VH + SCENES * VH_PER_SCENE) + 'vh';
+  var phaseFrac = PHASE_VH / (PHASE_VH + SCENES * VH_PER_SCENE);
+
+  var frame = document.getElementById('frame');
+  var portaContent = document.getElementById('porta-content');
   var video = document.getElementById('tour-video');
   var captions = Array.prototype.slice.call(document.querySelectorAll('.scene-caption'));
   var indexLabel = document.getElementById('scene-index');
@@ -206,6 +251,8 @@
   var ready = false;
 
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function clamp01(v) { return Math.min(Math.max(v, 0), 1); }
+  function easeInOut(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
 
   // Pre-scarica tutto il video: il seek diventa locale e istantaneo
   fetch('videos/tour.mp4').then(function (res) {
@@ -229,14 +276,12 @@
     video.src = URL.createObjectURL(blob);
     video.load();
   }).catch(function () {
-    // Fallback: sorgente diretta (scrubbing possibile appena il browser bufferizza)
     video.src = 'videos/tour.mp4';
     video.preload = 'auto';
     video.load();
   });
 
-  // Chrome rimanda l'inizializzazione dei video nelle schede nascoste:
-  // quando la scheda torna visibile, riprova finche' i metadati non arrivano.
+  // Chrome rimanda l'inizializzazione dei video nelle schede nascoste
   function tryInit() {
     if (ready) return;
     if (video.readyState >= 1 && !isNaN(video.duration)) {
@@ -252,37 +297,63 @@
   document.addEventListener('visibilitychange', tryInit);
   setInterval(tryInit, 1200);
 
+  function seek(t) {
+    if (ready && !isNaN(video.duration)) {
+      var target = Math.min(t, Math.max(video.duration - 0.05, 0));
+      if (Math.abs((video.currentTime || 0) - target) > 0.01) { video.currentTime = target; }
+    }
+  }
+
   function update() {
     ticking = false;
-    var rect = tour.getBoundingClientRect();
-    var total = tour.offsetHeight - window.innerHeight;
-    if (total <= 0) return;
-    var p = Math.min(Math.max(-rect.top / total, 0), 0.9999);
+    var vh = window.innerHeight;
+    var dur = (ready && !isNaN(video.duration)) ? video.duration : FALLBACK_DUR;
 
-    if (ready && !isNaN(video.duration)) {
-      var t = p * Math.max(video.duration - 0.05, 0);
-      if (Math.abs((video.currentTime || 0) - t) > 0.01) { video.currentTime = t; }
+    var rect = tour.getBoundingClientRect();
+    var total = tour.offsetHeight - vh;
+    if (total <= 0) return;
+    var p = clamp01(-rect.top / total);
+    p = Math.min(p, 0.9999);
+
+    if (p <= phaseFrac) {
+      // --- fase 1: il riquadro-video si espande, il drone comincia a muoversi ---
+      var e = easeInOut(p / phaseFrac);
+      frame.style.transform = 'scale(' + (0.42 + 0.58 * e) + ')';
+      frame.style.borderRadius = (22 * (1 - e)) + 'px';
+      var o = clamp01(1 - (p / phaseFrac - 0.72) / 0.24);
+      portaContent.style.opacity = o;
+      portaContent.style.visibility = o <= 0.01 ? 'hidden' : 'visible';
+      portaContent.style.transform = 'translateY(' + (-40 * e) + 'px)';
+      seek((p / phaseFrac) * T_INTRO);
+      captions.forEach(function (c) { c.style.visibility = 'hidden'; });
+      indexLabel.textContent = pad(1) + ' / ' + pad(SCENES);
+      return;
     }
 
-    var scene = Math.floor(p * SCENES);
-    var local = p * SCENES - scene;
+    // --- fase 2: tour a schermo pieno ---
+    frame.style.transform = 'scale(1)';
+    frame.style.borderRadius = '0px';
+    portaContent.style.opacity = 0;
+    portaContent.style.visibility = 'hidden';
+
+    var p2 = (p - phaseFrac) / (1 - phaseFrac);
+    var t = T_INTRO + p2 * (dur - T_INTRO - 0.05);
+    seek(t);
+
+    // Le scene seguono il tempo reale del video, cosi' restano
+    // sincronizzate con le 5 clip anche dopo l'intro consumata
+    var sceneDur = dur / SCENES;
+    var scene = Math.min(Math.floor(t / sceneDur), SCENES - 1);
+    var local = clamp01(t / sceneDur - scene);
     indexLabel.textContent = pad(scene + 1) + ' / ' + pad(SCENES);
 
+    // V2: la didascalia entra dal basso e attraversa tutta l'altezza, senza dissolversi
     captions.forEach(function (c, k) {
-      if (k !== scene) { c.style.opacity = 0; return; }
-      var y, o;
-      if (local < 0.30) {
-        var e = local / 0.30;
-        y = 90 * (1 - e); o = e;
-      } else if (local < 0.75) {
-        var m = (local - 0.30) / 0.45;
-        y = -14 * m; o = 1;
-      } else {
-        var u = (local - 0.75) / 0.25;
-        y = -14 - 70 * u; o = 1 - u;
-      }
+      if (k !== scene) { c.style.visibility = 'hidden'; return; }
+      var ch = c.offsetHeight || 200;
+      var y = vh - local * (vh + ch);
+      c.style.visibility = 'visible';
       c.style.transform = 'translateY(' + y + 'px)';
-      c.style.opacity = o;
     });
   }
 
@@ -301,6 +372,7 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   document.addEventListener('visibilitychange', onScroll);
+  window.__tourUpdate = update; // gancio per collaudo e debug
   update();
 })();
 </script>
