@@ -104,7 +104,8 @@
   /* V2: le didascalie entrano dal basso e attraversano tutta l'altezza del video */
   .scene-caption {
     position: absolute; z-index: 3; left: clamp(24px, 7vw, 110px); top: 0;
-    max-width: 620px; visibility: hidden; will-change: transform;
+    right: clamp(20px, 6vw, 90px); max-width: 620px;
+    visibility: hidden; will-change: transform;
     pointer-events: none;
   }
   .scene-caption h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(2.1rem, 5.5vw, 4.2rem); line-height: 1.04; color: #fff; text-shadow: 0 3px 26px rgba(0,0,0,0.7); margin-top: 12px; }
