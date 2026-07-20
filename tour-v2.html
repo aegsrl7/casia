@@ -72,6 +72,9 @@
     will-change: transform, border-radius;
   }
   .frame video { position: absolute; inset: 0; }
+  @media (max-width: 700px) {
+    .frame { transform: scale(0.68); border-radius: 16px; }
+  }
   .porta-content {
     position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column;
     align-items: center; justify-content: center; text-align: center; padding: 24px;
@@ -317,9 +320,13 @@
 
     if (p <= phaseFrac) {
       // --- fase 1: il riquadro-video si espande, il drone comincia a muoversi ---
+      // sugli schermi stretti (telefono in verticale) il riquadro parte piu' grande
+      var stretto = window.innerWidth <= 700;
+      var scalaBase = stretto ? 0.68 : 0.42;
+      var raggioBase = stretto ? 16 : 22;
       var e = easeInOut(p / phaseFrac);
-      frame.style.transform = 'scale(' + (0.42 + 0.58 * e) + ')';
-      frame.style.borderRadius = (22 * (1 - e)) + 'px';
+      frame.style.transform = 'scale(' + (scalaBase + (1 - scalaBase) * e) + ')';
+      frame.style.borderRadius = (raggioBase * (1 - e)) + 'px';
       var o = clamp01(1 - (p / phaseFrac - 0.72) / 0.24);
       portaContent.style.opacity = o;
       portaContent.style.visibility = o <= 0.01 ? 'hidden' : 'visible';
