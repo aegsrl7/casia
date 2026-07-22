@@ -294,6 +294,18 @@
     }
 
     // ----- Calendar -----
+    // Giorno di cambio-ospite: il primo giorno occupato dopo il check-in scelto
+    // resta selezionabile come partenza (check-out la mattina, arrivo altrui il pomeriggio)
+    let checkoutOnlyDay = null;
+
+    function isDisabledDay(date) {
+        const d = date.getFullYear() + '-' +
+            String(date.getMonth() + 1).padStart(2, '0') + '-' +
+            String(date.getDate()).padStart(2, '0');
+        if (checkoutOnlyDay && d === checkoutOnlyDay) return false;
+        return bookingState.unavailableDates.includes(d);
+    }
+
     function initCalendar() {
         const calendarEl = document.getElementById('booking-calendar');
         if (!calendarEl || typeof flatpickr === 'undefined') return;
@@ -306,12 +318,7 @@
             dateFormat: 'Y-m-d',
             locale: typeof flatpickr.l10ns !== 'undefined' && flatpickr.l10ns.it ? flatpickr.l10ns.it : 'default',
             showMonths: window.innerWidth > 600 ? 2 : 1,
-            disable: [function(date) {
-                const d = date.getFullYear() + '-' +
-                    String(date.getMonth() + 1).padStart(2, '0') + '-' +
-                    String(date.getDate()).padStart(2, '0');
-                return bookingState.unavailableDates.includes(d);
-            }],
+            disable: [isDisabledDay],
             onChange: onDateChange,
             onMonthChange: onMonthChange,
         });
@@ -331,6 +338,18 @@
     }
 
     function onDateChange(selectedDates) {
+        if (selectedDates.length === 1) {
+            // check-in scelto: consenti come partenza il primo giorno occupato successivo
+            const ci = formatDateISO(selectedDates[0]);
+            const next = bookingState.unavailableDates.filter(function(d) { return d > ci; }).sort()[0] || null;
+            if (checkoutOnlyDay !== next) {
+                checkoutOnlyDay = next;
+                flatpickrInstance.set('disable', [isDisabledDay]);
+            }
+        } else if (checkoutOnlyDay !== null) {
+            checkoutOnlyDay = null;
+            flatpickrInstance.set('disable', [isDisabledDay]);
+        }
         if (selectedDates.length === 2) {
             bookingState.checkin = formatDateISO(selectedDates[0]);
             bookingState.checkout = formatDateISO(selectedDates[1]);
@@ -376,12 +395,7 @@
             bookingState.unavailableDates = data.unavailable || [];
 
             // Forza Flatpickr a rivalutare le date disabilitate
-            flatpickrInstance.set('disable', [function(date) {
-                const d = date.getFullYear() + '-' +
-                    String(date.getMonth() + 1).padStart(2, '0') + '-' +
-                    String(date.getDate()).padStart(2, '0');
-                return bookingState.unavailableDates.includes(d);
-            }]);
+            flatpickrInstance.set('disable', [isDisabledDay]);
         } catch (err) {
             console.error('Errore caricamento disponibilità:', err);
         }
