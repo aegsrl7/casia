@@ -371,7 +371,12 @@
             node.classList.add('casia-editor-hl');
         });
         if (scroll && nodes.length) {
-            nodes[0].scrollIntoView({ block: 'center', behavior: 'smooth' });
+            // Non usare scrollIntoView: dentro un iframe farebbe scorrere anche i contenitori
+            // del pannello che lo ospita. Si scorre solo questa finestra.
+            var r = nodes[0].getBoundingClientRect();
+            var top = Math.max(0, window.pageYOffset + r.top - (window.innerHeight / 2) + (r.height / 2));
+            // 'instant' perché il sito ha scroll-behavior smooth in CSS: nell'anteprima serve arrivare subito
+            try { window.scrollTo({ top: top, behavior: 'instant' }); } catch (e) { window.scrollTo(0, top); }
         }
     }
 

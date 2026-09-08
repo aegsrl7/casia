@@ -7,6 +7,10 @@
     'use strict';
 
     var SHOWKEYS_STORAGE_KEY = 'casia_testi_showkeys';
+    var PREVIEW_W_KEY = 'casia_testi_preview_w';      // larghezza della colonna anteprima (px)
+    var PREVIEW_MODE_KEY = 'casia_testi_preview_mode'; // 'desktop' (sito in scala) oppure 'mobile'
+    var DEFAULT_PREVIEW_W = 520;
+    var DESKTOP_W = 1200;   // larghezza a cui viene renderizzato il sito in modalità desktop
     var ALLOWED_HTML_TAGS = ['strong', 'em', 'br', 'a'];
 
     var initialized = false;
@@ -35,7 +39,10 @@
 
     // riferimenti DOM (popolati in cacheRefs)
     var navEl, fieldsEl, searchInput, langChipsEl, pageSelectEl, showKeysToggle,
-        statusEl, undoBtn, saveBtn, previewFrame, previewPageLabel, previewEmpty, previewHint;
+        statusEl, undoBtn, saveBtn, previewFrame, previewPageLabel, previewEmpty, previewHint,
+        appEl, previewBody, splitterEl, modesEl;
+    var previewW = DEFAULT_PREVIEW_W;
+    var previewMode = 'desktop';
 
     // -----------------------------------------------------------------
     // Helper generici
@@ -349,14 +356,14 @@
             renderNav();
         }
         renderFields();
-        requestAnimationFrame(function () {
-            var field = fieldsEl.querySelector('.testi-field[data-key="' + cssEsc(key) + '"]');
-            if (!field) return;
-            var focusable = field.querySelector('.testi-textarea') || field.querySelector('.testi-array-item');
-            if (!focusable) return;
-            scrollFieldIntoView(field);
-            focusable.focus({ preventScroll: true });
-        });
+        // Subito, senza requestAnimationFrame: il browser lo sospende con la finestra coperta
+        // o la scheda in secondo piano, e il focus non arriverebbe mai.
+        var field = fieldsEl.querySelector('.testi-field[data-key="' + cssEsc(key) + '"]');
+        if (!field) return;
+        var focusable = field.querySelector('.testi-textarea') || field.querySelector('.testi-array-item');
+        if (!focusable) return;
+        scrollFieldIntoView(field);
+        focusable.focus({ preventScroll: true });
     }
     function scrollFieldIntoView(el) {
         var r = el.getBoundingClientRect();
@@ -584,7 +591,7 @@
         var val = ta.value;
         var sel = val.slice(s, e);
         ta.value = val.slice(0, s) + '<strong>' + sel + '</strong>' + val.slice(e);
-        ta.focus();
+        ta.focus({ preventScroll: true });
         ta.selectionStart = s + '<strong>'.length;
         ta.selectionEnd = e + '<strong>'.length;
         ta.dispatchEvent(new Event('input', { bubbles: true }));
@@ -796,7 +803,9 @@
             '</div>' +
             '</div>' +
             '<aside class="testi-preview">' +
-            '<div class="testi-preview-head"><span>Anteprima</span>&middot;<span class="testi-preview-page">Home</span></div>' +
+            '<div class="testi-splitter" title="Trascina per cambiare la larghezza dell\'anteprima. Doppio clic per tornare alla larghezza iniziale."></div>' +
+            '<div class="testi-preview-head"><span>Anteprima</span>&middot;<span class="testi-preview-page">Home</span>' +
+            '<span class="testi-preview-modes"><button type="button" data-mode="desktop" title="Sito come si vede da computer, in scala">Desktop</button><button type="button" data-mode="mobile" title="Sito come si vede da telefono">Mobile</button></span></div>' +
             '<div class="testi-preview-body">' +
             '<iframe class="testi-preview-frame" title="Anteprima del sito"></iframe>' +
             '<div class="testi-preview-empty" hidden>Questa sezione non compare sul sito: sono testi che si vedono solo in certe situazioni.</div>' +
@@ -820,6 +829,93 @@
         previewPageLabel = rootEl.querySelector('.testi-preview-page');
         previewEmpty = rootEl.querySelector('.testi-preview-empty');
         previewHint = rootEl.querySelector('.testi-preview-hint');
+        appEl = rootEl.querySelector('.testi-app');
+        previewBody = rootEl.querySelector('.testi-preview-body');
+        splitterEl = rootEl.querySelector('.testi-splitter');
+        modesEl = rootEl.querySelector('.testi-preview-modes');
+    }
+
+    // -----------------------------------------------------------------
+    // Proporzione campi/anteprima e modalità desktop in scala
+    // -----------------------------------------------------------------
+    function clampPreviewW(w) {
+        var max = appEl ? (appEl.clientWidth - (navEl ? navEl.offsetWidth : 200) - 380) : 900;
+        if (max < 300) max = 300;
+        return Math.round(Math.max(300, Math.min(max, w)));
+    }
+    function applyPreviewLayout() {
+        if (!appEl || !previewFrame) return;
+        appEl.style.setProperty('--testi-preview-w', previewW + 'px');
+        if (modesEl) {
+            Array.prototype.forEach.call(modesEl.querySelectorAll('button'), function (b) {
+                b.classList.toggle('testi-on', b.getAttribute('data-mode') === previewMode);
+            });
+        }
+        var w = previewBody ? previewBody.clientWidth : 0;
+        var h = previewBody ? previewBody.clientHeight : 0;
+        if (previewMode === 'desktop' && w > 0 && h > 0) {
+            var s = w / DESKTOP_W;
+            previewFrame.style.width = DESKTOP_W + 'px';
+            previewFrame.style.height = Math.round(h / s) + 'px';
+            previewFrame.style.transform = 'scale(' + s + ')';
+        } else {
+            previewFrame.style.width = '';
+            previewFrame.style.height = '';
+            previewFrame.style.transform = '';
+        }
+    }
+    function setPreviewMode(mode) {
+        previewMode = mode === 'mobile' ? 'mobile' : 'desktop';
+        try { localStorage.setItem(PREVIEW_MODE_KEY, previewMode); } catch (e) { /* ignora */ }
+        applyPreviewLayout();
+    }
+    function wirePreviewLayout() {
+        if (modesEl) {
+            modesEl.addEventListener('click', function (e) {
+                var b = e.target.closest('button[data-mode]');
+                if (b) setPreviewMode(b.getAttribute('data-mode'));
+            });
+        }
+        if (splitterEl) {
+            var dragging = false, startX = 0, startW = 0;
+            splitterEl.addEventListener('pointerdown', function (e) {
+                e.preventDefault();
+                dragging = true;
+                startX = e.clientX;
+                startW = previewW;
+                appEl.classList.add('testi-dragging');
+                try { splitterEl.setPointerCapture(e.pointerId); } catch (err) { /* ignora */ }
+            });
+            splitterEl.addEventListener('pointermove', function (e) {
+                if (!dragging) return;
+                previewW = clampPreviewW(startW + (startX - e.clientX));
+                applyPreviewLayout();
+            });
+            function endDrag() {
+                if (!dragging) return;
+                dragging = false;
+                appEl.classList.remove('testi-dragging');
+                try { localStorage.setItem(PREVIEW_W_KEY, String(previewW)); } catch (err) { /* ignora */ }
+            }
+            splitterEl.addEventListener('pointerup', endDrag);
+            splitterEl.addEventListener('pointercancel', endDrag);
+            splitterEl.addEventListener('dblclick', function () {
+                previewW = clampPreviewW(DEFAULT_PREVIEW_W);
+                try { localStorage.setItem(PREVIEW_W_KEY, String(previewW)); } catch (err) { /* ignora */ }
+                applyPreviewLayout();
+            });
+        }
+        if (window.ResizeObserver && previewBody) {
+            var lastW = -1, lastH = -1;
+            new ResizeObserver(function () {
+                var w = previewBody.clientWidth, h = previewBody.clientHeight;
+                if (w === lastW && h === lastH) return;
+                lastW = w; lastH = h;
+                applyPreviewLayout();
+            }).observe(previewBody);
+        } else {
+            window.addEventListener('resize', applyPreviewLayout);
+        }
     }
 
     function wireStaticEvents() {
@@ -908,8 +1004,17 @@
         initialized = true;
         rootEl = rootElArg;
         try { showKeys = localStorage.getItem(SHOWKEYS_STORAGE_KEY) === '1'; } catch (e) { showKeys = false; }
+        try {
+            var savedW = parseInt(localStorage.getItem(PREVIEW_W_KEY), 10);
+            if (savedW > 0) previewW = savedW;
+            var savedMode = localStorage.getItem(PREVIEW_MODE_KEY);
+            if (savedMode === 'mobile' || savedMode === 'desktop') previewMode = savedMode;
+        } catch (e) { /* ignora */ }
         buildSkeleton();
         cacheRefs();
+        previewW = clampPreviewW(previewW);
+        applyPreviewLayout();
+        wirePreviewLayout();
         showKeysToggle.checked = showKeys;
         rootEl.querySelector('.testi-app').classList.toggle('testi-show-keys', showKeys);
         updateActiveChip();

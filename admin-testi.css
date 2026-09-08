@@ -6,15 +6,20 @@
 
 .testi-app {
     display: grid;
-    grid-template-columns: 200px minmax(0, 1fr) 400px;
+    grid-template-columns: 200px minmax(0, 1fr) var(--testi-preview-w, 520px);
     height: min(calc(100vh - 140px), 760px);
     min-height: 420px;
     border: 1px solid #e8e4de;
     border-radius: 8px;
     background: var(--white);
+    /* clip e non hidden: un contenitore "hidden" può venire scorso dal browser (focus,
+       scrollIntoView) e poi non si riesce più a riportarlo su con la rotella */
     overflow: hidden;
+    overflow: clip;
     font-size: 0.88rem;
 }
+.testi-app.testi-dragging { user-select: none; cursor: col-resize; }
+.testi-app.testi-dragging .testi-preview-frame { pointer-events: none; }
 .testi-app.testi-show-keys .testi-field-key { display: inline-block; }
 
 /* ----- Navigazione sezioni ----- */
@@ -52,7 +57,7 @@
 .testi-loading { padding: 24px; color: var(--text-light); }
 
 /* ----- Colonna centrale ----- */
-.testi-main { position: relative; display: flex; flex-direction: column; min-width: 0; }
+.testi-main { position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; overflow: clip; }
 
 .testi-toolbar {
     display: flex;
@@ -278,12 +283,58 @@
 
 /* ----- Anteprima ----- */
 .testi-preview {
+    position: relative;
     border-left: 1px solid #e8e4de;
     display: flex;
     flex-direction: column;
     min-width: 0;
+    min-height: 0;      /* elemento di griglia: senza questo cresce con l'iframe in scala */
+    overflow: hidden;
     background: #FAF8F4;
 }
+/* Maniglia per cambiare la proporzione tra campi e anteprima */
+.testi-splitter {
+    position: absolute;
+    left: -5px;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    cursor: col-resize;
+    z-index: 5;
+}
+.testi-splitter::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: background 0.15s;
+}
+.testi-splitter:hover::after,
+.testi-app.testi-dragging .testi-splitter::after { background: var(--rame); }
+.testi-preview-modes {
+    margin-left: auto;
+    display: flex;
+    border: 1px solid #e8e4de;
+    border-radius: 4px;
+    overflow: hidden;
+    letter-spacing: 0;
+    text-transform: none;
+}
+.testi-preview-modes button {
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    cursor: pointer;
+    color: var(--text-light);
+}
+.testi-preview-modes button.testi-on { background: var(--antracite); color: #fff; }
 .testi-preview-head {
     display: flex;
     align-items: center;
@@ -295,8 +346,8 @@
     color: var(--text-light);
     border-bottom: 1px solid #e8e4de;
 }
-.testi-preview-body { flex: 1; min-height: 0; position: relative; }
-.testi-preview-frame { width: 100%; height: 100%; border: 0; display: block; background: var(--white); }
+.testi-preview-body { flex: 1; min-height: 0; position: relative; overflow: hidden; }
+.testi-preview-frame { width: 100%; height: 100%; border: 0; display: block; background: var(--white); transform-origin: top left; }
 .testi-preview-empty {
     position: absolute;
     inset: 0;
