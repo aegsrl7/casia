@@ -278,9 +278,7 @@
                 const radio = document.querySelector(`input[name="apartment"][value="${apt}"]`);
                 if (radio && !radio.disabled) {
                     radio.checked = true;
-                    bookingState.apartment = apt;
-                    updateCounterLimits();
-                    loadAvailability();
+                    setApartment(apt);
                 }
                 // Scroll alla sezione prenota
                 const target = document.getElementById('prenota');
@@ -291,6 +289,21 @@
                 }
             });
         });
+    }
+
+    // Cambio appartamento: date e preventivo del vecchio appartamento non valgono più
+    function setApartment(apt) {
+        if (bookingState.apartment === apt) return;
+        bookingState.apartment = apt;
+        document.querySelectorAll('.booking-radio').forEach(function(label) {
+            const input = label.querySelector('input[name="apartment"]');
+            label.classList.toggle('booking-radio--active', !!input && input.value === apt);
+        });
+        updateCounterLimits();
+        checkoutOnlyDay = null;
+        bookingState.unavailableDates = [];
+        if (flatpickrInstance) flatpickrInstance.clear();
+        loadAvailability();
     }
 
     // ----- Calendar -----
@@ -364,6 +377,7 @@
             bookingState.nights = 0;
             bookingState.totalCents = 0;
             hidePriceInfo();
+            hideSummaryDetails();
             disableNextBtn();
         }
     }
@@ -508,9 +522,7 @@
         // Cambio appartamento → aggiorna limiti
         document.querySelectorAll('input[name="apartment"]').forEach(radio => {
             radio.addEventListener('change', function() {
-                bookingState.apartment = this.value;
-                updateCounterLimits();
-                loadAvailability();
+                setApartment(this.value);
             });
         });
 
@@ -996,6 +1008,13 @@
         const details = document.getElementById('booking-summary-details');
         if (empty) empty.style.display = 'none';
         if (details) details.style.display = 'block';
+    }
+
+    function hideSummaryDetails() {
+        const empty = document.getElementById('booking-summary-empty');
+        const details = document.getElementById('booking-summary-details');
+        if (empty) empty.style.display = '';
+        if (details) details.style.display = 'none';
     }
 
     function updateSummary() {

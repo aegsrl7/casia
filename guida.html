@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Guida di benvenuto per gli ospiti di Casia Vacanze">
+    <title>Guida di benvenuto | Casia Vacanze</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --rame: #B8956B;
+            --rame-light: #D4B896;
+            --rame-dark: #9A7B56;
+            --antracite: #2D2926;
+            --crema: #F8F5F0;
+            --carta: #FDFBF8;
+            --testo-soft: #5a5652;
+            --bordo: #ECE5DA;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Jost', -apple-system, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: var(--font-body);
+            background: #EFE9E0;
+            color: var(--antracite);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            font-weight: 300;
+        }
+        .app {
+            width: 100%;
+            max-width: 460px;
+            min-height: 100vh;
+            background: var(--crema);
+            position: relative;
+        }
+        @media (min-width: 520px) {
+            body { padding: 32px 0; }
+            .app { min-height: calc(100vh - 64px); border-radius: 24px; box-shadow: 0 20px 60px rgba(45,41,38,0.12); overflow: hidden; }
+        }
+
+        /* ---------- Lingue ---------- */
+        .langs {
+            display: flex; justify-content: flex-end; gap: 4px;
+            padding: 18px 20px 0;
+        }
+        .lang-b {
+            font-family: var(--font-body); font-size: 0.72rem; letter-spacing: 1px;
+            border: 1px solid transparent; background: transparent; color: var(--testo-soft);
+            padding: 5px 9px; border-radius: 99px; cursor: pointer;
+        }
+        .lang-b.on { background: var(--antracite); color: var(--crema); }
+
+        /* ---------- Home ---------- */
+        .home { padding: 8px 20px 40px; }
+        .logo { display: block; margin: 6px auto 14px; width: 84px; }
+        .h-title {
+            font-family: var(--font-display); font-style: italic; font-weight: 500;
+            font-size: 2rem; color: var(--rame-dark); text-align: center;
+        }
+        .h-sep {
+            width: 150px; margin: 10px auto 12px; display: flex; align-items: center; gap: 8px;
+        }
+        .h-sep::before, .h-sep::after { content: ''; flex: 1; height: 1px; background: var(--rame-light); }
+        .h-sep span { width: 5px; height: 5px; background: var(--rame-light); transform: rotate(45deg); }
+        .h-name { text-align: center; font-weight: 400; font-size: 1.05rem; letter-spacing: 0.5px; }
+        .h-place {
+            text-align: center; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--testo-soft); margin-top: 5px;
+        }
+        .grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            margin-top: 28px;
+        }
+        .tile {
+            background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px;
+            aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 0; cursor: pointer; text-decoration: none; color: inherit;
+            transition: transform 150ms ease, box-shadow 150ms ease;
+            padding: 8px 4px;
+        }
+        .tile:active { transform: scale(0.96); }
+        @media (hover: hover) { .tile:hover { box-shadow: 0 6px 18px rgba(45,41,38,0.08); } }
+        .tile svg { width: 30px; height: 30px; stroke: var(--rame); flex: 0 0 auto; }
+        .tile em {
+            font-style: normal; font-size: 0.58rem; letter-spacing: 1.2px; text-transform: uppercase;
+            color: var(--testo-soft); text-align: center; margin-top: 10px; line-height: 1.35;
+        }
+        .h-foot {
+            margin-top: 34px; text-align: center;
+            font-family: var(--font-display); font-style: italic; font-size: 1.05rem; color: var(--rame-dark);
+        }
+        .h-contact { text-align: center; font-size: 0.75rem; color: var(--testo-soft); margin-top: 8px; line-height: 1.7; }
+        .h-contact a { color: var(--testo-soft); }
+
+        /* ---------- Pannelli ---------- */
+        .panel { display: none; padding-bottom: 44px; }
+        .p-head {
+            position: sticky; top: 0; z-index: 5;
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(248,245,240,0.94); backdrop-filter: blur(6px);
+            padding: 14px 16px; border-bottom: 1px solid var(--bordo);
+        }
+        .back {
+            width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--bordo);
+            background: var(--carta); cursor: pointer; display: flex; align-items: center; justify-content: center;
+            flex: 0 0 auto;
+        }
+        .back svg { width: 16px; height: 16px; stroke: var(--antracite); }
+        .p-ico {
+            width: 34px; height: 34px; border-radius: 10px; background: #F1E9DD;
+            display: flex; align-items: center; justify-content: center; flex: 0 0 auto;
+        }
+        .p-ico svg { width: 18px; height: 18px; stroke: var(--rame-dark); }
+        .p-head h2 { font-family: var(--font-body); font-weight: 400; font-size: 1rem; }
+        .p-body { padding: 20px 20px 0; }
+        .intro { color: var(--testo-soft); font-size: 0.92rem; line-height: 1.65; margin-bottom: 18px; }
+
+        .card {
+            background: var(--carta); border: 1px solid var(--bordo); border-radius: 14px;
+            padding: 4px 16px; margin-bottom: 18px;
+        }
+        .kv {
+            display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+            padding: 12px 0; border-bottom: 1px solid var(--bordo);
+        }
+        .kv:last-child { border-bottom: none; }
+        .kv b { font-weight: 400; font-size: 1.05rem; white-space: nowrap; }
+        .kv span { font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--testo-soft); }
+
+        .sub {
+            font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--rame-dark);
+            display: flex; align-items: center; gap: 10px; margin: 22px 0 10px;
+        }
+        .sub::after { content: ''; flex: 1; height: 1px; background: var(--bordo); }
+
+        .steps { background: var(--carta); border: 1px solid var(--bordo); border-radius: 14px; padding: 2px 16px; margin-bottom: 18px; }
+        .step { display: flex; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--bordo); font-size: 0.92rem; line-height: 1.55; }
+        .step:last-child { border-bottom: none; }
+        .step i {
+            font-style: normal; flex: 0 0 auto; width: 22px; height: 22px; border: 1px solid var(--rame-light);
+            border-radius: 50%; color: var(--rame-dark); font-size: 0.72rem;
+            display: flex; align-items: center; justify-content: center; margin-top: 1px;
+        }
+        .chip { background: #F1E9DD; border-radius: 6px; padding: 1px 7px; font-weight: 400; white-space: nowrap; }
+
+        .list { background: var(--carta); border: 1px solid var(--bordo); border-radius: 14px; padding: 2px 16px; margin-bottom: 18px; }
+        .place { padding: 13px 0; border-bottom: 1px solid var(--bordo); }
+        .place:last-child { border-bottom: none; }
+        .place b { font-weight: 400; font-size: 0.95rem; }
+        .place p { font-size: 0.82rem; color: var(--testo-soft); line-height: 1.55; margin-top: 3px; }
+        .place p a { color: var(--rame-dark); text-decoration: none; }
+        .place .note { font-size: 0.78rem; color: var(--rame-dark); font-style: italic; margin-top: 2px; }
+
+        .btn {
+            display: flex; align-items: center; justify-content: center; gap: 9px;
+            background: var(--antracite); color: var(--crema); border: none; border-radius: 12px;
+            font-family: var(--font-body); font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 15px 18px; width: 100%; cursor: pointer; text-decoration: none; margin-bottom: 12px;
+        }
+        .btn svg { width: 16px; height: 16px; stroke: var(--crema); }
+        .btn.ghost { background: transparent; color: var(--antracite); border: 1px solid var(--antracite); }
+        .btn.ghost svg { stroke: var(--antracite); }
+
+        ul.plain { list-style: none; }
+        ul.plain li { display: flex; gap: 10px; padding: 8px 0; font-size: 0.92rem; line-height: 1.55; }
+        ul.plain li::before { content: ''; flex: 0 0 auto; width: 5px; height: 5px; background: var(--rame); transform: rotate(45deg); margin-top: 9px; }
+
+        .em-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px; }
+        .em {
+            background: var(--carta); border: 1px solid var(--bordo); border-radius: 14px;
+            text-align: center; padding: 14px 6px; text-decoration: none; color: inherit;
+        }
+        .em b { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; color: var(--rame-dark); }
+        .em span { display: block; font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--testo-soft); margin-top: 3px; }
+    </style>
+</head>
+<body>
+<div class="app">
+
+    <div class="langs" id="langs">
+        <button class="lang-b" data-lang="it">IT</button>
+        <button class="lang-b" data-lang="en">EN</button>
+        <button class="lang-b" data-lang="fr">FR</button>
+        <button class="lang-b" data-lang="de">DE</button>
+    </div>
+
+    <div class="home" id="home">
+        <img class="logo" src="images/logo_oro.png" alt="Casia Vacanze">
+        <h1 class="h-title" data-g="title">Guida di benvenuto</h1>
+        <div class="h-sep"><span></span></div>
+        <div class="h-name">Casia Vacanze</div>
+        <div class="h-place">Santo Stefano · Bene Vagienna</div>
+        <nav class="grid" id="grid"></nav>
+        <div class="h-foot" data-g="foot">Buon soggiorno da Casia</div>
+        <div class="h-contact">
+            <a href="tel:+393514321088">+39 351 432 1088</a> · <a href="mailto:info@casiavacanze.com">info@casiavacanze.com</a><br>
+            <a href="https://casiavacanze.com">casiavacanze.com</a>
+        </div>
+    </div>
+
+    <div id="panels"></div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    /* ---------- Icone (SVG inline, tratto sottile) ---------- */
+    var stroke = ' fill="none" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"';
+    var ICONS = {
+        key: '<svg' + stroke + '><circle cx="8" cy="7" r="3.5"/><path d="M10.5 9.5L19 18M15 14l2.5-2.5M12.5 16.5L15 14"/></svg>',
+        wifi: '<svg' + stroke + '><path d="M3 9.5C8 4.8 16 4.8 21 9.5M6 13c3.5-3.2 8.5-3.2 12 0M9 16.5c1.7-1.6 4.3-1.6 6 0"/><circle cx="12" cy="19.5" r="0.8"/></svg>',
+        pin: '<svg' + stroke + '><path d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>',
+        home: '<svg' + stroke + '><path d="M4 11l8-7 8 7M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/></svg>',
+        pool: '<svg' + stroke + '><path d="M3 17c1.5 1.2 3 1.2 4.5 0s3-1.2 4.5 0 3 1.2 4.5 0 3-1.2 4.5 0M3 20.5c1.5 1.2 3 1.2 4.5 0s3-1.2 4.5 0 3 1.2 4.5 0 3-1.2 4.5 0"/><path d="M9 14V5.5A1.5 1.5 0 0110.5 4h0A1.5 1.5 0 0112 5.5V6M15 14V5.5A1.5 1.5 0 0116.5 4h0A1.5 1.5 0 0118 5.5V6M9 8h6M9 11.5h6"/></svg>',
+        rules: '<svg' + stroke + '><path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6l7-3z"/><path d="M9.5 12l2 2 3.5-4"/></svg>',
+        cart: '<svg' + stroke + '><path d="M4 5h2l2.2 10.5a1.5 1.5 0 001.5 1.2h7.6a1.5 1.5 0 001.5-1.2L20.5 8H7"/><circle cx="10" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/></svg>',
+        drink: '<svg' + stroke + '><path d="M5 4h14l-7 8v6M8 20h8M8.5 8h7"/></svg>',
+        food: '<svg' + stroke + '><path d="M7 3v7a2 2 0 002 2v9M9 3v5M11 3v5"/><path d="M16 3c-1.7 1.5-2.5 4-2.5 6.5 0 1.5 1 2.5 2.5 2.5v9"/></svg>',
+        map: '<svg' + stroke + '><path d="M9 4L4 6v14l5-2 6 2 5-2V4l-5 2-6-2zM9 4v14M15 6v14"/></svg>',
+        phone: '<svg' + stroke + '><path d="M5 4h4l1.5 4.5L8 10a12 12 0 006 6l1.5-2.5L20 15v4a1.6 1.6 0 01-1.8 1.6C10.4 20 4 13.6 3.4 5.8A1.6 1.6 0 015 4z"/></svg>',
+        chat: '<svg' + stroke + '><path d="M20 12a8 8 0 10-3.2 6.4L20 20l-.9-3.4A8 8 0 0020 12z"/><path d="M8.5 11h7M8.5 14h4.5"/></svg>',
+        back: '<svg' + stroke + '><path d="M14 5l-7 7 7 7"/></svg>',
+        maps: '<svg' + stroke + '><path d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>',
+        wa: '<svg' + stroke + '><path d="M20 12a8 8 0 10-3.2 6.4L20 20l-.9-3.4A8 8 0 0020 12z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4.6 4.6 0 01-1.8-1.8l.8-1-1-2z"/></svg>'
+    };
+
+    /* ---------- Dati luoghi (nomi e recapiti uguali per tutte le lingue) ---------- */
+    var SHOPS = [
+        { n: 'Macelleria Bellino', a: 'Piazza Martiri 26, Bene Vagienna', t: '+39 0172 655262', c: { it: 'Chiuso lunedì e domenica pomeriggio', en: 'Closed Monday and Sunday afternoon', fr: 'Fermé le lundi et le dimanche après-midi', de: 'Montag und Sonntagnachmittag geschlossen' } },
+        { n: 'Ortofrutta Maiellaro', a: 'Piazza Martiri 9/B, Bene Vagienna', t: null, c: { it: 'Chiuso lunedì e domenica pomeriggio', en: 'Closed Monday and Sunday afternoon', fr: 'Fermé le lundi et le dimanche après-midi', de: 'Montag und Sonntagnachmittag geschlossen' } },
+        { n: 'OK Market', a: 'Via Roma 4/6, Bene Vagienna', t: '+39 0172 654401', c: { it: 'Chiuso mercoledì pomeriggio e domenica', en: 'Closed Wednesday afternoon and Sunday', fr: 'Fermé le mercredi après-midi et le dimanche', de: 'Mittwochnachmittag und Sonntag geschlossen' } },
+        { n: 'Minimarket Lo Spaventapasseri', a: 'Via Cigliutti 6, Lequio Tanaro', t: null, c: { it: 'Chiuso lunedì e domenica pomeriggio', en: 'Closed Monday and Sunday afternoon', fr: 'Fermé le lundi et le dimanche après-midi', de: 'Montag und Sonntagnachmittag geschlossen' } },
+        { n: 'Panetteria Non Solo Pane', a: 'Piazza Martiri della Libertà 13/B, Bene Vagienna', t: '+39 334 929 8116', c: { it: 'Chiuso domenica e lunedì', en: 'Closed Sunday and Monday', fr: 'Fermé le dimanche et le lundi', de: 'Sonntag und Montag geschlossen' } },
+        { n: "Lavanderia dell'Angolo", a: 'Via Beata Paola 28, Bene Vagienna', t: '+39 339 863 3468', c: { it: 'Chiuso domenica e lunedì', en: 'Closed Sunday and Monday', fr: 'Fermé le dimanche et le lundi', de: 'Sonntag und Montag geschlossen' } }
+    ];
+    var BARS = [
+        { n: 'Panorama Bar', a: 'Via Cigliutti 9, Lequio Tanaro', t: '+39 351 456 3500', c: { it: 'Chiuso lunedì', en: 'Closed Monday', fr: 'Fermé le lundi', de: 'Montag geschlossen' } },
+        { n: 'Retrò', a: 'Piazza Martiri della Libertà 12, Dogliani', t: '+39 0173 216776', c: { it: 'Chiuso giovedì', en: 'Closed Thursday', fr: 'Fermé le jeudi', de: 'Donnerstag geschlossen' } },
+        { n: 'Bar Lo Spigolo', a: 'Via Lequio Tanaro 7, Bene Vagienna', t: '+39 349 152 2519', c: { it: 'Chiuso domenica', en: 'Closed Sunday', fr: 'Fermé le dimanche', de: 'Sonntag geschlossen' } }
+    ];
+    var REST = [
+        { n: 'Marsam Locanda', a: 'Frazione Roncaglia 12, Bene Vagienna', t: '+39 333 487 3667', c: { it: 'Aperto giovedì, venerdì e sabato a cena, domenica a pranzo', en: 'Open Thursday to Saturday for dinner, Sunday for lunch', fr: 'Ouvert du jeudi au samedi le soir, le dimanche à midi', de: 'Do. bis Sa. abends geöffnet, So. mittags' } },
+        { n: 'I Particular, osteria agricola', a: 'Via Beata Paola 10, Bene Vagienna', t: '+39 366 475 9932', c: { it: 'Aperto dal mercoledì al sabato a cena, domenica pranzo e cena', en: 'Open Wednesday to Saturday for dinner, Sunday lunch and dinner', fr: 'Ouvert du mercredi au samedi le soir, dimanche midi et soir', de: 'Mi. bis Sa. abends geöffnet, So. mittags und abends' } },
+        { n: 'Pizzeria Augusta', a: 'Piazza Martiri 14, Bene Vagienna', t: '+39 351 455 9875', c: { it: 'Sempre aperto', en: 'Open every day', fr: 'Ouvert tous les jours', de: 'Täglich geöffnet' } },
+        { n: 'Trattoria da Anna', a: 'Via Narzole 59, Lequio Tanaro', t: '+39 338 916 4852', c: { it: 'Chiuso martedì, e mercoledì a cena', en: 'Closed Tuesday, and Wednesday evening', fr: 'Fermé le mardi et le mercredi soir', de: 'Dienstag sowie Mittwochabend geschlossen' } },
+        { n: 'Ristorante Villa Bernasconi', a: 'Viale Rimembranza 3, Narzole', t: '+39 350 911 3968', c: { it: 'Chiuso martedì', en: 'Closed Tuesday', fr: 'Fermé le mardi', de: 'Dienstag geschlossen' } },
+        { n: 'Ristorante Moderno', a: 'Via della Misericordia 12, Carrù', t: '+39 0173 75493', c: { it: 'Chiuso lunedì sera e martedì', en: 'Closed Monday evening and Tuesday', fr: 'Fermé le lundi soir et le mardi', de: 'Montagabend und Dienstag geschlossen' } },
+        { n: 'Osteria del Borgo', a: 'Via Garibaldi 19, Carrù', t: '+39 0173 759184', c: { it: 'Chiuso domenica e martedì a cena, mercoledì tutto il giorno', en: 'Closed Sunday and Tuesday evening, all day Wednesday', fr: 'Fermé le dimanche et le mardi soir, le mercredi toute la journée', de: 'Sonntag- und Dienstagabend sowie Mittwoch geschlossen' } }
+    ];
+    var PHARMA = { n: 'Farmacia Indemini', a: 'Piazza Botero 24, Bene Vagienna', t: '+39 0172 654163', c: { it: 'Chiusa mercoledì mattina, sabato pomeriggio e domenica', en: 'Closed Wednesday morning, Saturday afternoon and Sunday', fr: 'Fermée le mercredi matin, le samedi après-midi et le dimanche', de: 'Mittwochvormittag, Samstagnachmittag und Sonntag geschlossen' } };
+
+    var MAPS_URL = 'https://maps.google.com/?cid=11552918468678303856';
+    var WA_URL = 'https://wa.me/393514321088';
+
+    /* ---------- Testi ---------- */
+    var T = {
+        it: {
+            title: 'Guida di benvenuto', foot: 'Buon soggiorno da Casia', back: 'Indietro',
+            tiles: {
+                checkin: 'Check-in e check-out', wifi: 'Wi-Fi', arrivo: 'Come arrivare', casa: 'La casa e i servizi',
+                piscina: 'Piscina e giardino', regole: 'Regole della casa', numeri: 'Numeri utili', spesa: 'Per la spesa',
+                bar: 'Bar e aperitivi', cena: 'Dove cenare', fare: 'Cosa fare', contatti: 'Contattaci'
+            },
+            checkin: {
+                intro: 'Vi aspettiamo noi di persona per darvi il benvenuto: scriveteci il vostro orario di arrivo su WhatsApp e ci organizziamo.',
+                inLbl: 'Check-in dalle', outLbl: 'Check-out entro',
+                docsT: 'Documenti', docs: 'All’arrivo ci servono i documenti di tutti gli ospiti per la registrazione obbligatoria in Questura.'
+            },
+            wifi: {
+                intro: 'Il Wi-Fi è gratuito e copre tutta la casa.',
+                netLbl: 'Rete', net: 'CASIA-Guest',
+                pw: 'La password è nel foglio di benvenuto che trovate in appartamento. Non la trovate? Scriveteci e ve la mandiamo subito.'
+            },
+            arrivo: {
+                intro: 'Siamo in Frazione Santo Stefano 101/B, 12041 Bene Vagienna (CN), tra Langhe e Roero.',
+                mapsBtn: 'Apri in Google Maps',
+                stepsT: 'Da Bene Vagienna (3 minuti, 2,4 km)',
+                steps: ['Prendi la Strada Provinciale 3 in direzione Lequio Tanaro.', 'Alla rotonda, prima uscita su Via Lequio Tanaro / SP159 e prosegui per 1,2 km.', 'Svolta a destra e segui la strada per 300 metri.', 'L’ultimo tratto è la nostra strada privata: arrivate fino in fondo, siete a casa.'],
+                parkT: 'Parcheggio', park: 'Parcheggio privato gratuito nel cortile della cascina, un posto auto per appartamento e spazio per gli ospiti.'
+            },
+            casa: {
+                intro: 'La cascina è divisa in due appartamenti indipendenti, Oliva al primo piano e Venica al piano terra, ciascuno con il suo ingresso.',
+                list: ['Aria condizionata in tutte le camere', 'Cucina attrezzata con caffettiera e bollitore', 'Biancheria da letto e da bagno inclusa', 'Riscaldamento autonomo', 'Giardino e spazi esterni a disposizione', 'Lavanderia self-service in paese (Lavanderia dell’Angolo, Via Beata Paola 28)'],
+                helpT: 'Serve qualcosa?', help: 'Se qualcosa non funziona o non lo trovate, scriveteci su WhatsApp: rispondiamo in fretta.'
+            },
+            piscina: {
+                intro: 'La piscina (8 x 4 metri) è immersa tra i filari ed è condivisa tra i due appartamenti, aperta nella bella stagione.',
+                list: ['I bambini devono essere sempre accompagnati da un adulto', 'Niente vetro a bordo vasca: usate i bicchieri di plastica', 'Portate gli asciugamani da piscina, non quelli del bagno', 'Al tramonto la vista sulle colline è il momento migliore'],
+            },
+            regole: {
+                intro: 'Poche regole, quelle che servono per stare bene tutti.',
+                list: ['Vietato fumare all’interno degli appartamenti', 'Gli animali sono benvenuti, senza costi extra', 'Rispettate la quiete della campagna nelle ore serali', 'La struttura purtroppo non è adatta a ospiti con mobilità ridotta']
+            },
+            numeri: {
+                intro: 'I numeri di emergenza nazionali sono gratuiti e attivi 24 ore su 24.',
+                em: [['112', 'Carabinieri'], ['113', 'Polizia'], ['115', 'Vigili del fuoco'], ['118', 'Emergenza sanitaria']],
+                pharmaT: 'Farmacia'
+            },
+            spesa: { intro: 'Tutto quello che serve lo trovate a Bene Vagienna, a 3 minuti di auto.' },
+            bar: { intro: 'Per un caffè al volo o un aperitivo guardando le colline.' },
+            cena: { intro: 'I nostri consigli, dai piatti piemontesi alla pizza. Meglio prenotare, soprattutto nel fine settimana.' },
+            fare: {
+                intro: 'Siete nel cuore della campagna piemontese, tra Langhe e Roero.',
+                list: [
+                    ['Augusta Bagiennorum', 'L’area archeologica romana di Bene Vagienna, con teatro e anfiteatro, a due passi da casa.'],
+                    ['Il centro storico di Bene Vagienna', 'Portici, piazze e botteghe: il Piemonte com’era.'],
+                    ['Langhe e Roero', 'Barolo, Alba, Dogliani e le colline patrimonio UNESCO a mezz’ora di auto.'],
+                    ['La stagione del tartufo', 'Da ottobre a dicembre: la Fiera di Alba e i menu al tartufo in tutta la zona.'],
+                    ['A caccia di tartufi', 'Una mattinata con un trifolao esperto e il suo cane: chiedeteci, la organizziamo su richiesta.'],
+                    ['In moto e in auto', 'Curve dolci e strade panoramiche tra le colline: chiedeteci gli itinerari che preferiamo.']
+                ]
+            },
+            contatti: {
+                intro: 'Per qualsiasi cosa, prima, durante e dopo il soggiorno: ci siamo.',
+                waBtn: 'Scrivici su WhatsApp', telBtn: 'Chiamaci', mailBtn: 'Scrivici una email'
+            }
+        },
+        en: {
+            title: 'Welcome guide', foot: 'Enjoy your stay at Casia', back: 'Back',
+            tiles: {
+                checkin: 'Check-in and check-out', wifi: 'Wi-Fi', arrivo: 'Getting here', casa: 'The house and amenities',
+                piscina: 'Pool and garden', regole: 'House rules', numeri: 'Useful numbers', spesa: 'Groceries',
+                bar: 'Bars and aperitivo', cena: 'Where to eat', fare: 'Things to do', contatti: 'Contact us'
+            },
+            checkin: {
+                intro: 'We welcome you in person: text us your arrival time on WhatsApp and we will be there.',
+                inLbl: 'Check-in from', outLbl: 'Check-out by',
+                docsT: 'Documents', docs: 'On arrival we need ID documents for all guests, required for police registration in Italy.'
+            },
+            wifi: {
+                intro: 'Wi-Fi is free and covers the whole house.',
+                netLbl: 'Network', net: 'CASIA-Guest',
+                pw: 'The password is on the welcome sheet in your apartment. Can’t find it? Message us and we’ll send it right away.'
+            },
+            arrivo: {
+                intro: 'We are at Frazione Santo Stefano 101/B, 12041 Bene Vagienna (CN), between the Langhe and Roero hills.',
+                mapsBtn: 'Open in Google Maps',
+                stepsT: 'From Bene Vagienna (3 minutes, 2.4 km)',
+                steps: ['Take Strada Provinciale 3 towards Lequio Tanaro.', 'At the roundabout, first exit onto Via Lequio Tanaro / SP159 and continue for 1.2 km.', 'Turn right and follow the road for 300 metres.', 'The last stretch is our private road: drive to the end and you are home.'],
+                parkT: 'Parking', park: 'Free private parking in the farmhouse courtyard, one space per apartment plus room for guests.'
+            },
+            casa: {
+                intro: 'The farmhouse is split into two independent apartments, Oliva on the first floor and Venica on the ground floor, each with its own entrance.',
+                list: ['Air conditioning in every bedroom', 'Fully equipped kitchen with moka pot and kettle', 'Bed linen and towels included', 'Independent heating', 'Garden and outdoor spaces to enjoy', 'Self-service laundry in town (Lavanderia dell’Angolo, Via Beata Paola 28)'],
+                helpT: 'Need anything?', help: 'If something is missing or not working, message us on WhatsApp: we answer quickly.'
+            },
+            piscina: {
+                intro: 'The pool (8 x 4 metres) sits among the rows and is shared by the two apartments, open in the warm season.',
+                list: ['Children must always be accompanied by an adult', 'No glass by the pool: use plastic cups', 'Please use pool towels, not the bathroom ones', 'Sunset over the hills is the best moment of the day'],
+            },
+            regole: {
+                intro: 'Just a few rules, the ones that keep everyone happy.',
+                list: ['No smoking inside the apartments', 'Pets are welcome, at no extra cost', 'Please respect the quiet of the countryside in the evening', 'Unfortunately the property is not suitable for guests with reduced mobility']
+            },
+            numeri: {
+                intro: 'The national emergency numbers are free and available 24 hours a day.',
+                em: [['112', 'Carabinieri'], ['113', 'Police'], ['115', 'Fire brigade'], ['118', 'Medical emergency']],
+                pharmaT: 'Pharmacy'
+            },
+            spesa: { intro: 'Everything you need is in Bene Vagienna, a 3 minute drive away.' },
+            bar: { intro: 'For a quick espresso or an aperitivo overlooking the hills.' },
+            cena: { intro: 'Our picks, from Piedmontese cooking to pizza. Booking ahead is wise, especially at weekends.' },
+            fare: {
+                intro: 'You are in the heart of the Piedmont countryside, between the Langhe and Roero.',
+                list: [
+                    ['Augusta Bagiennorum', 'The Roman archaeological site of Bene Vagienna, with its theatre and amphitheatre, just around the corner.'],
+                    ['Bene Vagienna old town', 'Arcades, squares and little shops: Piedmont as it used to be.'],
+                    ['Langhe and Roero', 'Barolo, Alba, Dogliani and the UNESCO hills, half an hour by car.'],
+                    ['Truffle season', 'October to December: the Alba Truffle Fair and truffle menus all over the area.'],
+                    ['Truffle hunting', 'A morning with an expert trifolao and his dog: ask us, we arrange it on request.'],
+                    ['By motorbike or car', 'Gentle curves and scenic roads through the hills: ask us for our favourite routes.']
+                ]
+            },
+            contatti: {
+                intro: 'For anything at all, before, during and after your stay: we are here.',
+                waBtn: 'Message us on WhatsApp', telBtn: 'Call us', mailBtn: 'Send us an email'
+            }
+        },
+        fr: {
+            title: 'Guide de bienvenue', foot: 'Bon séjour à Casia', back: 'Retour',
+            tiles: {
+                checkin: 'Arrivée et départ', wifi: 'Wi-Fi', arrivo: 'Comment venir', casa: 'La maison et les services',
+                piscina: 'Piscine et jardin', regole: 'Règles de la maison', numeri: 'Numéros utiles', spesa: 'Courses',
+                bar: 'Bars et apéritifs', cena: 'Où dîner', fare: 'Que faire', contatti: 'Nous contacter'
+            },
+            checkin: {
+                intro: 'Nous vous accueillons en personne : écrivez-nous votre heure d’arrivée sur WhatsApp et nous nous organisons.',
+                inLbl: 'Arrivée à partir de', outLbl: 'Départ avant',
+                docsT: 'Documents', docs: 'À l’arrivée, nous avons besoin des pièces d’identité de tous les hôtes pour l’enregistrement obligatoire auprès de la police italienne.'
+            },
+            wifi: {
+                intro: 'Le Wi-Fi est gratuit et couvre toute la maison.',
+                netLbl: 'Réseau', net: 'CASIA-Guest',
+                pw: 'Le mot de passe figure sur la fiche de bienvenue dans votre appartement. Introuvable ? Écrivez-nous, nous vous l’envoyons tout de suite.'
+            },
+            arrivo: {
+                intro: 'Nous sommes à Frazione Santo Stefano 101/B, 12041 Bene Vagienna (CN), entre Langhe et Roero.',
+                mapsBtn: 'Ouvrir dans Google Maps',
+                stepsT: 'Depuis Bene Vagienna (3 minutes, 2,4 km)',
+                steps: ['Prenez la Strada Provinciale 3 en direction de Lequio Tanaro.', 'Au rond-point, première sortie sur Via Lequio Tanaro / SP159 et continuez sur 1,2 km.', 'Tournez à droite et suivez la route sur 300 mètres.', 'Le dernier tronçon est notre chemin privé : allez jusqu’au bout, vous êtes arrivés.'],
+                parkT: 'Parking', park: 'Parking privé gratuit dans la cour de la ferme, une place par appartement et de l’espace pour vos invités.'
+            },
+            casa: {
+                intro: 'La ferme est divisée en deux appartements indépendants, Oliva au premier étage et Venica au rez-de-chaussée, chacun avec sa propre entrée.',
+                list: ['Climatisation dans toutes les chambres', 'Cuisine équipée avec cafetière et bouilloire', 'Linge de lit et de bain inclus', 'Chauffage indépendant', 'Jardin et espaces extérieurs à disposition', 'Laverie en libre-service au village (Lavanderia dell’Angolo, Via Beata Paola 28)'],
+                helpT: 'Besoin de quelque chose ?', help: 'Si quelque chose manque ou ne fonctionne pas, écrivez-nous sur WhatsApp : nous répondons vite.'
+            },
+            piscina: {
+                intro: 'La piscine (8 x 4 mètres) est nichée entre les rangs et partagée entre les deux appartements, ouverte à la belle saison.',
+                list: ['Les enfants doivent toujours être accompagnés d’un adulte', 'Pas de verre au bord du bassin : utilisez des gobelets en plastique', 'Utilisez les serviettes de piscine, pas celles de la salle de bain', 'Au coucher du soleil, la vue sur les collines est le plus beau moment'],
+            },
+            regole: {
+                intro: 'Peu de règles, juste celles qui permettent à tous de se sentir bien.',
+                list: ['Interdiction de fumer à l’intérieur des appartements', 'Les animaux sont les bienvenus, sans frais supplémentaires', 'Respectez le calme de la campagne en soirée', 'La propriété n’est malheureusement pas adaptée aux personnes à mobilité réduite']
+            },
+            numeri: {
+                intro: 'Les numéros d’urgence nationaux sont gratuits et joignables 24h/24.',
+                em: [['112', 'Carabiniers'], ['113', 'Police'], ['115', 'Pompiers'], ['118', 'Urgences médicales']],
+                pharmaT: 'Pharmacie'
+            },
+            spesa: { intro: 'Tout ce qu’il vous faut se trouve à Bene Vagienna, à 3 minutes en voiture.' },
+            bar: { intro: 'Pour un café rapide ou un apéritif face aux collines.' },
+            cena: { intro: 'Nos adresses, de la cuisine piémontaise à la pizza. Mieux vaut réserver, surtout le week-end.' },
+            fare: {
+                intro: 'Vous êtes au cœur de la campagne piémontaise, entre Langhe et Roero.',
+                list: [
+                    ['Augusta Bagiennorum', 'Le site archéologique romain de Bene Vagienna, avec théâtre et amphithéâtre, à deux pas de la maison.'],
+                    ['Le centre historique de Bene Vagienna', 'Arcades, places et boutiques : le Piémont d’autrefois.'],
+                    ['Langhe et Roero', 'Barolo, Alba, Dogliani et les collines classées UNESCO, à une demi-heure de route.'],
+                    ['La saison de la truffe', 'D’octobre à décembre : la Foire d’Alba et des menus à la truffe dans toute la région.'],
+                    ['Chasse à la truffe', 'Une matinée avec un trifolao expérimenté et son chien : demandez-nous, nous l’organisons sur demande.'],
+                    ['À moto ou en voiture', 'Courbes douces et routes panoramiques entre les collines : demandez-nous nos itinéraires préférés.']
+                ]
+            },
+            contatti: {
+                intro: 'Pour quoi que ce soit, avant, pendant et après votre séjour : nous sommes là.',
+                waBtn: 'Écrivez-nous sur WhatsApp', telBtn: 'Appelez-nous', mailBtn: 'Envoyez-nous un email'
+            }
+        },
+        de: {
+            title: 'Willkommensguide', foot: 'Schönen Aufenthalt bei Casia', back: 'Zurück',
+            tiles: {
+                checkin: 'Check-in und Check-out', wifi: 'WLAN', arrivo: 'Anreise', casa: 'Haus und Ausstattung',
+                piscina: 'Pool und Garten', regole: 'Hausregeln', numeri: 'Wichtige Nummern', spesa: 'Einkaufen',
+                bar: 'Bars und Aperitivo', cena: 'Essen gehen', fare: 'Ausflüge', contatti: 'Kontakt'
+            },
+            checkin: {
+                intro: 'Wir begrüßen Sie persönlich: Schreiben Sie uns Ihre Ankunftszeit per WhatsApp, dann sind wir da.',
+                inLbl: 'Check-in ab', outLbl: 'Check-out bis',
+                docsT: 'Dokumente', docs: 'Bei der Ankunft benötigen wir die Ausweise aller Gäste für die in Italien vorgeschriebene polizeiliche Meldung.'
+            },
+            wifi: {
+                intro: 'Das WLAN ist kostenlos und deckt das ganze Haus ab.',
+                netLbl: 'Netzwerk', net: 'CASIA-Guest',
+                pw: 'Das Passwort steht auf dem Willkommensblatt in Ihrer Wohnung. Nicht auffindbar? Schreiben Sie uns, wir schicken es sofort.'
+            },
+            arrivo: {
+                intro: 'Sie finden uns in Frazione Santo Stefano 101/B, 12041 Bene Vagienna (CN), zwischen Langhe und Roero.',
+                mapsBtn: 'In Google Maps öffnen',
+                stepsT: 'Von Bene Vagienna (3 Minuten, 2,4 km)',
+                steps: ['Nehmen Sie die Strada Provinciale 3 Richtung Lequio Tanaro.', 'Im Kreisverkehr erste Ausfahrt auf die Via Lequio Tanaro / SP159, dann 1,2 km weiter.', 'Rechts abbiegen und der Straße 300 Meter folgen.', 'Das letzte Stück ist unser Privatweg: Fahren Sie bis zum Ende, dann sind Sie da.'],
+                parkT: 'Parken', park: 'Kostenloser Privatparkplatz im Hof des Bauernhauses, ein Stellplatz pro Wohnung und Platz für Besucher.'
+            },
+            casa: {
+                intro: 'Das Bauernhaus ist in zwei unabhängige Wohnungen geteilt, Oliva im ersten Stock und Venica im Erdgeschoss, jede mit eigenem Eingang.',
+                list: ['Klimaanlage in allen Schlafzimmern', 'Voll ausgestattete Küche mit Espressokanne und Wasserkocher', 'Bettwäsche und Handtücher inklusive', 'Unabhängige Heizung', 'Garten und Außenbereiche zur freien Nutzung', 'SB-Wäscherei im Ort (Lavanderia dell’Angolo, Via Beata Paola 28)'],
+                helpT: 'Fehlt etwas?', help: 'Wenn etwas fehlt oder nicht funktioniert, schreiben Sie uns per WhatsApp: Wir antworten schnell.'
+            },
+            piscina: {
+                intro: 'Der Pool (8 x 4 Meter) liegt zwischen den Rebzeilen und wird von beiden Wohnungen geteilt, geöffnet in der warmen Jahreszeit.',
+                list: ['Kinder müssen immer von einem Erwachsenen begleitet werden', 'Kein Glas am Beckenrand: Bitte Plastikbecher verwenden', 'Bitte die Poolhandtücher verwenden, nicht die Badezimmerhandtücher', 'Der Sonnenuntergang über den Hügeln ist der schönste Moment des Tages'],
+            },
+            regole: {
+                intro: 'Nur wenige Regeln, damit sich alle wohlfühlen.',
+                list: ['Rauchen in den Wohnungen verboten', 'Haustiere sind willkommen, ohne Aufpreis', 'Bitte respektieren Sie abends die Ruhe der Landschaft', 'Das Haus ist leider nicht für Gäste mit eingeschränkter Mobilität geeignet']
+            },
+            numeri: {
+                intro: 'Die nationalen Notrufnummern sind kostenlos und rund um die Uhr erreichbar.',
+                em: [['112', 'Carabinieri'], ['113', 'Polizei'], ['115', 'Feuerwehr'], ['118', 'Medizinischer Notruf']],
+                pharmaT: 'Apotheke'
+            },
+            spesa: { intro: 'Alles, was Sie brauchen, finden Sie in Bene Vagienna, 3 Autominuten entfernt.' },
+            bar: { intro: 'Für einen schnellen Espresso oder einen Aperitivo mit Blick auf die Hügel.' },
+            cena: { intro: 'Unsere Tipps, von piemontesischer Küche bis Pizza. Reservieren lohnt sich, besonders am Wochenende.' },
+            fare: {
+                intro: 'Sie sind mitten im piemontesischen Hügelland, zwischen Langhe und Roero.',
+                list: [
+                    ['Augusta Bagiennorum', 'Die römische Ausgrabungsstätte von Bene Vagienna mit Theater und Amphitheater, gleich um die Ecke.'],
+                    ['Die Altstadt von Bene Vagienna', 'Arkaden, Plätze und kleine Läden: das Piemont von früher.'],
+                    ['Langhe und Roero', 'Barolo, Alba, Dogliani und die UNESCO-Hügel, eine halbe Autostunde entfernt.'],
+                    ['Die Trüffelsaison', 'Oktober bis Dezember: die Trüffelmesse in Alba und Trüffelmenüs in der ganzen Gegend.'],
+                    ['Auf Trüffelsuche', 'Ein Vormittag mit einem erfahrenen Trifolao und seinem Hund: Fragen Sie uns, wir organisieren es auf Wunsch.'],
+                    ['Mit Motorrad oder Auto', 'Sanfte Kurven und Panoramastraßen durch die Hügel: Fragen Sie uns nach unseren Lieblingsrouten.']
+                ]
+            },
+            contatti: {
+                intro: 'Für alles, vor, während und nach dem Aufenthalt: Wir sind für Sie da.',
+                waBtn: 'Schreiben Sie uns auf WhatsApp', telBtn: 'Rufen Sie uns an', mailBtn: 'Schreiben Sie uns eine E-Mail'
+            }
+        }
+    };
+
+    var TILES = [
+        ['checkin', 'key'], ['wifi', 'wifi'], ['arrivo', 'pin'],
+        ['casa', 'home'], ['piscina', 'pool'], ['regole', 'rules'],
+        ['spesa', 'cart'], ['bar', 'drink'], ['cena', 'food'],
+        ['fare', 'map'], ['numeri', 'phone'], ['contatti', 'chat']
+    ];
+
+    var lang = (function() {
+        var q = new URLSearchParams(location.search).get('lang');
+        var saved = null;
+        try { saved = localStorage.getItem('guida-lang'); } catch (e) {}
+        var l = q || saved || (navigator.language || 'it').slice(0, 2);
+        return T[l] ? l : 'it';
+    })();
+
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+    function telLink(t) { return '<a href="tel:' + t.replace(/\s/g, '') + '">' + t + '</a>'; }
+    function placeList(items, L) {
+        var h = '<div class="list">';
+        items.forEach(function(p) {
+            h += '<div class="place"><b>' + esc(p.n) + '</b><p>' + esc(p.a) + (p.t ? ' · ' + telLink(p.t) : '') + '</p><p class="note">' + esc(p.c[L]) + '</p></div>';
+        });
+        return h + '</div>';
+    }
+    function bullets(arr) {
+        return '<ul class="plain">' + arr.map(function(x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+    }
+
+    function sectionHTML(key, L) {
+        var t = T[L];
+        switch (key) {
+            case 'checkin':
+                return '<p class="intro">' + t.checkin.intro + '</p>' +
+                    '<div class="card"><div class="kv"><span>' + t.checkin.inLbl + '</span><b>15:00</b></div>' +
+                    '<div class="kv"><span>' + t.checkin.outLbl + '</span><b>10:00</b></div></div>' +
+                    '<div class="sub">' + t.checkin.docsT + '</div><p class="intro">' + t.checkin.docs + '</p>';
+            case 'wifi':
+                return '<p class="intro">' + t.wifi.intro + '</p>' +
+                    '<div class="card"><div class="kv"><span>' + t.wifi.netLbl + '</span><b>' + t.wifi.net + '</b></div></div>' +
+                    '<p class="intro">' + t.wifi.pw + '</p>' +
+                    '<a class="btn ghost" href="' + WA_URL + '">' + ICONS.wa + t.contatti.waBtn + '</a>';
+            case 'arrivo':
+                var steps = '<div class="steps">';
+                t.arrivo.steps.forEach(function(s, i) { steps += '<div class="step"><i>' + (i + 1) + '</i><div>' + s + '</div></div>'; });
+                steps += '</div>';
+                return '<p class="intro">' + t.arrivo.intro + '</p>' +
+                    '<a class="btn" href="' + MAPS_URL + '" target="_blank" rel="noopener">' + ICONS.maps + t.arrivo.mapsBtn + '</a>' +
+                    '<div class="sub">' + t.arrivo.stepsT + '</div>' + steps +
+                    '<div class="sub">' + t.arrivo.parkT + '</div><p class="intro">' + t.arrivo.park + '</p>';
+            case 'casa':
+                return '<p class="intro">' + t.casa.intro + '</p>' + bullets(t.casa.list) +
+                    '<div class="sub">' + t.casa.helpT + '</div><p class="intro">' + t.casa.help + '</p>' +
+                    '<a class="btn ghost" href="' + WA_URL + '">' + ICONS.wa + t.contatti.waBtn + '</a>';
+            case 'piscina':
+                return '<p class="intro">' + t.piscina.intro + '</p>' + bullets(t.piscina.list);
+            case 'regole':
+                return '<p class="intro">' + t.regole.intro + '</p>' + bullets(t.regole.list);
+            case 'numeri':
+                var em = '<div class="em-grid">';
+                t.numeri.em.forEach(function(e) { em += '<a class="em" href="tel:' + e[0] + '"><b>' + e[0] + '</b><span>' + e[1] + '</span></a>'; });
+                em += '</div>';
+                return '<p class="intro">' + t.numeri.intro + '</p>' + em +
+                    '<div class="sub">' + t.numeri.pharmaT + '</div>' + placeList([PHARMA], L);
+            case 'spesa':
+                return '<p class="intro">' + t.spesa.intro + '</p>' + placeList(SHOPS, L);
+            case 'bar':
+                return '<p class="intro">' + t.bar.intro + '</p>' + placeList(BARS, L);
+            case 'cena':
+                return '<p class="intro">' + t.cena.intro + '</p>' + placeList(REST, L);
+            case 'fare':
+                var h = '<p class="intro">' + t.fare.intro + '</p><div class="list">';
+                t.fare.list.forEach(function(x) { h += '<div class="place"><b>' + x[0] + '</b><p>' + x[1] + '</p></div>'; });
+                return h + '</div>';
+            case 'contatti':
+                return '<p class="intro">' + t.contatti.intro + '</p>' +
+                    '<a class="btn" href="' + WA_URL + '">' + ICONS.wa + t.contatti.waBtn + '</a>' +
+                    '<a class="btn ghost" href="tel:+393514321088">' + ICONS.phone + t.contatti.telBtn + '</a>' +
+                    '<a class="btn ghost" href="mailto:info@casiavacanze.com">' + ICONS.chat + t.contatti.mailBtn + '</a>';
+        }
+        return '';
+    }
+
+    var grid = document.getElementById('grid');
+    var panels = document.getElementById('panels');
+    var home = document.getElementById('home');
+
+    function render() {
+        var t = T[lang];
+        document.documentElement.lang = lang;
+        document.querySelector('[data-g="title"]').textContent = t.title;
+        document.querySelector('[data-g="foot"]').textContent = t.foot;
+
+        grid.innerHTML = '';
+        panels.innerHTML = '';
+        TILES.forEach(function(pair) {
+            var key = pair[0], ico = pair[1];
+            var a = document.createElement('a');
+            a.className = 'tile';
+            a.href = '#' + key;
+            a.innerHTML = ICONS[ico] + '<em>' + t.tiles[key] + '</em>';
+            grid.appendChild(a);
+
+            var p = document.createElement('div');
+            p.className = 'panel';
+            p.id = 'panel-' + key;
+            p.innerHTML =
+                '<div class="p-head"><button class="back" aria-label="' + t.back + '">' + ICONS.back + '</button>' +
+                '<div class="p-ico">' + ICONS[ico] + '</div><h2>' + t.tiles[key] + '</h2></div>' +
+                '<div class="p-body">' + sectionHTML(key, lang) + '</div>';
+            p.querySelector('.back').addEventListener('click', function() { history.back(); });
+            panels.appendChild(p);
+        });
+
+        document.querySelectorAll('.lang-b').forEach(function(b) {
+            b.classList.toggle('on', b.dataset.lang === lang);
+        });
+        route();
+    }
+
+    function route() {
+        var key = location.hash.replace('#', '');
+        var target = key && document.getElementById('panel-' + key);
+        document.querySelectorAll('.panel').forEach(function(p) { p.style.display = 'none'; });
+        if (target) {
+            home.style.display = 'none';
+            document.getElementById('langs').style.display = 'none';
+            target.style.display = 'block';
+            window.scrollTo(0, 0);
+        } else {
+            home.style.display = 'block';
+            document.getElementById('langs').style.display = 'flex';
+        }
+    }
+
+    document.querySelectorAll('.lang-b').forEach(function(b) {
+        b.addEventListener('click', function() {
+            lang = b.dataset.lang;
+            try { localStorage.setItem('guida-lang', lang); } catch (e) {}
+            render();
+        });
+    });
+
+    window.addEventListener('hashchange', route);
+    render();
+})();
+</script>
+</body>
+</html>

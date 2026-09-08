@@ -250,74 +250,64 @@
             </article>
 
             <!-- Appartamento Venica -->
-            <article class="appartamento appartamento--coming reveal" id="venica">
+            <article class="appartamento reveal" id="venica">
                 <div class="appartamento-header">
                     <h3 class="appartamento-nome">Venica</h3>
-                    <span class="appartamento-tag appartamento-tag--coming" data-i18n="venica_tag">Prossimamente</span>
+                    <span class="appartamento-tag" data-i18n="venica_tag">Disponibile</span>
                 </div>
 
                 <div class="appartamento-content">
                     <div class="appartamento-gallery">
-                        <div class="appartamento-gallery-main appartamento-placeholder">
-                            <div class="placeholder-content">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                                    <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0l-2-7m-12 7l2-7m0 0h8m-8 0V7a1 1 0 011-1h6a1 1 0 011 1v7"/>
-                                </svg>
-                                <span data-i18n="venica_placeholder_title">In ristrutturazione</span>
-                                <p data-i18n="venica_placeholder_text">Nuove foto in arrivo</p>
-                            </div>
+                        <div class="appartamento-gallery-main" data-image="images/venica-tinello.jpg">
+                            <img src="images/venica-tinello.jpg" alt="Tinello appartamento Venica" loading="lazy">
                         </div>
                         <div class="appartamento-gallery-grid">
-                            <div class="appartamento-gallery-thumb appartamento-placeholder-thumb">
-                                <span>Foto</span>
+                            <div class="appartamento-gallery-thumb" data-image="images/venica-cucina.jpg">
+                                <img src="images/venica-cucina.jpg" alt="Cucina" loading="lazy">
                             </div>
-                            <div class="appartamento-gallery-thumb appartamento-placeholder-thumb">
-                                <span>Foto</span>
+                            <div class="appartamento-gallery-thumb" data-image="images/venica-camera-camino.jpg">
+                                <img src="images/venica-camera-camino.jpg" alt="Camera con camino" loading="lazy">
                             </div>
-                            <div class="appartamento-gallery-thumb appartamento-placeholder-thumb">
-                                <span>Foto</span>
+                            <div class="appartamento-gallery-thumb" data-image="images/venica-camera-armadio.jpg">
+                                <img src="images/venica-camera-armadio.jpg" alt="Camera matrimoniale" loading="lazy">
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="appartamento-info">
                         <p class="appartamento-descrizione" data-i18n="venica_description">
-                            Al piano terra con accesso diretto al giardino, l'appartamento Venica è attualmente in fase di ristrutturazione. Presto sarà pronto ad accogliervi con ambienti rinnovati e tutti i comfort moderni.
+                            Al piano terra con accesso diretto al giardino, l'appartamento Venica è appena stato ristrutturato: soffitti a volta, due camere da letto, cucina abitabile e tinello. Perfetto per famiglie o due coppie che cercano spazio e tranquillità.
                         </p>
-                        
+
                         <div class="appartamento-specs">
                             <div class="spec-item">
                                 <span class="spec-value">70</span>
-                                <span class="spec-label">mq</span>
+                                <span class="spec-label" data-i18n="venica_spec_sqm">mq</span>
                             </div>
                             <div class="spec-item">
-                                <span class="spec-value">1</span>
-                                <span class="spec-label">Camera</span>
+                                <span class="spec-value">2</span>
+                                <span class="spec-label" data-i18n="venica_spec_bedroom">Camere</span>
                             </div>
                             <div class="spec-item">
                                 <span class="spec-value">2+2+1</span>
-                                <span class="spec-label">Posti letto</span>
+                                <span class="spec-label" data-i18n="venica_spec_beds">Posti letto</span>
                             </div>
                             <div class="spec-item">
                                 <span class="spec-value">1</span>
-                                <span class="spec-label">Bagno</span>
+                                <span class="spec-label" data-i18n="venica_spec_bathroom">Bagno</span>
                             </div>
                         </div>
 
                         <ul class="appartamento-features">
                             <li data-i18n="venica_feat_kitchen">Cucina attrezzata</li>
                             <li data-i18n="venica_feat_studio">Studio con divano letto</li>
-                            <li data-i18n="venica_feat_bedroom">Camera da letto</li>
+                            <li data-i18n="venica_feat_bedroom">Due camere da letto</li>
                             <li data-i18n="venica_feat_bathroom">Bagno con doccia</li>
                             <li data-i18n="venica_feat_garden">Accesso diretto al giardino</li>
                             <li data-i18n="venica_feat_ac">Aria condizionata</li>
                         </ul>
 
-                        <p class="appartamento-coming-note">
-                            <em data-i18n="venica_coming_note">Disponibile da Estate 2026 · Contattaci per info</em>
-                        </p>
-
-                        <span class="btn btn-outline appartamento-cta appartamento-cta--disabled" data-i18n="venica_cta_disabled">Disponibile da Estate 2026</span>
+                        <a href="#prenota" class="btn btn-primary appartamento-cta" data-apartment="venica" data-i18n="venica_cta">Prenota questo appartamento</a>
                     </div>
                 </div>
             </article>
@@ -600,10 +590,10 @@
                                     <span class="booking-radio-label" data-i18n="booking_step1_apt_oliva">Appartamento Oliva</span>
                                     <span class="booking-radio-tag" data-i18n="booking_apt_tag_available">Disponibile</span>
                                 </label>
-                                <label class="booking-radio booking-radio--disabled">
-                                    <input type="radio" name="apartment" value="venica" disabled>
+                                <label class="booking-radio">
+                                    <input type="radio" name="apartment" value="venica">
                                     <span class="booking-radio-label" data-i18n="booking_step1_apt_venica">Appartamento Venica</span>
-                                    <span class="booking-radio-tag" data-i18n="booking_apt_tag_coming">Estate 2026</span>
+                                    <span class="booking-radio-tag" data-i18n="booking_apt_tag_available">Disponibile</span>
                                 </label>
                             </div>
                             <div id="booking-calendar"></div>
@@ -836,7 +826,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
     <script src="i18n.js"></script>
-    <script src="script.js?v=cambio1"></script>
+    <script src="script.js?v=venica3"></script>
 </body>
 </html>
 

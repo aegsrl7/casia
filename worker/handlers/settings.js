@@ -121,7 +121,7 @@ export async function handleCreateTouristTax(reservationId, env) {
     'success_url': `${siteUrl}/?tax_paid=success`,
     'cancel_url': `${siteUrl}/?tax_paid=cancelled`,
     'line_items[0][price_data][currency]': 'eur',
-    'line_items[0][price_data][product_data][name]': `Tassa di soggiorno — ${apartmentName}`,
+    'line_items[0][price_data][product_data][name]': `Tassa di soggiorno · ${apartmentName}`,
     'line_items[0][price_data][product_data][description]': `${taxablePersons} persone x ${taxableNights} notti`,
     'line_items[0][price_data][unit_amount]': amountCents.toString(),
     'line_items[0][quantity]': '1',

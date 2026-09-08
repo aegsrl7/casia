@@ -163,49 +163,43 @@
             </article>
 
             <!-- Appartamento Venica -->
-            <article class="appartamento appartamento--coming reveal" id="venica">
+            <article class="appartamento reveal" id="venica">
                 <div class="appartamento-header">
                     <h3 class="appartamento-nome">Venica</h3>
-                    <span class="appartamento-tag appartamento-tag--coming">In ristrutturazione</span>
+                    <span class="appartamento-tag">Disponibile</span>
                 </div>
-                
+
                 <div class="appartamento-content">
                     <div class="appartamento-gallery">
-                        <div class="appartamento-gallery-main appartamento-placeholder">
-                            <div class="placeholder-content">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                                    <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0l-2-7m-12 7l2-7m0 0h8m-8 0V7a1 1 0 011-1h6a1 1 0 011 1v7"/>
-                                </svg>
-                                <span>Lavori in corso</span>
-                                <p>Foto a breve</p>
-                            </div>
+                        <div class="appartamento-gallery-main" data-image="images/venica-tinello.jpg">
+                            <img src="images/venica-tinello.jpg" alt="Tinello appartamento Venica" loading="lazy">
                         </div>
                         <div class="appartamento-gallery-grid">
-                            <div class="appartamento-gallery-thumb appartamento-placeholder-thumb">
-                                <span>Foto</span>
+                            <div class="appartamento-gallery-thumb" data-image="images/venica-cucina.jpg">
+                                <img src="images/venica-cucina.jpg" alt="Cucina" loading="lazy">
                             </div>
-                            <div class="appartamento-gallery-thumb appartamento-placeholder-thumb">
-                                <span>Foto</span>
+                            <div class="appartamento-gallery-thumb" data-image="images/venica-camera-camino.jpg">
+                                <img src="images/venica-camera-camino.jpg" alt="Camera con camino" loading="lazy">
                             </div>
-                            <div class="appartamento-gallery-thumb appartamento-placeholder-thumb">
-                                <span>Foto</span>
+                            <div class="appartamento-gallery-thumb" data-image="images/venica-camera-armadio.jpg">
+                                <img src="images/venica-camera-armadio.jpg" alt="Camera matrimoniale" loading="lazy">
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="appartamento-info">
                         <p class="appartamento-descrizione">
-                            Al piano terra, con uscita diretta sul giardino. Stiamo finendo i lavori di rinnovo · tra poco sarà pronto con interni nuovi e tutti i comfort.
+                            Al piano terra, con uscita diretta sul giardino. Lavori finiti: soffitti a volta, due camere da letto, cucina abitabile e tinello. Tutto rinnovato, pronto ad accogliervi.
                         </p>
-                        
+
                         <div class="appartamento-specs">
                             <div class="spec-item">
                                 <span class="spec-value">70</span>
                                 <span class="spec-label">mq</span>
                             </div>
                             <div class="spec-item">
-                                <span class="spec-value">1</span>
-                                <span class="spec-label">Camera</span>
+                                <span class="spec-value">2</span>
+                                <span class="spec-label">Camere</span>
                             </div>
                             <div class="spec-item">
                                 <span class="spec-value">2+2+1</span>
@@ -220,17 +214,13 @@
                         <ul class="appartamento-features">
                             <li>Cucina attrezzata</li>
                             <li>Studio con divano letto</li>
-                            <li>Camera da letto</li>
+                            <li>Due camere da letto</li>
                             <li>Bagno con doccia</li>
                             <li>Uscita sul giardino</li>
                             <li>Aria condizionata</li>
                         </ul>
 
-                        <p class="appartamento-coming-note">
-                            <em>Dovrebbe essere pronto per estate 2026 · scrivici per aggiornamenti</em>
-                        </p>
-
-                        <span class="btn btn-outline appartamento-cta appartamento-cta--disabled">Non ancora disponibile</span>
+                        <a href="#prenota" class="btn btn-primary appartamento-cta" data-apartment="venica">Prenota questo appartamento</a>
                     </div>
                 </div>
             </article>
@@ -513,10 +503,10 @@
                                     <span class="booking-radio-label">Appartamento Oliva</span>
                                     <span class="booking-radio-tag">Disponibile</span>
                                 </label>
-                                <label class="booking-radio booking-radio--disabled">
-                                    <input type="radio" name="apartment" value="venica" disabled>
+                                <label class="booking-radio">
+                                    <input type="radio" name="apartment" value="venica">
                                     <span class="booking-radio-label">Appartamento Venica</span>
-                                    <span class="booking-radio-tag">In ristrutturazione</span>
+                                    <span class="booking-radio-tag">Disponibile</span>
                                 </label>
                             </div>
                             <div id="booking-calendar"></div>
@@ -741,7 +731,7 @@
         </button>
     </div>
 
-    <script src="script.js?v=cambio1"></script>
+    <script src="script.js?v=venica3"></script>
 </body>
 </html>
 
