@@ -1,0 +1,1003 @@
+{
+  "pages": {
+    "index": {
+      "title": "Home",
+      "preview": "/?editor=1"
+    },
+    "amici": {
+      "title": "Home, versione Amici",
+      "preview": "/amici?editor=1"
+    }
+  },
+  "sections": [
+    {
+      "id": "menu",
+      "title": "Menu",
+      "where": "Barra in alto, sempre visibile",
+      "preview": true,
+      "keys": [
+        {
+          "k": "nav_casa",
+          "label": "Voce menu \"La Casa\""
+        },
+        {
+          "k": "nav_servizi",
+          "label": "Voce menu \"Servizi\""
+        },
+        {
+          "k": "nav_territorio",
+          "label": "Voce menu \"Territorio\""
+        },
+        {
+          "k": "nav_esperienze",
+          "label": "Voce menu \"Esperienze\""
+        },
+        {
+          "k": "nav_prenota",
+          "label": "Bottone Prenota nel menu"
+        }
+      ]
+    },
+    {
+      "id": "hero",
+      "title": "Copertina",
+      "where": "La prima schermata con la foto della cascina",
+      "preview": true,
+      "keys": [
+        {
+          "k": "hero_title",
+          "label": "Titolo grande"
+        },
+        {
+          "k": "hero_subtitle",
+          "label": "Sottotitolo, il luogo"
+        },
+        {
+          "k": "hero_cta_discover",
+          "label": "Bottone chiaro"
+        },
+        {
+          "k": "hero_cta_book",
+          "label": "Bottone prenota"
+        },
+        {
+          "k": "scroll",
+          "label": "Scritta \"scorri\" in basso"
+        }
+      ]
+    },
+    {
+      "id": "intro",
+      "title": "Introduzione",
+      "where": "Il paragrafo di benvenuto sotto la copertina",
+      "preview": true,
+      "keys": [
+        {
+          "k": "intro_text",
+          "label": "Testo di benvenuto"
+        }
+      ]
+    },
+    {
+      "id": "casa",
+      "title": "La Casa",
+      "where": "Titolo della sezione e blocco \"La Cascina\"",
+      "preview": true,
+      "keys": [
+        {
+          "k": "section_label_alloggi",
+          "label": "Etichetta sopra il titolo"
+        },
+        {
+          "k": "section_title_casa",
+          "label": "Titolo della sezione"
+        },
+        {
+          "k": "appartamenti_intro",
+          "label": "Testo introduttivo"
+        },
+        {
+          "k": "cascina_title",
+          "label": "Titolo del blocco cascina"
+        },
+        {
+          "k": "cascina_subtitle",
+          "label": "Testo del blocco cascina"
+        }
+      ]
+    },
+    {
+      "id": "oliva",
+      "title": "Appartamento Oliva",
+      "where": "La scheda Oliva nella sezione La Casa",
+      "preview": true,
+      "keys": [
+        {
+          "k": "oliva_tag",
+          "label": "Etichetta di stato"
+        },
+        {
+          "k": "oliva_description",
+          "label": "Descrizione"
+        },
+        {
+          "k": "oliva_spec_sqm",
+          "label": "Dicitura metri quadri"
+        },
+        {
+          "k": "oliva_spec_bedroom",
+          "label": "Dicitura camera"
+        },
+        {
+          "k": "oliva_spec_beds",
+          "label": "Dicitura posti letto"
+        },
+        {
+          "k": "oliva_spec_bathroom",
+          "label": "Dicitura bagno"
+        },
+        {
+          "k": "oliva_feat_kitchen",
+          "label": "Dotazione 1"
+        },
+        {
+          "k": "oliva_feat_sofa",
+          "label": "Dotazione 2"
+        },
+        {
+          "k": "oliva_feat_bedroom",
+          "label": "Dotazione 3"
+        },
+        {
+          "k": "oliva_feat_bathroom",
+          "label": "Dotazione 4"
+        },
+        {
+          "k": "oliva_feat_ac",
+          "label": "Dotazione 5"
+        },
+        {
+          "k": "oliva_feat_tv",
+          "label": "Dotazione 6"
+        },
+        {
+          "k": "oliva_cta",
+          "label": "Bottone della scheda"
+        }
+      ]
+    },
+    {
+      "id": "venica",
+      "title": "Appartamento Venica",
+      "where": "La scheda Venica nella sezione La Casa",
+      "preview": true,
+      "keys": [
+        {
+          "k": "venica_tag",
+          "label": "Etichetta di stato"
+        },
+        {
+          "k": "venica_description",
+          "label": "Descrizione"
+        },
+        {
+          "k": "venica_spec_sqm",
+          "label": "Dicitura metri quadri"
+        },
+        {
+          "k": "venica_spec_bedroom",
+          "label": "Dicitura camere"
+        },
+        {
+          "k": "venica_spec_beds",
+          "label": "Dicitura posti letto"
+        },
+        {
+          "k": "venica_spec_bathroom",
+          "label": "Dicitura bagno"
+        },
+        {
+          "k": "venica_feat_kitchen",
+          "label": "Dotazione 1"
+        },
+        {
+          "k": "venica_feat_studio",
+          "label": "Dotazione 2"
+        },
+        {
+          "k": "venica_feat_bedroom",
+          "label": "Dotazione 3"
+        },
+        {
+          "k": "venica_feat_bathroom",
+          "label": "Dotazione 4"
+        },
+        {
+          "k": "venica_feat_garden",
+          "label": "Dotazione 5"
+        },
+        {
+          "k": "venica_feat_ac",
+          "label": "Dotazione 6"
+        },
+        {
+          "k": "venica_cta",
+          "label": "Bottone della scheda"
+        }
+      ]
+    },
+    {
+      "id": "servizi",
+      "title": "Servizi",
+      "where": "La griglia dei nove servizi",
+      "preview": true,
+      "keys": [
+        {
+          "k": "section_label_comfort",
+          "label": "Etichetta sopra il titolo"
+        },
+        {
+          "k": "section_title_servizi",
+          "label": "Titolo della sezione"
+        },
+        {
+          "k": "service_wifi_title",
+          "label": "WiFi, nome"
+        },
+        {
+          "k": "service_wifi_desc",
+          "label": "WiFi, descrizione"
+        },
+        {
+          "k": "service_kitchen_title",
+          "label": "Cucina, nome"
+        },
+        {
+          "k": "service_kitchen_desc",
+          "label": "Cucina, descrizione"
+        },
+        {
+          "k": "service_heating_title",
+          "label": "Riscaldamento, nome"
+        },
+        {
+          "k": "service_heating_desc",
+          "label": "Riscaldamento, descrizione"
+        },
+        {
+          "k": "service_linen_title",
+          "label": "Biancheria, nome"
+        },
+        {
+          "k": "service_linen_desc",
+          "label": "Biancheria, descrizione"
+        },
+        {
+          "k": "service_parking_title",
+          "label": "Parcheggio, nome"
+        },
+        {
+          "k": "service_parking_desc",
+          "label": "Parcheggio, descrizione"
+        },
+        {
+          "k": "service_garden_title",
+          "label": "Giardino, nome"
+        },
+        {
+          "k": "service_garden_desc",
+          "label": "Giardino, descrizione"
+        },
+        {
+          "k": "service_pool_title",
+          "label": "Piscina, nome"
+        },
+        {
+          "k": "service_pool_desc",
+          "label": "Piscina, descrizione"
+        },
+        {
+          "k": "service_pets_title",
+          "label": "Animali, nome"
+        },
+        {
+          "k": "service_pets_desc",
+          "label": "Animali, descrizione"
+        },
+        {
+          "k": "service_bbq_title",
+          "label": "Barbecue, nome"
+        },
+        {
+          "k": "service_bbq_desc",
+          "label": "Barbecue, descrizione"
+        }
+      ]
+    },
+    {
+      "id": "territorio",
+      "title": "Territorio",
+      "where": "Introduzione, quattro luoghi e distanze",
+      "preview": true,
+      "keys": [
+        {
+          "k": "section_label_dintorni",
+          "label": "Etichetta sopra il titolo"
+        },
+        {
+          "k": "section_title_territorio",
+          "label": "Titolo della sezione"
+        },
+        {
+          "k": "territorio_intro",
+          "label": "Testo introduttivo"
+        },
+        {
+          "k": "luogo_bene_title",
+          "label": "Bene Vagienna, titolo"
+        },
+        {
+          "k": "luogo_bene_desc",
+          "label": "Bene Vagienna, descrizione"
+        },
+        {
+          "k": "luogo_langhe_title",
+          "label": "Langhe e Roero, titolo"
+        },
+        {
+          "k": "luogo_langhe_desc",
+          "label": "Langhe e Roero, descrizione"
+        },
+        {
+          "k": "luogo_mare_title",
+          "label": "Mare, titolo"
+        },
+        {
+          "k": "luogo_mare_desc",
+          "label": "Mare, descrizione"
+        },
+        {
+          "k": "luogo_montagna_title",
+          "label": "Montagna, titolo"
+        },
+        {
+          "k": "luogo_montagna_desc",
+          "label": "Montagna, descrizione"
+        },
+        {
+          "k": "distanze_title",
+          "label": "Titolo del riquadro distanze"
+        },
+        {
+          "k": "distanza_cuneo",
+          "label": "Distanza 1"
+        },
+        {
+          "k": "distanza_alba",
+          "label": "Distanza 2"
+        },
+        {
+          "k": "distanza_torino",
+          "label": "Distanza 3"
+        }
+      ]
+    },
+    {
+      "id": "esperienze",
+      "title": "Esperienze",
+      "where": "Le due card e la nota finale",
+      "preview": true,
+      "keys": [
+        {
+          "k": "section_label_esperienze",
+          "label": "Etichetta sopra il titolo"
+        },
+        {
+          "k": "section_title_esperienze",
+          "label": "Titolo della sezione"
+        },
+        {
+          "k": "esp_tartufo_title",
+          "label": "Tartufo, titolo"
+        },
+        {
+          "k": "esp_tartufo_desc",
+          "label": "Tartufo, descrizione"
+        },
+        {
+          "k": "esp_tartufo_tag",
+          "label": "Tartufo, etichetta"
+        },
+        {
+          "k": "esp_auto_title",
+          "label": "Bikers & Cars, titolo"
+        },
+        {
+          "k": "esp_auto_desc",
+          "label": "Bikers & Cars, descrizione"
+        },
+        {
+          "k": "esp_auto_tag",
+          "label": "Bikers & Cars, etichetta"
+        },
+        {
+          "k": "esperienze_note",
+          "label": "Nota in fondo"
+        }
+      ]
+    },
+    {
+      "id": "prenota",
+      "title": "Prenotazione",
+      "where": "Il modulo di prenotazione in due passi",
+      "preview": true,
+      "keys": [
+        {
+          "k": "section_label_prenota",
+          "label": "Etichetta sopra il titolo"
+        },
+        {
+          "k": "section_title_prenota",
+          "label": "Titolo della sezione"
+        },
+        {
+          "k": "prenota_intro",
+          "label": "Testo introduttivo"
+        },
+        {
+          "k": "booking_step1_title",
+          "label": "Titolo passo 1"
+        },
+        {
+          "k": "booking_step1_apt_oliva",
+          "label": "Scelta Oliva"
+        },
+        {
+          "k": "booking_step1_apt_venica",
+          "label": "Scelta Venica"
+        },
+        {
+          "k": "booking_apt_tag_available",
+          "label": "Etichetta \"disponibile\""
+        },
+        {
+          "k": "booking_calendar_hint",
+          "label": "Suggerimento calendario"
+        },
+        {
+          "k": "booking_summary_title",
+          "label": "Titolo riepilogo"
+        },
+        {
+          "k": "booking_summary_empty",
+          "label": "Riepilogo vuoto"
+        },
+        {
+          "k": "booking_summary_apartment",
+          "label": "Riga appartamento"
+        },
+        {
+          "k": "booking_summary_checkin",
+          "label": "Riga check-in"
+        },
+        {
+          "k": "booking_summary_checkout",
+          "label": "Riga check-out"
+        },
+        {
+          "k": "booking_summary_nights",
+          "label": "Riga notti"
+        },
+        {
+          "k": "booking_adults_label",
+          "label": "Etichetta adulti"
+        },
+        {
+          "k": "booking_children_label",
+          "label": "Etichetta bambini"
+        },
+        {
+          "k": "booking_summary_total",
+          "label": "Riga totale"
+        },
+        {
+          "k": "booking_price_loading",
+          "label": "Messaggio \"calcolo prezzo in corso\""
+        },
+        {
+          "k": "booking_next_btn",
+          "label": "Bottone continua"
+        },
+        {
+          "k": "booking_back_btn",
+          "label": "Link torna al calendario"
+        },
+        {
+          "k": "timer_complete_within",
+          "label": "Etichetta \"completa entro\" del timer"
+        },
+        {
+          "k": "booking_step2_title",
+          "label": "Titolo passo 2"
+        },
+        {
+          "k": "booking_step2_name_label",
+          "label": "Campo nome"
+        },
+        {
+          "k": "booking_step2_email_label",
+          "label": "Campo email"
+        },
+        {
+          "k": "booking_step2_phone_label",
+          "label": "Campo telefono"
+        },
+        {
+          "k": "booking_step2_message_label",
+          "label": "Campo note"
+        },
+        {
+          "k": "booking_step2_message_optional",
+          "label": "Dicitura facoltativo"
+        },
+        {
+          "k": "booking_step2_privacy",
+          "label": "Consenso privacy"
+        },
+        {
+          "k": "booking_step2_marketing",
+          "label": "Consenso comunicazioni"
+        },
+        {
+          "k": "confirmation_guests",
+          "label": "Riga ospiti nel riepilogo del passo 2"
+        },
+        {
+          "k": "booking_pay_btn",
+          "label": "Bottone paga"
+        },
+        {
+          "k": "booking_pay_note",
+          "label": "Nota sotto il bottone"
+        },
+        {
+          "k": "prenota_fallback",
+          "label": "Contatto diretto"
+        }
+      ]
+    },
+    {
+      "id": "footer",
+      "title": "Piè di pagina",
+      "where": "Contatti, link e copyright",
+      "preview": true,
+      "keys": [
+        {
+          "k": "footer_contacts",
+          "label": "Titolo contatti"
+        },
+        {
+          "k": "footer_explore_title",
+          "label": "Titolo \"Esplora\""
+        },
+        {
+          "k": "footer_link_casa",
+          "label": "Link 1"
+        },
+        {
+          "k": "footer_link_servizi",
+          "label": "Link 2"
+        },
+        {
+          "k": "footer_link_territorio",
+          "label": "Link 3"
+        },
+        {
+          "k": "footer_link_prenota",
+          "label": "Link 4"
+        }
+      ]
+    },
+    {
+      "id": "sistema",
+      "title": "Messaggi di sistema",
+      "where": "Compaiono solo in situazioni particolari: errori, conferma di pagamento, riepilogo stampato",
+      "preview": false,
+      "keys": [
+        {
+          "k": "meta_description",
+          "label": "Descrizione SEO della pagina (meta description)"
+        },
+        {
+          "k": "og_title",
+          "label": "Titolo per la condivisione social (og:title)"
+        },
+        {
+          "k": "og_description",
+          "label": "Descrizione per la condivisione social (og:description)"
+        },
+        {
+          "k": "months_short",
+          "label": "Mesi abbreviati del calendario"
+        },
+        {
+          "k": "adults_count",
+          "label": "Conteggio adulti (\"1 adulto\" / \"2 adulti\")"
+        },
+        {
+          "k": "children_count",
+          "label": "Conteggio bambini (\"1 bambino\" / \"2 bambini\")"
+        },
+        {
+          "k": "guests_separator",
+          "label": "Separatore tra adulti e bambini"
+        },
+        {
+          "k": "validate_name",
+          "label": "Errore: nome mancante"
+        },
+        {
+          "k": "validate_email",
+          "label": "Errore: email mancante"
+        },
+        {
+          "k": "validate_email_invalid",
+          "label": "Errore: email non valida"
+        },
+        {
+          "k": "validate_phone",
+          "label": "Errore: telefono mancante"
+        },
+        {
+          "k": "validate_privacy",
+          "label": "Errore: consenso privacy mancante"
+        },
+        {
+          "k": "booking_price_error",
+          "label": "Errore nel calcolo del prezzo"
+        },
+        {
+          "k": "booking_connection_error",
+          "label": "Errore di connessione durante la prenotazione"
+        },
+        {
+          "k": "booking_min_nights_error",
+          "label": "Errore: soggiorno troppo breve"
+        },
+        {
+          "k": "booking_no_price_error",
+          "label": "Errore: prezzo non disponibile"
+        },
+        {
+          "k": "timer_expired",
+          "label": "Messaggio: tempo scaduto per completare la prenotazione"
+        },
+        {
+          "k": "booking_pay_processing",
+          "label": "Messaggio durante il pagamento"
+        },
+        {
+          "k": "booking_pay_error",
+          "label": "Errore durante il pagamento"
+        },
+        {
+          "k": "url_payment_error",
+          "label": "Errore generico dopo il pagamento"
+        },
+        {
+          "k": "banner_success",
+          "label": "Banner: prenotazione confermata"
+        },
+        {
+          "k": "banner_cancelled",
+          "label": "Banner: pagamento annullato"
+        },
+        {
+          "k": "confirmation_loading",
+          "label": "Modale conferma: messaggio di caricamento"
+        },
+        {
+          "k": "confirmation_title",
+          "label": "Modale conferma: titolo"
+        },
+        {
+          "k": "confirmation_subtitle",
+          "label": "Modale conferma: sottotitolo con numero prenotazione"
+        },
+        {
+          "k": "confirmation_apartment",
+          "label": "Modale conferma: riga appartamento"
+        },
+        {
+          "k": "confirmation_checkin",
+          "label": "Modale conferma: riga check-in"
+        },
+        {
+          "k": "confirmation_checkout",
+          "label": "Modale conferma: riga check-out"
+        },
+        {
+          "k": "confirmation_nights",
+          "label": "Modale conferma: riga notti"
+        },
+        {
+          "k": "confirmation_total",
+          "label": "Modale conferma: riga totale pagato"
+        },
+        {
+          "k": "confirmation_email_note",
+          "label": "Modale conferma: nota email di conferma inviata"
+        },
+        {
+          "k": "confirmation_print",
+          "label": "Modale conferma: bottone \"Stampa riepilogo\""
+        },
+        {
+          "k": "confirmation_close",
+          "label": "Modale conferma: bottone \"Chiudi\""
+        },
+        {
+          "k": "confirmation_thankyou",
+          "label": "Modale conferma: frase di saluto finale"
+        },
+        {
+          "k": "confirmation_fallback_title",
+          "label": "Modale conferma: titolo se i dati non si caricano"
+        },
+        {
+          "k": "confirmation_fallback_subtitle",
+          "label": "Modale conferma: sottotitolo se i dati non si caricano"
+        },
+        {
+          "k": "print_title",
+          "label": "Riepilogo stampato: titolo della pagina"
+        },
+        {
+          "k": "print_header",
+          "label": "Riepilogo stampato: intestazione \"Casia Vacanze\""
+        },
+        {
+          "k": "print_location",
+          "label": "Riepilogo stampato: località"
+        },
+        {
+          "k": "print_badge",
+          "label": "Riepilogo stampato: etichetta \"Prenotazione confermata\""
+        },
+        {
+          "k": "print_details_title",
+          "label": "Riepilogo stampato: titolo \"Dettagli prenotazione\""
+        },
+        {
+          "k": "print_apartment",
+          "label": "Riepilogo stampato: riga appartamento"
+        },
+        {
+          "k": "print_guest",
+          "label": "Riepilogo stampato: riga ospite"
+        },
+        {
+          "k": "print_email",
+          "label": "Riepilogo stampato: riga email"
+        },
+        {
+          "k": "print_checkin",
+          "label": "Riepilogo stampato: riga check-in"
+        },
+        {
+          "k": "print_checkout",
+          "label": "Riepilogo stampato: riga check-out"
+        },
+        {
+          "k": "print_nights",
+          "label": "Riepilogo stampato: riga notti"
+        },
+        {
+          "k": "print_guests",
+          "label": "Riepilogo stampato: riga ospiti"
+        },
+        {
+          "k": "print_total",
+          "label": "Riepilogo stampato: riga totale pagato"
+        },
+        {
+          "k": "print_thanks",
+          "label": "Riepilogo stampato: frase di ringraziamento finale"
+        },
+        {
+          "k": "print_address",
+          "label": "Riepilogo stampato: indirizzo in fondo alla pagina"
+        }
+      ]
+    },
+    {
+      "id": "email",
+      "title": "Email agli ospiti",
+      "where": "Conferma della prenotazione, invito al check-in, istruzioni di accesso, tassa di soggiorno. Le parti tra graffe come {name} o {checkin} vengono sostituite dai dati veri: non vanno cambiate.",
+      "preview": false,
+      "page": "email",
+      "keys": [
+        {
+          "k": "conf_subject",
+          "label": "Conferma: oggetto dell'email"
+        },
+        {
+          "k": "conf_title",
+          "label": "Conferma: titolo"
+        },
+        {
+          "k": "conf_greeting",
+          "label": "Conferma: saluto iniziale"
+        },
+        {
+          "k": "conf_intro",
+          "label": "Conferma: testo introduttivo"
+        },
+        {
+          "k": "conf_apartment",
+          "label": "Conferma: etichetta \"Appartamento\""
+        },
+        {
+          "k": "conf_checkin",
+          "label": "Conferma: etichetta \"Check-in\""
+        },
+        {
+          "k": "conf_checkout",
+          "label": "Conferma: etichetta \"Check-out\""
+        },
+        {
+          "k": "conf_checkin_time",
+          "label": "Conferma: orario di check-in"
+        },
+        {
+          "k": "conf_checkout_time",
+          "label": "Conferma: orario di check-out"
+        },
+        {
+          "k": "conf_nights",
+          "label": "Conferma: etichetta \"Notti\""
+        },
+        {
+          "k": "conf_guests",
+          "label": "Conferma: etichetta \"Ospiti\""
+        },
+        {
+          "k": "conf_adults",
+          "label": "Conferma: testo numero adulti"
+        },
+        {
+          "k": "conf_children",
+          "label": "Conferma: testo numero bambini"
+        },
+        {
+          "k": "conf_total_label",
+          "label": "Conferma: etichetta totale pagato"
+        },
+        {
+          "k": "conf_address_label",
+          "label": "Conferma: etichetta indirizzo"
+        },
+        {
+          "k": "conf_address",
+          "label": "Conferma: indirizzo della struttura"
+        },
+        {
+          "k": "conf_directions_note",
+          "label": "Conferma: nota sulle indicazioni stradali"
+        },
+        {
+          "k": "checkin_subject",
+          "label": "Check-in: oggetto dell'email"
+        },
+        {
+          "k": "checkin_title",
+          "label": "Check-in: titolo"
+        },
+        {
+          "k": "checkin_greeting",
+          "label": "Check-in: saluto iniziale"
+        },
+        {
+          "k": "checkin_intro",
+          "label": "Check-in: testo introduttivo"
+        },
+        {
+          "k": "checkin_details",
+          "label": "Check-in: riga con le date del soggiorno"
+        },
+        {
+          "k": "checkin_cta",
+          "label": "Check-in: testo del pulsante"
+        },
+        {
+          "k": "checkin_steps",
+          "label": "Check-in: spiegazione dei passaggi"
+        },
+        {
+          "k": "checkin_note",
+          "label": "Check-in: nota finale sul link personale"
+        },
+        {
+          "k": "access_subject",
+          "label": "Accesso: oggetto dell'email"
+        },
+        {
+          "k": "access_title",
+          "label": "Accesso: titolo"
+        },
+        {
+          "k": "access_greeting",
+          "label": "Accesso: saluto iniziale"
+        },
+        {
+          "k": "access_intro",
+          "label": "Accesso: testo introduttivo con le date"
+        },
+        {
+          "k": "access_contact",
+          "label": "Accesso: testo di chiusura"
+        },
+        {
+          "k": "tax_subject",
+          "label": "Tassa di soggiorno: oggetto dell'email"
+        },
+        {
+          "k": "tax_title",
+          "label": "Tassa di soggiorno: titolo"
+        },
+        {
+          "k": "tax_greeting",
+          "label": "Tassa di soggiorno: saluto iniziale"
+        },
+        {
+          "k": "tax_intro",
+          "label": "Tassa di soggiorno: testo introduttivo"
+        },
+        {
+          "k": "tax_period",
+          "label": "Tassa di soggiorno: etichetta \"Periodo\""
+        },
+        {
+          "k": "tax_persons",
+          "label": "Tassa di soggiorno: etichetta persone soggette"
+        },
+        {
+          "k": "tax_nights_label",
+          "label": "Tassa di soggiorno: etichetta notti tassabili"
+        },
+        {
+          "k": "tax_total_label",
+          "label": "Tassa di soggiorno: etichetta importo dovuto"
+        },
+        {
+          "k": "tax_cta",
+          "label": "Tassa di soggiorno: testo del pulsante di pagamento"
+        },
+        {
+          "k": "tax_note",
+          "label": "Tassa di soggiorno: nota sul pagamento tramite Stripe"
+        }
+      ]
+    }
+  ],
+  "hidden": [
+    "venica_placeholder_title",
+    "venica_placeholder_text",
+    "venica_placeholder_thumb",
+    "venica_coming_note",
+    "venica_cta_disabled",
+    "modal_close",
+    "modal_prev",
+    "modal_next",
+    "footer_address",
+    "oliva_name",
+    "venica_name",
+    "booking_apt_tag_coming",
+    "checkin_time",
+    "checkout_time",
+    "booking_apt_tag_coming_amici",
+    "booking_summary_dates",
+    "booking_summary_guests",
+    "footer_copyright"
+  ]
+}

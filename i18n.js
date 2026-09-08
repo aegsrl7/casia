@@ -14,6 +14,14 @@
     let translations = {};
     let currentPage = detectPage();
 
+    // Modalità editor: attiva solo con ?editor=1 e pagina dentro un iframe.
+    var EDITOR_MODE = false;
+    try {
+        EDITOR_MODE = new URLSearchParams(window.location.search).get('editor') === '1' && window.parent !== window;
+    } catch (e) {
+        EDITOR_MODE = false;
+    }
+
     function detectPage() {
         const path = window.location.pathname;
         if (path.includes('amici')) return 'amici';
@@ -46,7 +54,7 @@
         }
         try {
             // Try API first (DB-backed translations)
-            const res = await fetch(`${API_BASE}/translations?lang=${lang}`);
+            const res = await fetch(`${API_BASE}/translations?lang=${lang}`, EDITOR_MODE ? { cache: 'no-store' } : undefined);
             if (res.ok) {
                 translations = await res.json();
                 return;
@@ -55,7 +63,7 @@
             // Fallback to static JSON
         }
         try {
-            const res = await fetch(`lang/${lang}.json`);
+            const res = await fetch(`lang/${lang}.json`, EDITOR_MODE ? { cache: 'no-store' } : undefined);
             if (res.ok) {
                 translations = await res.json();
                 return;
@@ -181,7 +189,7 @@
         if (lang === currentLang && Object.keys(translations).length > 0) return;
 
         currentLang = lang;
-        localStorage.setItem(STORAGE_KEY, lang);
+        if (!EDITOR_MODE) localStorage.setItem(STORAGE_KEY, lang);
 
         // Update URL without reload (remove ?lang param if present)
         var url = new URL(window.location);
@@ -193,7 +201,7 @@
         await loadTranslations(lang);
 
         if (lang === DEFAULT_LANG) {
-            // Restore original Italian HTML — simplest: reload page
+            // Ripristina l'HTML italiano originale: il modo più semplice è ricaricare la pagina
             window.location.reload();
             return;
         }
@@ -234,6 +242,12 @@
             updateMeta();
             document.documentElement.classList.remove('i18n-loading');
             window.dispatchEvent(new CustomEvent('langchange', { detail: { lang: currentLang } }));
+        } else if (EDITOR_MODE) {
+            // In modalità editor serve attendere il caricamento anche per l'italiano,
+            // così si può inviare 'ready' solo a dizionario pronto.
+            await loadTranslations(currentLang);
+            translateDOM();
+            window.dispatchEvent(new CustomEvent('langchange', { detail: { lang: currentLang } }));
         } else {
             // Anche in italiano serve il dizionario per i messaggi dinamici
             // (errori prenotazione, hint calendario): il DOM resta quello del server.
@@ -254,8 +268,169 @@
 
     // Auto-init
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', function() {
+            init().then(initEditorMode);
+        });
     } else {
-        init();
+        init().then(initEditorMode);
+    }
+
+    // ==========================================================
+    // MODALITÀ EDITOR (anteprima nel pannello admin, via iframe)
+    // Attiva solo se EDITOR_MODE è vero (?editor=1 e window.parent !== window).
+    // In ogni altro caso initEditorMode() esce subito e non fa nulla.
+    // ==========================================================
+
+    var editorReadySent = false;
+
+    function cssEscapeKey(value) {
+        if (window.CSS && typeof CSS.escape === 'function') return CSS.escape(value);
+        return String(value).replace(/(["\\])/g, '\\$1');
+    }
+
+    function editorInjectStyles() {
+        var style = document.createElement('style');
+        style.setAttribute('data-casia-editor', 'true');
+        style.textContent =
+            '[data-i18n]:hover, [data-i18n-html]:hover, [data-i18n-placeholder]:hover {' +
+            ' outline: 1px dashed rgba(184,149,107,.7); cursor: pointer; }' +
+            '.casia-editor-hl {' +
+            ' outline: 2px solid #B8956B; outline-offset: 3px;' +
+            ' background: rgba(184,149,107,.18);' +
+            ' transition: outline .15s ease, background .15s ease; }';
+        document.head.appendChild(style);
+    }
+
+    function editorFindNodes(key) {
+        var selector = '[data-i18n="' + cssEscapeKey(key) + '"], ' +
+            '[data-i18n-html="' + cssEscapeKey(key) + '"], ' +
+            '[data-i18n-placeholder="' + cssEscapeKey(key) + '"]';
+        return document.querySelectorAll(selector);
+    }
+
+    function editorUpdateMemory(key, value) {
+        if (translations[currentPage] && translations[currentPage][key] !== undefined) {
+            translations[currentPage][key] = value;
+            return;
+        }
+        if (translations.common && translations.common[key] !== undefined) {
+            translations.common[key] = value;
+            return;
+        }
+        // Chiave nuova: la creiamo sulla pagina corrente in memoria.
+        if (!translations[currentPage]) translations[currentPage] = {};
+        translations[currentPage][key] = value;
+    }
+
+    // L'anteprima nell'iframe admin non è sandboxata (deve restare same-origin
+    // per lo scroll/scambio postMessage), quindi un valore data-i18n-html non
+    // ancora salvato non va mai eseguito così com'è: qui rimuoviamo tag e
+    // attributi capaci di eseguire script prima di iniettarlo nel DOM.
+    function editorSanitizeHtml(html) {
+        var tpl = document.createElement('template');
+        tpl.innerHTML = String(html);
+        tpl.content.querySelectorAll('script, iframe, object, embed, link, style, svg').forEach(function(el) {
+            el.remove();
+        });
+        tpl.content.querySelectorAll('*').forEach(function(el) {
+            Array.prototype.slice.call(el.attributes).forEach(function(attr) {
+                var name = attr.name.toLowerCase();
+                if (name.indexOf('on') === 0) {
+                    el.removeAttribute(attr.name);
+                } else if ((name === 'href' || name === 'src' || name === 'xlink:href' || name === 'action') &&
+                    /^\s*javascript:/i.test(attr.value)) {
+                    el.removeAttribute(attr.name);
+                }
+            });
+        });
+        return tpl.innerHTML;
+    }
+
+    function editorApplySet(key, value) {
+        document.querySelectorAll('[data-i18n="' + cssEscapeKey(key) + '"]').forEach(function(node) {
+            node.textContent = value;
+        });
+        document.querySelectorAll('[data-i18n-html="' + cssEscapeKey(key) + '"]').forEach(function(node) {
+            node.innerHTML = editorSanitizeHtml(value);
+        });
+        document.querySelectorAll('[data-i18n-placeholder="' + cssEscapeKey(key) + '"]').forEach(function(node) {
+            node.placeholder = value;
+        });
+    }
+
+    function editorClearHighlight() {
+        document.querySelectorAll('.casia-editor-hl').forEach(function(node) {
+            node.classList.remove('casia-editor-hl');
+        });
+    }
+
+    function editorHighlight(key, scroll) {
+        editorClearHighlight();
+        var nodes = editorFindNodes(key);
+        nodes.forEach(function(node) {
+            node.classList.add('casia-editor-hl');
+        });
+        if (scroll && nodes.length) {
+            nodes[0].scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+    }
+
+    function editorSendReady() {
+        if (editorReadySent) return;
+        editorReadySent = true;
+        window.parent.postMessage({ casiaEditor: true, type: 'ready', page: currentPage, lang: currentLang }, window.location.origin);
+    }
+
+    function editorOnMessage(event) {
+        if (event.origin !== window.location.origin) return;
+        var data = event.data;
+        if (!data || data.casiaEditor !== true) return;
+
+        if (data.type === 'set') {
+            editorUpdateMemory(data.key, data.value);
+            editorApplySet(data.key, data.value);
+        } else if (data.type === 'setMany' && data.values) {
+            Object.keys(data.values).forEach(function(key) {
+                editorUpdateMemory(key, data.values[key]);
+                editorApplySet(key, data.values[key]);
+            });
+        } else if (data.type === 'highlight') {
+            editorHighlight(data.key, !!data.scroll);
+        } else if (data.type === 'clear') {
+            editorClearHighlight();
+        }
+    }
+
+    function editorOnClickCapture(event) {
+        var editableAncestor = event.target.closest && event.target.closest('[data-i18n], [data-i18n-html], [data-i18n-placeholder]');
+        if (editableAncestor) {
+            event.preventDefault();
+            event.stopPropagation();
+            var key = editableAncestor.getAttribute('data-i18n') ||
+                editableAncestor.getAttribute('data-i18n-html') ||
+                editableAncestor.getAttribute('data-i18n-placeholder');
+            window.parent.postMessage({ casiaEditor: true, type: 'pick', key: key }, window.location.origin);
+            return;
+        }
+        var linkAncestor = event.target.closest && event.target.closest('a[href]');
+        if (linkAncestor) {
+            var href = linkAncestor.getAttribute('href') || '';
+            if (href.indexOf('#') !== 0) {
+                event.preventDefault();
+            }
+        }
+    }
+
+    function editorOnSubmitCapture(event) {
+        event.preventDefault();
+    }
+
+    function initEditorMode() {
+        if (!EDITOR_MODE) return;
+        editorInjectStyles();
+        window.addEventListener('message', editorOnMessage);
+        document.addEventListener('click', editorOnClickCapture, true);
+        document.addEventListener('submit', editorOnSubmitCapture, true);
+        editorSendReady();
     }
 })();

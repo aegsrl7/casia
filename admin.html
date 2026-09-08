@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-testi.css?v=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/it.js"></script>
@@ -521,172 +522,6 @@
             color: var(--text-light);
         }
 
-        /* Translation editor */
-        .trans-row {
-            display: grid;
-            grid-template-columns: 180px 1fr 1fr;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid #f0ece6;
-            align-items: start;
-        }
-        .trans-row:hover { background: rgba(184,149,107,0.04); margin: 0 -12px; padding-left: 12px; padding-right: 12px; }
-        .trans-key {
-            font-family: 'Courier New', monospace;
-            font-size: 0.78rem;
-            color: var(--text-light);
-            word-break: break-all;
-            padding-top: 6px;
-        }
-        .trans-key .trans-page-tag {
-            display: inline-block;
-            font-family: 'Jost', sans-serif;
-            background: #e8e4de;
-            padding: 1px 6px;
-            border-radius: 3px;
-            font-size: 0.7rem;
-            margin-bottom: 2px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .trans-ref {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            padding: 6px 8px;
-            background: #fafaf8;
-            border-radius: 4px;
-            line-height: 1.4;
-            max-height: 120px;
-            overflow-y: auto;
-        }
-        .trans-edit textarea {
-            width: 100%;
-            padding: 6px 8px;
-            border: 1.5px solid #ddd;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 0.85rem;
-            resize: vertical;
-            min-height: 38px;
-            line-height: 1.4;
-        }
-        .trans-edit textarea:focus {
-            outline: none;
-            border-color: var(--rame);
-        }
-        .trans-edit textarea.changed {
-            border-color: var(--warning);
-            background: #fffbeb;
-        }
-        .btn-row-save {
-            display: none;
-            margin-top: 4px;
-            margin-left: auto;
-            padding: 3px 12px;
-            font-size: 0.78rem;
-            font-family: 'Jost', sans-serif;
-            background: var(--rame);
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-row-save:disabled { opacity: 0.6; cursor: default; }
-        .btn-row-save.visible { display: block; }
-        .btn-row-save.saved { background: var(--success, #4a7c3a); }
-        .trans-header {
-            display: grid;
-            grid-template-columns: 180px 1fr 1fr;
-            gap: 12px;
-            padding: 10px 0;
-            font-size: 0.78rem;
-            font-weight: 500;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid #e8e4de;
-        }
-
-        /* Translation sub-tabs */
-        .trans-subtabs {
-            display: flex;
-            gap: 0;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e8e4de;
-        }
-        .trans-subtab {
-            padding: 10px 18px;
-            cursor: pointer;
-            font-size: 0.82rem;
-            font-weight: 500;
-            color: var(--text-light);
-            border: none;
-            background: none;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.2s;
-            letter-spacing: 0.5px;
-        }
-        .trans-subtab:hover { color: var(--antracite); }
-        .trans-subtab.active {
-            color: var(--rame);
-            border-bottom-color: var(--rame);
-        }
-        .trans-subtab .trans-subtab-count {
-            display: inline-block;
-            background: #e8e4de;
-            color: var(--text-light);
-            font-size: 0.7rem;
-            padding: 1px 6px;
-            border-radius: 10px;
-            margin-left: 6px;
-        }
-        .trans-subtab.active .trans-subtab-count {
-            background: rgba(184,149,107,0.15);
-            color: var(--rame);
-        }
-
-        /* Translation section groups */
-        .trans-section {
-            margin-bottom: 8px;
-        }
-        .trans-section-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0 8px;
-            cursor: pointer;
-            user-select: none;
-        }
-        .trans-section-header:hover .trans-section-title { color: var(--rame); }
-        .trans-section-title {
-            font-size: 0.82rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--antracite);
-            transition: color 0.2s;
-        }
-        .trans-section-line {
-            flex: 1;
-            height: 1px;
-            background: #e8e4de;
-        }
-        .trans-section-count {
-            font-size: 0.72rem;
-            color: var(--text-light);
-            background: #f0ece6;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-        .trans-section-toggle {
-            font-size: 0.7rem;
-            color: var(--text-light);
-            transition: transform 0.2s;
-        }
-        .trans-section.collapsed .trans-section-toggle { transform: rotate(-90deg); }
-        .trans-section.collapsed .trans-section-body { display: none; }
-
         /* Responsive */
         @media (max-width: 960px) {
             .admin-layout { flex-direction: column; }
@@ -755,13 +590,6 @@
             .mini-cal-header { flex-direction: column; gap: 10px; align-items: flex-start; }
             .mini-cal-nav { width: 100%; justify-content: space-between; }
             .mini-cal-legend { flex-wrap: wrap; gap: 8px; font-size: 0.7rem; }
-
-            /* Traduzioni */
-            .trans-row, .trans-header { grid-template-columns: 1fr; }
-            .trans-header > span:not(:first-child) { display: none; }
-            .trans-key { padding-top: 0; }
-            .trans-subtabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            .trans-subtab { padding: 8px 12px; font-size: 0.75rem; flex-shrink: 0; }
 
             /* Modal prenotazione */
             #res-modal .confirm-card {
@@ -942,7 +770,7 @@
     </button>
     <button class="admin-tab" data-panel="translations">
         <svg viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
-        <span class="tab-label">Traduzioni</span>
+        <span class="tab-label">Testi del sito</span>
     </button>
     <div class="sidebar-divider"></div>
     <button class="admin-tab" data-panel="customers">
@@ -1105,46 +933,7 @@
     </div>
 
     <!-- Translations Panel -->
-    <div class="admin-panel" id="panel-translations">
-        <div class="admin-card">
-            <h3>Editor traduzioni</h3>
-            <div id="trans-it-banner" style="display:none;background:#f7f4ec;border-left:3px solid var(--rame);padding:10px 14px;margin-bottom:14px;font-size:0.9rem;line-height:1.5;color:var(--text);">
-                <strong>Come funziona per l'italiano:</strong> quello che salvi qui va online da solo in pochi secondi, controlla bene prima di salvare (le altre lingue le aggiorniamo noi di conseguenza). Attenzione ai pezzi tipo <code>&lt;strong&gt;</code>: servono per il grassetto, non cancellarli. Lavora nelle schede <strong>Comune</strong> (menu, prenotazione, footer) e <strong>Standard</strong> (la home): la scheda Amici e la versione "semplice" del sito non ti riguardano.
-            </div>
-            <div class="admin-filters">
-                <div class="form-group">
-                    <label>Lingua</label>
-                    <select id="trans-lang">
-                        <option value="it" selected>Italiano</option>
-                        <option value="en">English</option>
-                        <option value="fr">Français</option>
-                        <option value="de">Deutsch</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Cerca</label>
-                    <input type="text" id="trans-search" placeholder="Filtra per chiave o testo...">
-                </div>
-                <button class="btn btn-primary" id="btn-load-trans">Carica</button>
-            </div>
-
-            <div class="trans-actions" style="display:flex;gap:12px;margin-bottom:16px;align-items:center;">
-                <button class="btn btn-primary" id="btn-save-trans" disabled>Salva modifiche</button>
-                <span id="trans-changes-count" style="font-size:0.85rem;color:var(--text-light);"></span>
-                <button class="btn btn-sm" id="btn-seed-trans" style="margin-left:auto;background:transparent;color:var(--rame);border:1px solid var(--rame);">Importa da JSON</button>
-            </div>
-
-            <div class="trans-subtabs" id="trans-subtabs">
-                <button class="trans-subtab active" data-page="common">Comune <span class="trans-subtab-count" id="trans-count-common"></span></button>
-                <button class="trans-subtab" data-page="index">Standard <span class="trans-subtab-count" id="trans-count-index"></span></button>
-                <button class="trans-subtab" data-page="amici">Amici <span class="trans-subtab-count" id="trans-count-amici"></span></button>
-            </div>
-
-            <div id="translations-table-wrap" class="admin-table-wrap">
-                <div class="empty-state">Seleziona una lingua e clicca "Carica"</div>
-            </div>
-        </div>
-    </div>
+    <div class="admin-panel" id="panel-translations"><div id="testi-root"></div></div>
 
     <!-- Pricing Panel -->
     <div class="admin-panel" id="panel-pricing">
@@ -1273,6 +1062,22 @@
                 <span id="ical-sync-status" style="font-size:0.82rem;color:var(--text-light);"></span>
             </div>
         </div>
+        <div class="admin-card" style="margin-top:20px;">
+            <h3>Testi del sito</h3>
+            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:16px;">Riporta tutti i testi di una lingua ai file di partenza del sito. Cancella le modifiche fatte dal pannello per quella lingua: da usare solo se qualcosa è andato storto.</p>
+            <div class="admin-filters" style="align-items:flex-end;">
+                <div class="form-group">
+                    <label>Lingua</label>
+                    <select id="setting-testi-lang">
+                        <option value="it">Italiano</option>
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                    </select>
+                </div>
+                <button class="btn btn-sm" id="btn-restore-testi" style="background:transparent;color:var(--rame);border:1px solid var(--rame);">Ripristina i testi dai file</button>
+            </div>
+        </div>
     </div>
 
     <!-- Marketing Panel -->
@@ -1321,6 +1126,7 @@
     </div>
 </div>
 
+<script src="admin-testi.js?v=1"></script>
 <script>
 (function() {
     'use strict';
@@ -1405,7 +1211,7 @@
 
             if (this.dataset.panel === 'blocked') { loadBlocked(); loadBlockPickerData(); }
             if (this.dataset.panel === 'pricing') loadPricing();
-            if (this.dataset.panel === 'translations') loadTranslations();
+            if (this.dataset.panel === 'translations') { CasiaTesti.init(document.getElementById('testi-root'), { apiFetch: apiFetch, toast: toast, confirmModal: confirmModal }); CasiaTesti.open(); }
             if (this.dataset.panel === 'customers') loadCustomers();
             if (this.dataset.panel === 'settings') loadSettings();
             if (this.dataset.panel === 'marketing') loadCampaigns();
@@ -2441,371 +2247,6 @@
         setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
     }
 
-    // ----- Translations -----
-    let transData = [];       // dati dal DB { id, lang, page, key, value }
-    let transRefData = {};    // italiano di riferimento { page: { key: value } }
-    let transChanges = {};    // chiavi modificate { "page|key": newValue }
-    let transCurrentPage = 'common';  // sub-tab attivo
-
-    // Mappa raggruppamenti chiavi per sezione logica
-    const SECTION_GROUPS = {
-        common: [
-            { id: 'general', label: 'Generali', prefixes: ['months_short', 'scroll'] },
-            { id: 'booking', label: 'Prenotazione', prefixes: ['booking_'] },
-            { id: 'validation', label: 'Validazione', prefixes: ['validate_'] },
-            { id: 'timer', label: 'Timer', prefixes: ['timer_'] },
-            { id: 'guests', label: 'Ospiti', prefixes: ['adults_', 'children_', 'guests_'] },
-            { id: 'times', label: 'Orari', prefixes: ['checkin_time', 'checkout_time'] },
-            { id: 'confirmation', label: 'Conferma', prefixes: ['confirmation_'] },
-            { id: 'print', label: 'Stampa', prefixes: ['print_'] },
-            { id: 'banner', label: 'Banner / Errori', prefixes: ['banner_', 'url_'] },
-            { id: 'footer', label: 'Footer', prefixes: ['footer_'] },
-            { id: 'modal', label: 'Modale', prefixes: ['modal_'] },
-            { id: 'apartments', label: 'Appartamenti', prefixes: ['oliva_', 'venica_'] },
-        ],
-        index: [
-            { id: 'seo', label: 'SEO / Meta', prefixes: ['meta_', 'og_'] },
-            { id: 'nav', label: 'Navigazione', prefixes: ['nav_'] },
-            { id: 'hero', label: 'Hero', prefixes: ['hero_'] },
-            { id: 'intro', label: 'Intro', prefixes: ['intro_'] },
-            { id: 'sections', label: 'Titoli sezioni', prefixes: ['section_'] },
-            { id: 'apartments', label: 'Appartamenti', prefixes: ['appartamenti_', 'oliva_', 'venica_'] },
-            { id: 'cascina', label: 'Cascina', prefixes: ['cascina_'] },
-            { id: 'services', label: 'Servizi', prefixes: ['service_'] },
-            { id: 'territory', label: 'Territorio', prefixes: ['territorio_', 'luogo_', 'distanz'] },
-            { id: 'experiences', label: 'Esperienze', prefixes: ['esp_', 'esperienze_'] },
-            { id: 'booking', label: 'Prenotazione', prefixes: ['booking_', 'prenota_'] },
-            { id: 'footer', label: 'Footer', prefixes: ['footer_'] },
-        ],
-        amici: [
-            { id: 'seo', label: 'SEO / Meta', prefixes: ['meta_', 'og_'] },
-            { id: 'nav', label: 'Navigazione', prefixes: ['nav_'] },
-            { id: 'hero', label: 'Hero', prefixes: ['hero_'] },
-            { id: 'intro', label: 'Intro', prefixes: ['intro_'] },
-            { id: 'sections', label: 'Titoli sezioni', prefixes: ['section_'] },
-            { id: 'apartments', label: 'Appartamenti', prefixes: ['appartamenti_', 'oliva_', 'venica_'] },
-            { id: 'cascina', label: 'Cascina', prefixes: ['cascina_'] },
-            { id: 'services', label: 'Servizi', prefixes: ['service_'] },
-            { id: 'territory', label: 'Territorio', prefixes: ['territorio_', 'luogo_', 'distanz'] },
-            { id: 'experiences', label: 'Esperienze', prefixes: ['esp_', 'esperienze_'] },
-            { id: 'booking', label: 'Prenotazione', prefixes: ['booking_', 'prenota_'] },
-            { id: 'footer', label: 'Footer', prefixes: ['footer_'] },
-        ],
-    };
-
-    function getKeySection(page, key) {
-        const groups = SECTION_GROUPS[page] || [];
-        for (const group of groups) {
-            for (const prefix of group.prefixes) {
-                if (key === prefix || key.startsWith(prefix)) return group.id;
-            }
-        }
-        return '_other';
-    }
-
-    // Sub-tabs
-    document.querySelectorAll('.trans-subtab').forEach(tab => {
-        tab.addEventListener('click', function() {
-            document.querySelectorAll('.trans-subtab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            transCurrentPage = this.dataset.page;
-            renderTranslations();
-        });
-    });
-
-    async function loadTranslations() {
-        const lang = document.getElementById('trans-lang').value;
-        const banner = document.getElementById('trans-it-banner');
-        if (banner) banner.style.display = lang === 'it' ? 'block' : 'none';
-        const wrap = document.getElementById('translations-table-wrap');
-        wrap.innerHTML = '<div class="loading">Caricamento...</div>';
-        transChanges = {};
-        updateTransChangesCount();
-
-        // Carica italiano come riferimento (se non già caricato)
-        if (Object.keys(transRefData).length === 0) {
-            const refRes = await apiFetch('/translations?lang=it');
-            if (refRes) {
-                const refJson = await refRes.json();
-                transRefData = {};
-                (refJson.translations || []).forEach(t => {
-                    if (!transRefData[t.page]) transRefData[t.page] = {};
-                    transRefData[t.page][t.key] = t.value;
-                });
-            }
-        }
-
-        // Carica lingua target (tutte le pagine)
-        const res = await apiFetch('/translations?lang=' + lang);
-        if (!res) return;
-        const data = await res.json();
-        transData = data.translations || [];
-
-        // Aggiorna contatori sub-tab
-        ['common', 'index', 'amici'].forEach(p => {
-            const count = Object.keys(transRefData[p] || {}).length;
-            const el = document.getElementById('trans-count-' + p);
-            if (el) el.textContent = count || '';
-        });
-
-        renderTranslations();
-    }
-
-    function renderTranslations() {
-        const wrap = document.getElementById('translations-table-wrap');
-        const search = (document.getElementById('trans-search').value || '').toLowerCase();
-        const lang = document.getElementById('trans-lang').value;
-        const page = transCurrentPage;
-
-        // Crea mappa di dati target
-        const targetMap = {};
-        transData.forEach(t => {
-            const k = t.page + '|' + t.key;
-            targetMap[k] = t.value;
-        });
-
-        // Raccogli chiavi della pagina corrente
-        const refKeys = transRefData[page] || {};
-        let allKeys = Object.keys(refKeys).map(key => ({ page, key }));
-
-        // Filtra per ricerca
-        if (search) {
-            allKeys = allKeys.filter(item => {
-                const refVal = (transRefData[item.page] || {})[item.key] || '';
-                const targetVal = targetMap[item.page + '|' + item.key] || '';
-                return item.key.toLowerCase().includes(search)
-                    || refVal.toLowerCase().includes(search)
-                    || targetVal.toLowerCase().includes(search);
-            });
-        }
-
-        if (allKeys.length === 0) {
-            wrap.innerHTML = '<div class="empty-state">Nessuna chiave trovata. Importa prima le traduzioni con "Importa da JSON".</div>';
-            return;
-        }
-
-        // Raggruppa per sezione
-        const groups = SECTION_GROUPS[page] || [];
-        const grouped = {};
-        const groupOrder = [];
-        groups.forEach(g => { grouped[g.id] = []; groupOrder.push(g.id); });
-        grouped['_other'] = [];
-
-        allKeys.forEach(item => {
-            const sectionId = getKeySection(page, item.key);
-            if (!grouped[sectionId]) { grouped[sectionId] = []; groupOrder.push(sectionId); }
-            grouped[sectionId].push(item);
-        });
-
-        // Aggiungi _other alla fine se ha chiavi
-        if (grouped['_other'].length > 0 && !groupOrder.includes('_other')) {
-            groupOrder.push('_other');
-        }
-
-        const groupLabels = {};
-        groups.forEach(g => { groupLabels[g.id] = g.label; });
-        groupLabels['_other'] = 'Altro';
-
-        let html = '';
-
-        groupOrder.forEach(sectionId => {
-            const items = grouped[sectionId];
-            if (!items || items.length === 0) return;
-
-            const label = groupLabels[sectionId] || sectionId;
-
-            html += `<div class="trans-section" data-section="${sectionId}">
-                <div class="trans-section-header" onclick="this.parentElement.classList.toggle('collapsed')">
-                    <span class="trans-section-toggle">&#9660;</span>
-                    <span class="trans-section-title">${esc(label)}</span>
-                    <span class="trans-section-line"></span>
-                    <span class="trans-section-count">${items.length}</span>
-                </div>
-                <div class="trans-section-body">
-                    <div class="trans-header"><span>Chiave</span><span>Italiano (riferimento)</span><span>${lang.toUpperCase()}</span></div>`;
-
-            items.forEach(item => {
-                const compositeKey = item.page + '|' + item.key;
-                const refVal = (transRefData[item.page] || {})[item.key] || '';
-                const targetVal = transChanges[compositeKey] !== undefined ? transChanges[compositeKey] : (targetMap[compositeKey] || '');
-                const isChanged = transChanges[compositeKey] !== undefined;
-                const rows = Math.max(1, Math.min(4, Math.ceil(Math.max(refVal.length, targetVal.length) / 60)));
-
-                html += `<div class="trans-row" data-composite="${esc(compositeKey)}">
-                    <div class="trans-key">${esc(item.key)}</div>
-                    <div class="trans-ref">${esc(refVal)}</div>
-                    <div class="trans-edit">
-                        <textarea rows="${rows}" data-page="${esc(item.page)}" data-key="${esc(item.key)}" data-original="${esc(targetMap[compositeKey] || '')}" class="${isChanged ? 'changed' : ''}">${esc(targetVal)}</textarea>
-                        <button type="button" class="btn-row-save ${isChanged ? 'visible' : ''}" data-page="${esc(item.page)}" data-key="${esc(item.key)}">Salva</button>
-                    </div>
-                </div>`;
-            });
-
-            html += '</div></div>';
-        });
-
-        wrap.innerHTML = html;
-
-        // Listener per cambi
-        wrap.querySelectorAll('.trans-edit textarea').forEach(ta => {
-            ta.addEventListener('input', function() {
-                const compositeKey = this.dataset.page + '|' + this.dataset.key;
-                const original = this.dataset.original;
-                const rowBtn = this.parentElement.querySelector('.btn-row-save');
-                if (this.value !== original) {
-                    transChanges[compositeKey] = this.value;
-                    this.classList.add('changed');
-                    if (rowBtn) { rowBtn.classList.add('visible'); rowBtn.classList.remove('saved'); rowBtn.textContent = 'Salva'; }
-                } else {
-                    delete transChanges[compositeKey];
-                    this.classList.remove('changed');
-                    if (rowBtn) rowBtn.classList.remove('visible');
-                }
-                updateTransChangesCount();
-            });
-        });
-
-        // Salvataggio asincrono della singola riga
-        wrap.querySelectorAll('.btn-row-save').forEach(btn => {
-            btn.addEventListener('click', async function() {
-                const ta = this.parentElement.querySelector('textarea');
-                if (!ta) return;
-                const lang = document.getElementById('trans-lang').value;
-                const compositeKey = ta.dataset.page + '|' + ta.dataset.key;
-
-                if (tagMismatch(ta.dataset.original || '', ta.value)) {
-                    const ok = await confirmModal(
-                        'Controlla i tag',
-                        'In questo testo sembra mancare o essere cambiato un tag tipo &lt;strong&gt;. Salvare lo stesso?',
-                        'Salva comunque', false
-                    );
-                    if (!ok) return;
-                }
-
-                this.disabled = true;
-                this.textContent = 'Salvo...';
-                const res = await apiFetch('/translations', {
-                    method: 'PUT',
-                    body: JSON.stringify({ updates: [{ lang, page: ta.dataset.page, key: ta.dataset.key, value: ta.value }] }),
-                });
-                this.disabled = false;
-                const data = res ? await res.json() : null;
-                if (data && data.success) {
-                    ta.dataset.original = ta.value;
-                    ta.classList.remove('changed');
-                    delete transChanges[compositeKey];
-                    updateTransChangesCount();
-                    this.textContent = 'Salvato ✓';
-                    this.classList.add('saved');
-                    const self = this;
-                    setTimeout(function() { self.classList.remove('visible', 'saved'); self.textContent = 'Salva'; }, 1600);
-                } else {
-                    this.textContent = 'Errore, riprova';
-                    toast((data && data.error) || 'Errore nel salvataggio', 'error');
-                }
-            });
-        });
-    }
-
-    function updateTransChangesCount() {
-        const count = Object.keys(transChanges).length;
-        const el = document.getElementById('trans-changes-count');
-        const btn = document.getElementById('btn-save-trans');
-        el.textContent = count > 0 ? count + ' modific' + (count === 1 ? 'a' : 'he') + ' non salvat' + (count === 1 ? 'a' : 'e') : '';
-        btn.disabled = count === 0;
-    }
-
-    document.getElementById('btn-load-trans').addEventListener('click', loadTranslations);
-    document.getElementById('trans-search').addEventListener('input', renderTranslations);
-
-    // Avvisa se si lascia la pagina con modifiche non salvate
-    window.addEventListener('beforeunload', function(e) {
-        if (Object.keys(transChanges).length > 0) {
-            e.preventDefault();
-            e.returnValue = '';
-        }
-    });
-
-    // I tag HTML (<strong> ecc.) devono restare in pari col testo originale
-    function tagMismatch(original, nuovo) {
-        const conta = s => (s.match(/<[^>]+>/g) || []).length;
-        return conta(original) !== conta(nuovo);
-    }
-
-    document.getElementById('btn-save-trans').addEventListener('click', async function() {
-        const lang = document.getElementById('trans-lang').value;
-        const updates = Object.entries(transChanges).map(([compositeKey, value]) => {
-            const [page, key] = compositeKey.split('|');
-            return { lang, page, key, value };
-        });
-
-        if (updates.length === 0) return;
-
-        // Controllo soft sui tag HTML rovinati
-        const sospette = [];
-        document.querySelectorAll('.trans-edit textarea.changed').forEach(ta => {
-            if (tagMismatch(ta.dataset.original || '', ta.value)) sospette.push(ta.dataset.key);
-        });
-        if (sospette.length > 0) {
-            const ok = await confirmModal(
-                'Controlla i tag',
-                'In ' + sospette.length + ' test' + (sospette.length === 1 ? 'o' : 'i') + ' sembra mancare o essere cambiato un tag tipo &lt;strong&gt; (' + sospette.slice(0, 3).join(', ') + '). Salvare lo stesso?',
-                'Salva comunque',
-                false
-            );
-            if (!ok) return;
-        }
-
-        const res = await apiFetch('/translations', {
-            method: 'PUT',
-            body: JSON.stringify({ updates }),
-        });
-        if (!res) return;
-        const data = await res.json();
-        if (data.success) {
-            toast(updates.length + ' traduzion' + (updates.length === 1 ? 'e salvata' : 'i salvate'), 'success');
-            transChanges = {};
-            loadTranslations();
-        } else {
-            toast(data.error || 'Errore nel salvataggio', 'error');
-        }
-    });
-
-    document.getElementById('btn-seed-trans').addEventListener('click', async function() {
-        const lang = document.getElementById('trans-lang').value;
-        const ok = await confirmModal(
-            'Importa traduzioni',
-            'Importare le traduzioni dal file JSON per <strong>' + lang.toUpperCase() + '</strong>?<br>I testi esistenti nel DB verranno sovrascritti.',
-            'Importa',
-            false
-        );
-        if (!ok) return;
-
-        toast('Caricamento file lang/' + lang + '.json...', 'success');
-
-        try {
-            const jsonRes = await fetch('/lang/' + lang + '.json');
-            if (!jsonRes.ok) { toast('File lang/' + lang + '.json non trovato', 'error'); return; }
-            const translations = await jsonRes.json();
-
-            const res = await apiFetch('/translations/seed', {
-                method: 'POST',
-                body: JSON.stringify({ lang, translations }),
-            });
-            if (!res) return;
-            const data = await res.json();
-            if (data.success) {
-                toast(data.keys_imported + ' chiavi importate per ' + lang.toUpperCase(), 'success');
-                transRefData = {};
-                loadTranslations();
-            } else {
-                toast(data.error || 'Errore', 'error');
-            }
-        } catch (err) {
-            toast('Errore nel caricamento del file JSON', 'error');
-        }
-    });
-
     // ----- Reservation Detail Modal -----
     window.showResDetail = async function(id) {
         const modal = document.getElementById('res-modal');
@@ -3281,6 +2722,11 @@
         document.getElementById('ical-sync-status').textContent = parts.join(' · ');
         toast('Sincronizzazione completata', 'success');
         loadReservations();
+    });
+
+    document.getElementById('btn-restore-testi').addEventListener('click', function() {
+        CasiaTesti.init(document.getElementById('testi-root'), { apiFetch: apiFetch, toast: toast, confirmModal: confirmModal });
+        CasiaTesti.restoreFromFiles(document.getElementById('setting-testi-lang').value);
     });
 
     document.getElementById('btn-save-access-settings').addEventListener('click', async function() {

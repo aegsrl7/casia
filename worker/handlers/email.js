@@ -1,5 +1,5 @@
 // Email handler via Resend API
-import { getEmailTexts, getCheckinEmailTexts, getAccessEmailTexts, getTaxEmailTexts } from './email-translations.js';
+import { loadEmailTexts, fill } from './email-translations.js';
 
 // Orari standard check-in / check-out
 const CHECKIN_TIME = '15:00';
@@ -53,7 +53,7 @@ function formatPrice(cents) {
 export async function sendGuestConfirmation(env, reservation) {
   const { guest_name, guest_email, apartment, checkin, checkout, nights, adults, children, total_cents, lang } = reservation;
 
-  const t = getEmailTexts(lang || 'it');
+  const t = await loadEmailTexts(env, 'conf', lang || 'it');
   const apartmentName = apartment === 'oliva' ? 'Appartamento Oliva' : 'Appartamento Venica';
 
   const html = `
@@ -84,7 +84,7 @@ export async function sendGuestConfirmation(env, reservation) {
     </div>
     <div class="body">
       <h2>${t.title}</h2>
-      <p>${t.greeting(guest_name)}</p>
+      <p>${fill(t.greeting, { name: guest_name })}</p>
       <p>${t.intro}</p>
 
       <div class="detail">
@@ -105,7 +105,7 @@ export async function sendGuestConfirmation(env, reservation) {
       </div>
       <div class="detail">
         <span class="detail-label">${t.guests}</span>
-        <span class="detail-value">${t.adults(adults)}${t.children(children)}</span>
+        <span class="detail-value">${fill(t.adults, { n: adults })}${children > 0 ? ' ' + fill(t.children, { n: children }) : ''}</span>
       </div>
 
       <div class="total">
@@ -132,7 +132,7 @@ export async function sendGuestConfirmation(env, reservation) {
 
   return sendEmail(env, {
     to: guest_email,
-    subject: t.subject(apartmentName, formatDate(checkin), formatDate(checkout)),
+    subject: fill(t.subject, { apt: apartmentName, checkin: formatDate(checkin), checkout: formatDate(checkout) }),
     html,
   });
 }
@@ -223,7 +223,7 @@ export async function sendHostNotification(env, reservation) {
  */
 export async function sendCheckinEmail(env, reservation) {
   const { guest_name, guest_email, checkin, checkout, checkin_token, lang } = reservation;
-  const t = getCheckinEmailTexts(lang || 'it');
+  const t = await loadEmailTexts(env, 'checkin', lang || 'it');
   const siteUrl = env.SITE_URL || 'https://casiavacanze.com';
   const checkinUrl = `${siteUrl}/checkin.html?token=${checkin_token}`;
 
@@ -251,9 +251,9 @@ export async function sendCheckinEmail(env, reservation) {
     </div>
     <div class="body">
       <h2>${t.title}</h2>
-      <p>${t.greeting(guest_name)}</p>
+      <p>${fill(t.greeting, { name: guest_name })}</p>
       <p>${t.intro}</p>
-      <p>${t.details(formatDate(checkin), formatDate(checkout))}</p>
+      <p>${fill(t.details, { checkin: formatDate(checkin), checkout: formatDate(checkout) })}</p>
       <p style="text-align:center;">
         <a href="${checkinUrl}" class="btn">${t.cta}</a>
       </p>
@@ -283,7 +283,7 @@ export async function sendCheckinEmail(env, reservation) {
  */
 export async function sendAccessEmail(env, reservation, instructions) {
   const { guest_name, guest_email, checkin, checkout, lang } = reservation;
-  const t = getAccessEmailTexts(lang || 'it');
+  const t = await loadEmailTexts(env, 'access', lang || 'it');
 
   const html = `
 <!DOCTYPE html>
@@ -309,8 +309,8 @@ export async function sendAccessEmail(env, reservation, instructions) {
     </div>
     <div class="body">
       <h2>${t.title}</h2>
-      <p>${t.greeting(guest_name)}</p>
-      <p>${t.intro(formatDate(checkin), formatDate(checkout))}</p>
+      <p>${fill(t.greeting, { name: guest_name })}</p>
+      <p>${fill(t.intro, { checkin: formatDate(checkin), checkout: formatDate(checkout) })}</p>
       <div class="instructions">${instructions.replace(/\n/g, '<br>')}</div>
       <p>${t.contact}</p>
     </div>
@@ -327,7 +327,7 @@ export async function sendAccessEmail(env, reservation, instructions) {
 
   return sendEmail(env, {
     to: guest_email,
-    subject: t.subject(formatDate(checkin)),
+    subject: fill(t.subject, { checkin: formatDate(checkin) }),
     html,
   });
 }
@@ -337,7 +337,7 @@ export async function sendAccessEmail(env, reservation, instructions) {
  */
 export async function sendTouristTaxEmail(env, reservation, paymentUrl, amountCents, taxablePersons, taxableNights) {
   const { guest_name, guest_email, checkin, checkout, lang } = reservation;
-  const t = getTaxEmailTexts(lang || 'it');
+  const t = await loadEmailTexts(env, 'tax', lang || 'it');
 
   const html = `
 <!DOCTYPE html>
@@ -368,7 +368,7 @@ export async function sendTouristTaxEmail(env, reservation, paymentUrl, amountCe
     </div>
     <div class="body">
       <h2>${t.title}</h2>
-      <p>${t.greeting(guest_name)}</p>
+      <p>${fill(t.greeting, { name: guest_name })}</p>
       <p>${t.intro}</p>
       <div class="detail">
         <span class="detail-label">${t.period}</span>

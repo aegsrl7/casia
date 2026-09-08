@@ -23,11 +23,18 @@ function cacheKeyFor(origin, path) {
 export async function serveItalianPage(request, env, path) {
   if (request.method !== 'GET' || !PAGINE[path]) return null;
 
-  const origin = new URL(request.url).origin;
+  const url = new URL(request.url);
+  // L'anteprima dell'editor (?editor=1) non deve toccare la cache condivisa
+  // con i visitatori reali: altrimenti una GET di anteprima in corso puo'
+  // resuscitare in cache il testo vecchio subito dopo un salvataggio.
+  const isEditorPreview = url.searchParams.get('editor') === '1';
+  const origin = url.origin;
   const cache = caches.default;
-  const key = cacheKeyFor(origin, path);
-  const hit = await cache.match(key);
-  if (hit) return hit;
+  const key = isEditorPreview ? null : cacheKeyFor(origin, path);
+  if (key) {
+    const hit = await cache.match(key);
+    if (hit) return hit;
+  }
 
   const asset = await env.ASSETS.fetch(request);
   const ct = asset.headers.get('content-type') || '';
@@ -63,13 +70,17 @@ export async function serveItalianPage(request, env, path) {
     .transform(asset);
 
   const res = new Response(riscritta.body, riscritta);
-  res.headers.set('Cache-Control', `public, max-age=0, s-maxage=${CACHE_TTL}`);
   res.headers.set('X-It-Render', '1');
 
-  try {
-    await cache.put(key, res.clone());
-  } catch (err) {
-    console.error('render-it: cache.put fallita:', err.message);
+  if (key) {
+    res.headers.set('Cache-Control', `public, max-age=0, s-maxage=${CACHE_TTL}`);
+    try {
+      await cache.put(key, res.clone());
+    } catch (err) {
+      console.error('render-it: cache.put fallita:', err.message);
+    }
+  } else {
+    res.headers.set('Cache-Control', 'private, no-store');
   }
   return res;
 }
