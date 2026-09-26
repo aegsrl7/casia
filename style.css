@@ -514,6 +514,19 @@ html.i18n-loading [data-i18n-html] {
     margin-bottom: var(--space-lg);
 }
 
+/* Copertina Home: titolo in maiuscolo, sottotitolo in minuscolo */
+.hero-title--caps {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-wrap: balance;
+}
+
+.hero-subtitle--plain {
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    text-transform: none;
+}
+
 .hero-cta {
     display: flex;
     flex-direction: column;
